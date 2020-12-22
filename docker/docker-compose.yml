@@ -1,0 +1,40 @@
+# Should be used with the docker-base project that can be fetched here:
+# https://github.com/spydemon/docker-base
+version: '2.0'
+
+services:
+  db:
+    container_name: tiroucubo-db
+    environment:
+      - MYSQL_DATABASE=tiroucubo
+      - MYSQL_ROOT_PASSWORD=toor
+    expose:
+      - "3306"
+    hostname: tiroucubo-db
+    image: mariadb:10.4
+    ports:
+      - "3455:3306" #MySQL is bind to the port 3452 on the host.
+    networks:
+      - default
+    volumes:
+      - ./db/db:/var/lib/mysql
+  web:
+    container_name: tiroucubo-web
+    expose:
+      - "80"
+    environment:
+      - VIRTUAL_HOST=tiroucubo.local
+    hostname: tiroucubo-web
+    image: spydemon/php74-symfony:0.1
+    volumes:
+      - ..:/var/www
+      - home:/root
+    networks:
+      - base
+      - default
+volumes:
+  home:
+networks:
+  base:
+    external: true
+  default:

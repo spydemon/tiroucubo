@@ -25,7 +25,7 @@ services:
     environment:
       - VIRTUAL_HOST=tiroucubo.local
     hostname: tiroucubo-web
-    image: spydemon/php74-symfony:0.1
+    image: spydemon/php80-symfony:0.1
     volumes:
       - ..:/var/www
       - home:/root

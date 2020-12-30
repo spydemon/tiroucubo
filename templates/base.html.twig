@@ -1,12 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ page.lang }}">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <meta name="author" content="{{ page.author }}" />
+        <title>{{ page.title }} — {{ website.title }}</title>
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
+        <header>
+            {% block header %}{% endblock %}
+            <nav>
+                {% block nav %}
+                    {{ render(controller( 'App\\Controller\\Fragment\\Navigation::display')) }}
+                {% endblock %}
+            </nav>
+        </header>
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
+        <footer>
+            {% block footer %}
+                {{ render(controller( 'App\\Controller\\Fragment\\Footer::display')) }}
+            {% endblock %}
+        </footer>
     </body>
 </html>

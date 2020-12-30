@@ -15,6 +15,9 @@
                 {% endblock %}
             </nav>
         </header>
+        {% block notification %}
+            {{ render(controller( 'App\\Controller\\Fragment\\Notification::display')) }}
+        {% endblock %}
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
         <footer>

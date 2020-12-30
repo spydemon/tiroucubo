@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    Login customer
+    <h1>Login</h1>
+    {{ form_start(form_login) }}
+        {{ form_widget(form_login) }}
+        <input type="submit" />
+    {{ form_end(form_login) }}
 {% endblock %}

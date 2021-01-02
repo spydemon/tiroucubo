@@ -28,6 +28,7 @@ services:
     image: spydemon/php80-symfony:0.1
     volumes:
       - ..:/var/www
+      - ./config/local.env:/var/www/.env
       - home:/root
     networks:
       - base

@@ -2,9 +2,9 @@
 
 namespace App\Controller\Admin;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Controller\AbstractBaseController;
 
-class AbstractAdminController extends AbstractController
+class AbstractAdminController extends AbstractBaseController
 {
 
 }

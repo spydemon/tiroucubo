@@ -20,11 +20,9 @@ class SecurityController extends AbstractBaseController
         if ($this->getUser()) {
             return $this->redirectToRoute('front_home');
         }
-        $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
         return $this->render('front/login.html.twig', [
             'last_username' => $lastUsername,
-            'error' => $error,
             'page' => [
                 'title' => 'Login'
             ]

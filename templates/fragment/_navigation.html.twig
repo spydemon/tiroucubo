@@ -3,4 +3,9 @@
     <li>Magento</li>
     <li>Symfony</li>
     <li>Whatever…</li>
+    {% if app.user %}
+        <li>
+            {{ app.user.username }} <a href="{{ path('front_security_logout') }}">Logout</a>
+        </li>
+    {% endif %}
 </ul>

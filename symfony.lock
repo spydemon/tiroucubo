@@ -2,6 +2,9 @@
     "composer/package-versions-deprecated": {
         "version": "1.11.99.1"
     },
+    "dbrekelmans/bdi": {
+        "version": "0.3"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -113,6 +116,9 @@
     },
     "nikic/php-parser": {
         "version": "v4.10.4"
+    },
+    "php-webdriver/webdriver": {
+        "version": "1.9.0"
     },
     "phpdocumentor/reflection-common": {
         "version": "2.2.0"
@@ -337,6 +343,9 @@
     },
     "symfony/orm-pack": {
         "version": "v2.1.0"
+    },
+    "symfony/panther": {
+        "version": "v0.9.0"
     },
     "symfony/phpunit-bridge": {
         "version": "4.3",

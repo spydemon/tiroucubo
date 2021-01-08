@@ -11,7 +11,7 @@ services:
     expose:
       - "3306"
     hostname: tiroucubo-db
-    image: mariadb:10.4
+    image: mariadb:10.5.8
     ports:
       - "3455:3306" #MySQL is bind to the port 3452 on the host.
     networks:
@@ -25,7 +25,7 @@ services:
     environment:
       - VIRTUAL_HOST=tiroucubo.local
     hostname: tiroucubo-web
-    image: spydemon/php80-symfony:0.1
+    image: spydemon/php74-symfony:0.1
     volumes:
       - ..:/var/www
       - ./config/local.env:/var/www/.env

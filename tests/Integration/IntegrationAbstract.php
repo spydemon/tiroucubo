@@ -36,7 +36,7 @@ abstract class IntegrationAbstract extends PantherTestCase
         $this->setConfiguration();
     }
 
-    protected function getClient() : Client
+    protected function getBrowser() : Client
     {
         if (is_null($this->client)) {
             $this->client = $this->generateClient();

@@ -8,7 +8,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ShowController extends UserRepository
 {
-    #[Route('/user/show/{id}')]
+    /**
+     * @Route("/user/show/{id}")
+     */
     public function display(User $user)
     {
         $test = 1;

@@ -7,9 +7,13 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class PasswordManager
 {
+    private UserPasswordEncoderInterface $passwordManager;
+
     public function __construct(
-        private UserPasswordEncoderInterface $passwordManager
-    ) {}
+        UserPasswordEncoderInterface $passwordManager
+    ) {
+        $this->passwordManager = $passwordManager;
+    }
 
     public function setNewPassword(User $user, string $clearPassword) : void
     {

@@ -11,10 +11,10 @@ class DashboardController extends AbstractAdminController
     /**
      * TODO: replace with PHP 8 annotation when available.
      * @IsGranted("ROLE_ADMIN")
+     * @Route("/dashboard")
      */
-    #[Route('/dashboard')]
     public function display() : Response
     {
-        return $this->render('back/dashboard.html.twig', ['website' => ['title' => 'Boloss']]);
+        return $this->render('back/dashboard.html.twig');
     }
 }

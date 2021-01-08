@@ -21,9 +21,13 @@ class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
 
+    private UrlGeneratorInterface $urlGenerator;
+
     public function __construct(
-        private UrlGeneratorInterface $urlGenerator,
-    ) { }
+        UrlGeneratorInterface $urlGenerator
+    ) {
+        $this->urlGenerator = $urlGenerator;
+    }
 
     public function authenticate(Request $request): PassportInterface
     {

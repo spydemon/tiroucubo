@@ -7,7 +7,7 @@ trait AdminDashboardTrait
 {
     public function testLoginProtectedTest()
     {
-        $client = $this->getClient();
+        $client = $this->getBrowser();
         $crawler = $client->request('GET', '/admin/dashboard');
         $url = $this->getAppUrl('/en/login');
         $this->assertEquals(

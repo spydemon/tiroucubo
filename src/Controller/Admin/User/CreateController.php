@@ -11,7 +11,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CreateController extends AbstractAdminController
 {
-    #[Route('/user/create')]
+    /**
+     * @Route("/user/create")
+     */
     public function display(ValidatorInterface $validator, PasswordManager $passwordManager) : Response
     {
         $entityManager = $this->getDoctrine()->getManager();

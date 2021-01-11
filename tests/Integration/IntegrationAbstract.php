@@ -4,9 +4,11 @@ namespace App\Tests\Integration;
 
 use Exception;
 use Facebook\WebDriver\Chrome\ChromeOptions;
+use Facebook\WebDriver\Remote\RemoteWebElement;
+use Facebook\WebDriver\Remote\DesiredCapabilities;
+use Facebook\WebDriver\WebDriverBy;
 use Symfony\Component\Panther\Client;
 use Symfony\Component\Panther\PantherTestCase;
-use Facebook\WebDriver\Remote\DesiredCapabilities;
 
 /**
  * Class IntegrationAbstract
@@ -36,6 +38,11 @@ abstract class IntegrationAbstract extends PantherTestCase
         $this->setConfiguration();
     }
 
+    protected function getAppUrl($path) : string
+    {
+        return $this->envBaseUri . $path;
+    }
+
     protected function getBrowser() : Client
     {
         if (is_null($this->client)) {
@@ -44,13 +51,21 @@ abstract class IntegrationAbstract extends PantherTestCase
         return $this->client;
     }
 
-    /**
-     * @param $path
-     * @return string
-     */
-    protected function getAppUrl($path) : string
+    protected function getElementByCssSelector($selector) : RemoteWebElement
     {
-        return $this->envBaseUri . $path;
+        return $this->getBrowser()->findElement(WebDriverBy::cssSelector($selector));
+    }
+
+    /**
+     * Will set the internal browser to the provided $url. Note that the $url should not be in a fully qualified form.
+     * Eg: if $url = '/en/login', the browser will load the page "http(s)://<site_root>/en/login."
+     *
+     * @param $url
+     */
+    protected function goToUrl($url) : void
+    {
+        $client = $this->getBrowser();
+        $client->request('GET', $url);
     }
 
     private function generateClient() : Client

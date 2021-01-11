@@ -3,10 +3,13 @@
         "@symfony/stimulus-bridge": "^1.1.0",
         "@symfony/webpack-encore": "^0.32.0",
         "core-js": "^3.0.0",
+        "postcss-loader": "^4.1.0",
         "regenerator-runtime": "^0.13.2",
         "sass": "^1.32.2",
         "sass-loader": "^10.1.1",
         "stimulus": "^2.0.0",
+        "stylelint": "^13.8.0",
+        "stylelint-config-recommended": "^3.0.0",
         "webpack-notifier": "^1.6.0"
     },
     "license": "UNLICENSED",
@@ -17,8 +20,8 @@
         "watch": "encore dev --watch",
         "build": "encore production --progress"
     },
-    "dependencies": {
-        "sass": "^1.32.2",
-        "sass-loader": "^10.1.1"
+    "dependencies": {},
+    "stylelint": {
+        "extends": "stylelint-config-recommended"
     }
 }

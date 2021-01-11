@@ -38,6 +38,16 @@ abstract class IntegrationAbstract extends PantherTestCase
         $this->setConfiguration();
     }
 
+    protected function closeBrowser() : void
+    {
+        if (is_null($this->client)) {
+            return;
+        }
+        $this->client->close();
+        $this->client->quit();
+        $this->client = null;
+    }
+
     protected function getAppUrl($path) : string
     {
         return $this->envBaseUri . $path;
@@ -66,6 +76,12 @@ abstract class IntegrationAbstract extends PantherTestCase
     {
         $client = $this->getBrowser();
         $client->request('GET', $url);
+    }
+
+    protected function tearDown() : void
+    {
+        $this->closeBrowser();
+        parent::tearDown();
     }
 
     private function generateClient() : Client

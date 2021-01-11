@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\Extension;
 
 use PHPUnit\Runner\BeforeFirstTestHook;
 

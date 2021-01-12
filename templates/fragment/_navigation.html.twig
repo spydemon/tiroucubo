@@ -1,11 +1,26 @@
-<ul>
-    <li>Home</li>
-    <li>Magento</li>
-    <li>Symfony</li>
-    <li>Whatever…</li>
-    {% if app.user %}
-        <li>
-            {{ app.user.username }} <a href="{{ path('front_security_logout') }}">Logout</a>
-        </li>
-    {% endif %}
-</ul>
+<div class="logo"></div>
+<div class="title">
+    <div class="main">Spyzone</div>
+    <div class="sub">Spydemon personal blog</div>
+</div>
+<div class="navigation">
+    <nav>
+        <div class="item">
+            Home
+        </div>
+        <div class="item">
+            Magento
+        </div>
+        <div class="item">
+            Symfony
+        </div>
+        <div class="item">
+            Whatever…
+        </div>
+            {% if app.user %}
+                <div class="item">
+                    <a href="{{ path('front_security_logout') }}">Logout</a>
+                </div>
+            {% endif %}
+    </nav>
+</div>

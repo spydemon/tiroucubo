@@ -1,0 +1,51 @@
+/**
+ * Set page colors
+ */
+
+$color-background-main: #072121;
+$color-background-second: #824C71;
+$color-font-bgm-main: #7FB285;
+$color-font-bgm-second: #F5DBCB;
+$color-font-bgs-main: #072121;
+
+header, .notification, .main-content {
+  background-color: $color-background-main;
+  color: $color-font-bgm-main;
+}
+
+body {
+  background-color: $color-background-second;
+  color: $color-font-bgs-main;
+  font-family: 'Raleway', sans-serif;
+}
+
+a {
+  color: $color-font-bgm-main;
+}
+
+/**
+ * Set page margins and paddings
+ */
+
+$default-padding-horizontal: 10px;
+
+body {
+  margin: 0;
+  padding: 0;
+  @include for-wide-desktop-up {
+    margin: auto;
+    width : 1900px;
+  }
+}
+
+header {
+  padding: 0 $default-padding-horizontal;
+}
+
+h1 {
+  margin: 0;
+}
+
+ul {
+  margin: 0;
+}

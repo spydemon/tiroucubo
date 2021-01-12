@@ -15,17 +15,19 @@
     </head>
     <body>
         <header>
-            {% block header %}{% endblock %}
-            <nav>
-                {% block nav %}
-                    {{ render(controller( 'App\\Controller\\Fragment\\Navigation::display')) }}
-                {% endblock %}
-            </nav>
+            {% block header %}
+                {# TODO: rename to header #}
+                {{ render(controller( 'App\\Controller\\Fragment\\Navigation::display')) }}
+            {% endblock %}
         </header>
-        {% block notification %}
-            {{ render(controller( 'App\\Controller\\Fragment\\Notification::display')) }}
-        {% endblock %}
-        {% block body %}{% endblock %}
+        <div class="notification">
+            {% block notification %}
+                {{ render(controller( 'App\\Controller\\Fragment\\Notification::display')) }}
+            {% endblock %}
+        </div>
+        <div class="main-content">
+            {% block body %}{% endblock %}
+        </div>
         {% block javascripts %}{% endblock %}
         <footer>
             {% block footer %}

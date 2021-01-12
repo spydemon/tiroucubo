@@ -22,6 +22,9 @@
     },
     "dependencies": {},
     "stylelint": {
-        "extends": "stylelint-config-recommended"
+        "extends": "stylelint-config-recommended",
+        "rules":  {
+            "no-duplicate-selectors" : null
+        }
     }
 }

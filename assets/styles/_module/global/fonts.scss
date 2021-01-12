@@ -1,0 +1,11 @@
+/**
+ * Configure all font to use in the website.
+ */
+
+@font-face {
+  font-family: raleway;
+  src: url('../../../fonts/raleway.ttf') format('woff2 supports variations'),
+  url('../../../fonts/raleway.ttf') format('woff2-variations');
+  font-weight: 100 1000;
+  font-stretch: 25% 151%;
+}

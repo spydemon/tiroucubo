@@ -1,0 +1,30 @@
+header {
+  display: table-row;
+
+  .logo, .title, .navigation {
+    display: table-cell;
+  }
+
+  .title {
+    margin: 0 30px;
+    text-align: center;
+
+    .main {
+      font-size: xxx-large;
+      font-weight: bold;
+    }
+  }
+
+  .navigation {
+    width: 100%;
+  }
+
+  nav {
+    display: flex;
+    justify-content: right;
+
+    .item {
+      margin: 10px;
+    }
+  }
+}

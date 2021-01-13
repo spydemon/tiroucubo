@@ -1,0 +1,16 @@
+/**
+ * Ads decorations
+ */
+
+.newsletter {
+  background-color: $color-font-bgm-second;
+  color: $color-background-main;
+  text-align: center;
+  margin: $default-padding-horizontal;
+  padding: $default-padding-horizontal;
+
+  input, button {
+    border: 3px double $color-font-bgm-second;
+    width: 100%;
+  }
+}

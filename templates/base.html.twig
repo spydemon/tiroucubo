@@ -25,8 +25,37 @@
                 {{ render(controller( 'App\\Controller\\Fragment\\Notification::display')) }}
             {% endblock %}
         </div>
+        <div class="left-column">
+            {% block left_column %}
+                <ul>
+                    <li>Installation</li>
+                    <ul>
+                        <li>Docker configuration</li>
+                        <li>Composer use</li>
+                        <li>Magento configuration</li>
+                    </ul>
+                    <li>Use of the CMS</li>
+                    <ul>
+                        <li>All about customers</li>
+                        <li>Product configuration</li>
+                    </ul>
+                    <li>Module creation</li>
+                    <li>Front modifications</li>
+                    <li>etc.</li>
+                </ul>
+            {% endblock %}
+        </div>
         <div class="main-content">
             {% block body %}{% endblock %}
+        </div>
+        <div class="right-column">
+            {% block right_column %}
+                <div class="newsletter">
+                    <p>Feel free to subscribe to my (currently) useless mailing list!</p>
+                    <input type="email" placeholder="Your email address" /><br />
+                    <button type="submit">Subscribe!</button>
+                </div>
+            {% endblock %}
         </div>
         {% block javascripts %}{% endblock %}
         <footer>

@@ -1,0 +1,9 @@
+.flash {
+  border: 1px solid;
+  padding: 2px;
+}
+
+.flash.error {
+  border-color: red;
+  color: red;
+}

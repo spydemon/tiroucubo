@@ -1,12 +1,15 @@
 header {
-  display: table-row;
+  display: block;
 
   .logo, .title, .navigation {
-    display: table-cell;
+    display: block;
+    @include for-desktop-up {
+      display: table-cell;
+    }
   }
 
   .title {
-    margin: 0 30px;
+    padding-right: 20px;
     text-align: center;
 
     .main {
@@ -21,7 +24,12 @@ header {
 
   nav {
     display: flex;
-    justify-content: right;
+    flex-flow: wrap;
+    justify-content: center;
+
+    @include for-desktop-up {
+      justify-content: left;
+    }
 
     .item {
       margin: 10px;

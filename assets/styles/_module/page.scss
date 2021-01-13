@@ -8,7 +8,7 @@ $color-font-bgm-main: #7FB285;
 $color-font-bgm-second: #F5DBCB;
 $color-font-bgs-main: #072121;
 
-header, .notification, .main-content {
+header, .notification, .left-column, .main-content, .right-column {
   background-color: $color-background-main;
   color: $color-font-bgm-main;
 }
@@ -34,18 +34,39 @@ body {
   padding: 0;
   @include for-wide-desktop-up {
     margin: auto;
-    width : 1900px;
+    width : 2000px;
   }
 }
 
-header {
-  padding: 0 $default-padding-horizontal;
+body > * {
+  padding: $default-padding-horizontal;
+}
+
+div {
+  margin: 0;
 }
 
 h1 {
-  margin: 0;
+  margin: 0 0 10px;
 }
 
 ul {
   margin: 0;
+}
+
+/**
+ * Handle the position of left column, right column and the main content.
+ */
+
+.left-column, .main-content, .right-column {
+  display: table-cell;
+}
+
+.left-column, .right-column {
+  max-width: 350px;
+  min-width: 350px;
+}
+
+.main-content {
+  width: 100%;
 }

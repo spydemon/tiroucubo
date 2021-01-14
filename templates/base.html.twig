@@ -44,18 +44,15 @@
                     <li>etc.</li>
                 </ul>
             {% endblock %}
+            <div class="right-column in-left-column">
+                {{ render(controller( 'App\\Controller\\Fragment\\RightColumn::display')) }}
+            </div>
         </div>
         <div class="main-content">
             {% block body %}{% endblock %}
         </div>
-        <div class="right-column">
-            {% block right_column %}
-                <div class="newsletter">
-                    <p>Feel free to subscribe to my (currently) useless mailing list!</p>
-                    <input type="email" placeholder="Your email address" /><br />
-                    <button type="submit">Subscribe!</button>
-                </div>
-            {% endblock %}
+        <div class="right-column in-its-own-column">
+            {{ render(controller( 'App\\Controller\\Fragment\\RightColumn::display')) }}
         </div>
         {% block javascripts %}{% endblock %}
         <footer>

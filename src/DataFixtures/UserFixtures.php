@@ -11,6 +11,19 @@ class UserFixtures extends Fixture
 {
     private PasswordManager $passwordManager;
 
+    private array $userData = [
+        [
+            'email' => 'admin@tiroucubo.local',
+            'password' => 'pa$$word',
+            'roles' => [ User::USER_ROLE_ADMIN ]
+        ],
+        [
+            'email' => 'user@tiroucubo.local',
+            'password' => 'pa$$word',
+            'roles' => []
+        ]
+    ];
+
     public function __construct(
         PasswordManager $passwordManager
     ) {
@@ -19,12 +32,14 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        $user = new User();
-        $user
-            ->setEmail('admin@tiroucubo.local')
-            ->setRoles(['ROLE_ADMIN']);
-        $this->passwordManager->setNewPassword($user, 'pa$$word');
-        $manager->persist($user);
+        foreach ($this->userData as $currentUser) {
+            $user = new User();
+            $user
+                ->setEmail($currentUser['email'])
+                ->setRoles($currentUser['roles']);
+            $this->passwordManager->setNewPassword($user, $currentUser['password']);
+            $manager->persist($user);
+        }
         $manager->flush();
     }
 }

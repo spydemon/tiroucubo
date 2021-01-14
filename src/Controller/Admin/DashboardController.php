@@ -11,7 +11,7 @@ class DashboardController extends AbstractAdminController
     /**
      * TODO: replace with PHP 8 annotation when available.
      * @IsGranted("ROLE_ADMIN")
-     * @Route("/dashboard")
+     * @Route("/dashboard", name="back_dashboard")
      */
     public function display() : Response
     {

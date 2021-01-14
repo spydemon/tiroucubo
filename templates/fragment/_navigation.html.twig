@@ -17,10 +17,15 @@
         <div class="item">
             Whatever…
         </div>
-            {% if app.user %}
-                <div class="item">
-                    <a href="{{ path('front_security_logout') }}">Logout</a>
-                </div>
-            {% endif %}
+        {% if user_admin%}
+            <div class="item admin">
+                <a href="{{ path('back_dashboard') }}">Admin</a>
+            </div>
+        {% endif %}
+        {% if user_authenticated %}
+            <div class="item logout">
+                <a href="{{ path('front_security_logout') }}">Logout</a>
+            </div>
+        {% endif %}
     </nav>
 </div>

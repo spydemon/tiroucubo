@@ -86,6 +86,17 @@ abstract class IntegrationAbstract extends PantherTestCase
         $client->request('GET', $url);
     }
 
+    protected function loginCustomer(string $email, string $password)
+    {
+        $this->goToUrl('/en/login');
+        $inputEmail = $this->getElementByCssSelector('.login-form #inputEmail');
+        $inputPassword = $this->getElementByCssSelector('.login-form #inputPassword');
+        $submitButton = $this->getElementByCssSelector('.login-form button[type="submit"]');
+        $inputEmail->sendKeys($email);
+        $inputPassword->sendKeys($password);
+        $submitButton->click();
+    }
+
     protected function tearDown() : void
     {
         $this->closeBrowser();

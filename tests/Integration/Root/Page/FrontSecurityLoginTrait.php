@@ -26,8 +26,7 @@ trait FrontSecurityLoginTrait
      */
     public function testLoginFormSubmissionWithNonExistentEmailTest()
     {
-        $this->goToUrl('/en/login');
-        $this->fillLoginForm('nonexistant@tiroucubo.local', 'pa$$sword');
+        $this->loginCustomer('nonexistant@tiroucubo.local', 'pa$$word');
         $flashError = $this->getElementByCssSelector('.flash.error');
         $this->assertEquals(
             'Invalid user or password provided.',
@@ -41,8 +40,7 @@ trait FrontSecurityLoginTrait
      */
     public function testLoginFormSubmissionWithInvalidPasswordTest()
     {
-        $this->goToUrl('/en/login');
-        $this->fillLoginForm('admin@tiroucubo.local', 'wrong_password');
+        $this->loginCustomer('nonexistant@tiroucubo.local', 'wrong_password');
         $flashError = $this->getElementByCssSelector('.flash.error');
         $this->assertEquals(
             'Invalid user or password provided.',
@@ -54,22 +52,11 @@ trait FrontSecurityLoginTrait
     /**
      * @depends testLoginFormSubmissionWithInvalidPasswordTest
      */
-    public function testLoginFormSubmissionWithValidCredentials()
+    public function testLoginFormSubmissionWithValidCredentialsTest()
     {
-        $this->goToUrl('/en/login');
-        $this->fillLoginForm('admin@tiroucubo.local', 'pa$$word');
-        $this->getElementByCssSelector('ul > li > a[href="/en/logout"]');
+        $this->loginCustomer('admin@tiroucubo.local', 'pa$$word');
+        $this->getElementByCssSelector('header > .navigation > nav > .item.logout');
         $this->assertTrue(true, 'Login with correct credentials work.');
-    }
-
-    protected function fillLoginForm(string $email, string $password) : void
-    {
-        $inputEmail = $this->getElementByCssSelector('#inputEmail');
-        $inputPassword = $this->getElementByCssSelector('#inputPassword');
-        $submitButton = $this->getElementByCssSelector('button[type="submit"]');
-        $inputEmail->sendKeys($email);
-        $inputPassword->sendKeys($password);
-        $submitButton->click();
     }
 }
 

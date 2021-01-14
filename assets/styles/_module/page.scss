@@ -48,6 +48,11 @@ div {
 
 h1 {
   margin: 0 0 10px;
+  text-align: center;
+
+  @include for-tablet-landscape-up {
+    text-align: left;
+  }
 }
 
 ul {
@@ -59,12 +64,19 @@ ul {
  */
 
 .left-column, .main-content, .right-column {
-  display: table-cell;
+  display: block;
+
+  @include for-tablet-landscape-up {
+    display: table-cell;
+    vertical-align: top;
+  }
 }
 
 .left-column, .right-column {
-  max-width: 350px;
-  min-width: 350px;
+  @include for-tablet-landscape-up {
+    max-width: 350px;
+    min-width: 350px;
+  }
 }
 
 .main-content {

@@ -1,6 +1,11 @@
 .flash {
   border: 1px solid;
   padding: 2px;
+  text-align: center;
+
+  @include for-tablet-landscape-up {
+    text-align: left;
+  }
 }
 
 .flash.error {

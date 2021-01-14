@@ -1,4 +1,29 @@
 /**
+ * Manage responsive
+ */
+.right-column.in-its-own-column {
+  display: block;
+  @include for-tablet-landscape-up {
+    display: none;
+  }
+  @include for-desktop-up {
+    display: table-cell;
+  }
+}
+
+.right-column.in-left-column {
+  display: none;
+
+  @include for-tablet-landscape-up {
+    display : block;
+  }
+
+  @include for-desktop-up {
+    display: none;
+  }
+}
+
+/**
  * Ads decorations
  */
 
@@ -6,8 +31,14 @@
   background-color: $color-font-bgm-second;
   color: $color-background-main;
   text-align: center;
-  margin: $default-padding-horizontal;
   padding: $default-padding-horizontal;
+
+  @include for-tablet-landscape-up {
+    margin-top: 10px;
+  }
+  @include for-desktop-up {
+    margin-top: 0;
+  }
 
   input, button {
     border: 3px double $color-font-bgm-second;

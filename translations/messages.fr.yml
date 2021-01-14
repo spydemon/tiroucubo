@@ -1,0 +1,29 @@
+# Controller/Admin/DashboardController.php
+"Admin dashboard": "Tableau de bord administrateur"
+
+# templates/fragment/_footer.html.twig
+"Footer of the website.": "Footer du site web."
+"Home": "Accueil"
+"Magento": "Magento"
+"Symfony": "Symfony"
+"Whatever…": "Etc."
+"Admin": "Admin"
+"Logout": "Déconnexion"
+
+# templates/fragment/_navigation.html.twig
+"Spydemon personal blog": "Blog personnel de Spydemon"
+
+# templates/fragment/_right-column.html.twig
+"Feel free to subscribe to my (currently) useless mailing list!": "N'hésitez pas à vous abonner à ma mailing-list inutile (pour le moment) !"
+"Your email address": "Votre adresse email"
+"Subscribe!": "Inscription !"
+
+# templates/front/home.html.twig
+"Home page of my blog. \\m/": "Page d'accueil de mon blog. \\m/"
+
+# templates/front/login.html.twig
+"Login": "Login"
+"Connection": "Connexion"
+"Email": "Email"
+"Password": "Mot de passe"
+"Sign in": "Connexion"

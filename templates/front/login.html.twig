@@ -1,13 +1,13 @@
 {% extends 'layout/three-columns.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}{% trans %}Login{% endtrans %}{% endblock %}
 
 {% block body %}
     <form class="login-form" method="post">
-        <h1>Please sign in</h1>
-        <label for="inputEmail">Email</label>
+        <h1>{% trans %}Connection{% endtrans %}</h1>
+        <label for="inputEmail">{% trans %}Email{% endtrans %}</label>
         <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" required autofocus>
-        <label for="inputPassword">Password</label>
+        <label for="inputPassword">{% trans %}Password{% endtrans %}</label>
         <input type="password" name="password" id="inputPassword" class="form-control" required>
         <input type="hidden" name="_csrf_token"
                value="{{ csrf_token('authenticate') }}"
@@ -22,7 +22,7 @@
         </div>
         #}
         <button type="submit">
-            Sign in
+            {% trans %}Sign in{% endtrans %}
         </button>
     </form>
 {% endblock %}

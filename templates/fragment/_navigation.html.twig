@@ -1,30 +1,30 @@
 <div class="logo"></div>
 <div class="title">
     <div class="main">Spyzone</div>
-    <div class="sub">Spydemon personal blog</div>
+    <div class="sub">{% trans %}Spydemon personal blog{% endtrans %}</div>
 </div>
 <div class="navigation">
     <nav>
         <div class="item">
-            Home
+            {% trans %}Home{% endtrans %}
         </div>
         <div class="item">
-            Magento
+            {% trans %}Magento{% endtrans %}
         </div>
         <div class="item">
-            Symfony
+            {% trans %}Symfony{% endtrans %}
         </div>
         <div class="item">
-            Whatever…
+            {% trans %}Whatever…{% endtrans %}
         </div>
         {% if user_admin%}
             <div class="item admin">
-                <a href="{{ path('back_dashboard') }}">Admin</a>
+                <a href="{{ path('back_dashboard') }}">{% trans %}Admin</a>{% endtrans %}
             </div>
         {% endif %}
         {% if user_authenticated %}
             <div class="item logout">
-                <a href="{{ path('front_security_logout') }}">Logout</a>
+                <a href="{{ path('front_security_logout') }}">{% trans %}Logout{% endtrans %}</a>
             </div>
         {% endif %}
     </nav>

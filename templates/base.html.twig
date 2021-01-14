@@ -20,40 +20,7 @@
                 {{ render(controller( 'App\\Controller\\Fragment\\Navigation::display')) }}
             {% endblock %}
         </header>
-        <div class="notification">
-            {% block notification %}
-                {{ render(controller( 'App\\Controller\\Fragment\\Notification::display')) }}
-            {% endblock %}
-        </div>
-        <div class="left-column">
-            {% block left_column %}
-                <ul>
-                    <li>Installation</li>
-                    <ul>
-                        <li>Docker configuration</li>
-                        <li>Composer use</li>
-                        <li>Magento configuration</li>
-                    </ul>
-                    <li>Use of the CMS</li>
-                    <ul>
-                        <li>All about customers</li>
-                        <li>Product configuration</li>
-                    </ul>
-                    <li>Module creation</li>
-                    <li>Front modifications</li>
-                    <li>etc.</li>
-                </ul>
-            {% endblock %}
-            <div class="right-column in-left-column">
-                {{ render(controller( 'App\\Controller\\Fragment\\RightColumn::display')) }}
-            </div>
-        </div>
-        <div class="main-content">
-            {% block body %}{% endblock %}
-        </div>
-        <div class="right-column in-its-own-column">
-            {{ render(controller( 'App\\Controller\\Fragment\\RightColumn::display')) }}
-        </div>
+        {% block main_content %}{% endblock %}
         {% block javascripts %}{% endblock %}
         <footer>
             {% block footer %}

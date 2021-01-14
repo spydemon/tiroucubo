@@ -4,6 +4,7 @@ namespace App\Tests\Integration;
 
 use Exception;
 use Facebook\WebDriver\Chrome\ChromeOptions;
+use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\Remote\RemoteWebElement;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\WebDriverBy;
@@ -61,9 +62,16 @@ abstract class IntegrationAbstract extends PantherTestCase
         return $this->client;
     }
 
-    protected function getElementByCssSelector($selector) : RemoteWebElement
+    protected function getElementByCssSelector(string $selector, bool $fatal = true) : ?RemoteWebElement
     {
-        return $this->getBrowser()->findElement(WebDriverBy::cssSelector($selector));
+        try {
+            return $this->getBrowser()->findElement(WebDriverBy::cssSelector($selector));
+        } catch (NoSuchElementException $e) {
+            if ($fatal) {
+                throw $e;
+            }
+            return null;
+        }
     }
 
     /**

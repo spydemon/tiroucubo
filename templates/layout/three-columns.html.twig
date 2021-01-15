@@ -8,26 +8,7 @@
     </div>
     <div class="left-column">
         {% block left_column %}
-            <ul>
-                <li>Installation</li>
-                <li>
-                    <ul>
-                        <li>Docker configuration</li>
-                        <li>Composer use</li>
-                        <li>Magento configuration</li>
-                    </ul>
-                </li>
-                <li>Use of the CMS</li>
-                <li>
-                    <ul>
-                        <li>All about customers</li>
-                        <li>Product configuration</li>
-                    </ul>
-                </li>
-                <li>Module creation</li>
-                <li>Front modifications</li>
-                <li>etc.</li>
-            </ul>
+            {{ render(controller( 'App\\Controller\\Fragment\\LeftColumn::display')) }}
         {% endblock %}
         <div class="right-column in-left-column">
             {{ render(controller( 'App\\Controller\\Fragment\\RightColumn::display')) }}

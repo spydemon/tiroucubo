@@ -45,12 +45,12 @@ class Path
         $this->child = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getSlug(): ?string
+    public function getSlug(): string
     {
         return $this->slug;
     }
@@ -61,7 +61,7 @@ class Path
         return $this;
     }
 
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -109,5 +109,15 @@ class Path
             }
         }
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        $path = '';
+        if ($parent = $this->getParent()) {
+            $path .= $parent->__toString() . '/';
+        }
+        $path .= $this->getSlug();
+        return $path;
     }
 }

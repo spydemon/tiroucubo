@@ -5,9 +5,9 @@ namespace App\Tests\Integration;
 use Exception;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Exception\NoSuchElementException;
-use Facebook\WebDriver\Remote\RemoteWebElement;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverElement;
 use Symfony\Component\Panther\Client;
 use Symfony\Component\Panther\PantherTestCase;
 
@@ -62,16 +62,14 @@ abstract class IntegrationAbstract extends PantherTestCase
         return $this->client;
     }
 
-    protected function getElementByCssSelector(string $selector, bool $fatal = true) : ?RemoteWebElement
+    protected function getElementByCssSelector(string $selector, bool $fatal = true) : ?WebDriverElement
     {
-        try {
-            return $this->getBrowser()->findElement(WebDriverBy::cssSelector($selector));
-        } catch (NoSuchElementException $e) {
-            if ($fatal) {
-                throw $e;
-            }
-            return null;
-        }
+        return $this->getElement(WebDriverBy::cssSelector($selector), $fatal);
+    }
+
+    protected function getElementByLinkText(string $text, bool $fatal = true) : ?WebDriverElement
+    {
+        return $this->getElement(WebDriverBy::partialLinkText($text), $fatal);
     }
 
     /**
@@ -119,6 +117,18 @@ abstract class IntegrationAbstract extends PantherTestCase
             $capabilities,
             $this->envBaseUri
         );
+    }
+
+    private function getElement(WebdriverBy $by, bool $fatal) : ?WebDriverElement
+    {
+        try {
+            return $this->getBrowser()->findElement($by);
+        } catch (NoSuchElementException $e) {
+            if ($fatal) {
+                throw $e;
+            }
+            return null;
+        }
     }
 
     /**

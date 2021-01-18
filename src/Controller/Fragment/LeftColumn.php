@@ -25,7 +25,7 @@ class LeftColumn extends AbstractController
         $this->pathRepository = $pathRepository;
         $this->requestStack = $requestStack;
         $this->urlGenerator = $urlGenerator;
-        $this->rootUrl = $this->urlGenerator->generate('front_home', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $this->rootUrl = $this->urlGenerator->generate('default', [], UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
     public function display() : Response

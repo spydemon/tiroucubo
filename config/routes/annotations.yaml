@@ -8,7 +8,9 @@ front:
     prefix:
         en: /en
         fr: /fr
-
+default:
+    resource: ../../src/Controller/IndexController.php
+    type: annotation
 kernel:
     resource: ../../src/Kernel.php
     type: annotation

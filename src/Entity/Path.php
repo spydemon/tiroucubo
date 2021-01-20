@@ -40,9 +40,15 @@ class Path
      */
     private Collection $child;
 
+    /**
+     * @ORM\OneToMany(targetEntity=PathMap::class, mappedBy="path", orphanRemoval=true)
+     */
+    private Collection $pathMap;
+
     public function __construct()
     {
         $this->child = new ArrayCollection();
+        $this->pathMap= new ArrayCollection();
     }
 
     public function getId(): int
@@ -119,5 +125,30 @@ class Path
         }
         $path .= $this->getSlug();
         return $path;
+    }
+
+    public function getPathMap(): Collection
+    {
+        return $this->pathMap;
+    }
+
+    public function addPathMap(PathMap $pathMap): self
+    {
+        if (!$this->pathMap->contains($pathMap)) {
+            $this->pathMap[] = $pathMap;
+            $pathMap->setPath($this);
+        }
+        return $this;
+    }
+
+    public function removePathMap(PathMap $pathMap): self
+    {
+        if ($this->pathMap->removeElement($pathMap)) {
+            // set the owning side to null (unless already changed)
+            if ($pathMap->getPath() === $this) {
+                $pathMap->setPath(null);
+            }
+        }
+        return $this;
     }
 }

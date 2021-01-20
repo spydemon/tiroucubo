@@ -4,7 +4,7 @@ namespace App\EventListener;
 
 use App\Entity\Path;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
+use Psr\Cache\CacheItemPoolInterface;
 
 /**
  * Class EntityPathFlushCache
@@ -14,10 +14,10 @@ use Symfony\Component\Cache\Adapter\AdapterInterface;
  */
 class EntityPathFlushCache
 {
-    private AdapterInterface $entityPathCache;
+    private CacheItemPoolInterface $entityPathCache;
 
     public function __construct(
-        AdapterInterface $entityPathCache
+        CacheItemPoolInterface $entityPathCache
     ) {
         $this->entityPathCache = $entityPathCache;
     }

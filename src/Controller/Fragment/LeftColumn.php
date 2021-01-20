@@ -3,14 +3,19 @@
 namespace App\Controller\Fragment;
 
 use App\Entity\Path;
+use App\Manager\Cache\NameManager;
 use App\Repository\PathRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 
 class LeftColumn extends AbstractController
 {
+    private CacheInterface $entityPathCache;
+    private NameManager $nameManager;
     private PathRepository $pathRepository;
     private RequestStack $requestStack;
     private UrlGeneratorInterface $urlGenerator;
@@ -18,10 +23,14 @@ class LeftColumn extends AbstractController
     private string $rootUrl;
 
     public function __construct(
+        CacheInterface $entityPathCache,
+        NameManager $nameManager,
         PathRepository $pathRepository,
         RequestStack $requestStack,
         UrlGeneratorInterface $urlGenerator
     ) {
+        $this->entityPathCache = $entityPathCache;
+        $this->nameManager = $nameManager;
         $this->pathRepository = $pathRepository;
         $this->requestStack = $requestStack;
         $this->urlGenerator = $urlGenerator;
@@ -32,10 +41,20 @@ class LeftColumn extends AbstractController
     {
         // The masterRequest returns the original one done by the user, and not the child one that represent the fragment that is loaded in the generation of the master one.
         $masterRequest = $this->requestStack->getMasterRequest();
+        return new Response($this->getMenu());
+    }
+
+    protected function getMenu() : string
+    {
         // TODO : load the path dynamically depending of the root URL.
-        $root = $this->pathRepository->findByPath('en/magento');
-        $menu = $this->generateMenu($root, false);
-        return new Response($menu);
+        $pathString = 'en/magento';
+        return $this->entityPathCache->get(
+            $this->nameManager->encodeCacheKey('get_menu_' . $pathString),
+            function (ItemInterface $item) use ($pathString) {
+                $path = $this->pathRepository->findByPath($pathString);
+                return $this->generateMenu($path, false);
+            }
+        );
     }
 
     /**

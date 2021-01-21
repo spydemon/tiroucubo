@@ -1,9 +1,11 @@
 admin:
     resource: ../../src/Controller/Admin
+    trailing_slash_on_root: false
     type: annotation
     prefix: /admin
 front:
     resource: ../../src/Controller/Front
+    trailing_slash_on_root: false
     type: annotation
     prefix:
         en: /en

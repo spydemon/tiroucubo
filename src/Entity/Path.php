@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=PathRepository::class)
  * @ORM\Table(name="path")
+ * @ORM\Cache(usage="READ_ONLY", region="entity_region")
  */
 class Path
 {

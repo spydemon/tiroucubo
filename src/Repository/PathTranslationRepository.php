@@ -25,6 +25,7 @@ class PathTranslationRepository extends ServiceEntityRepository
             ->andWhere('p.path_en = :path')
             ->setParameter('path', $path)
             ->getQuery()
+            ->setCacheable(true)
             ->getOneOrNullResult();
     }
 
@@ -34,6 +35,7 @@ class PathTranslationRepository extends ServiceEntityRepository
             ->andWhere('p.path_fr = :path')
             ->setParameter('path', $path)
             ->getQuery()
+            ->setCacheable(true)
             ->getOneOrNullResult();
     }
 }

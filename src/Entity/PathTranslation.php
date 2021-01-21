@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=PathTranslationRepository::class)
+ * @ORM\Cache(usage="READ_ONLY", region="entity_region")
  */
 class PathTranslation
 {

@@ -9,6 +9,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="user")
+ * @ORM\Cache(usage="READ_ONLY", region="entity_region")
  */
 class User implements UserInterface
 {

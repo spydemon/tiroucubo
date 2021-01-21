@@ -43,6 +43,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->setParameter('email', $email)
             ->orderBy('u.id', 'ASC')
             ->getQuery()
+            ->setCacheable(true)
             ->getOneOrNullResult();
     }
 }

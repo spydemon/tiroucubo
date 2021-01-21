@@ -27,6 +27,7 @@ class PathMapRepository extends ServiceEntityRepository
             ->setParameter('url', $url)
             ->setMaxResults(1)
             ->getQuery()
+            ->setCacheable(true)
             ->getResult();
         return count($result) ? $result[0] : null;
     }

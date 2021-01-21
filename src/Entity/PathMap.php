@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=PathMapRepository::class)
+ * @ORM\Cache(usage="READ_ONLY", region="entity_region")
  *
  * A path map represents the root path object to use for generating the detailed menu of a given URL.
  */

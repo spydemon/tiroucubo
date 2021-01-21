@@ -52,7 +52,7 @@ class PathRepository extends ServiceEntityRepository
         } else {
             $queryBuilder->andWhere('c.parent IS NULL');
         }
-        return $queryBuilder->getQuery()->getSingleResult();
+        return $queryBuilder->getQuery()->setCacheable(true)->getSingleResult();
     }
 
     private function findIdByPathWithoutCache(string $pathString) : ?int

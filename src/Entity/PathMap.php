@@ -25,7 +25,7 @@ class PathMap
     private string $url;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Path::class, inversedBy="path")
+     * @ORM\ManyToOne(targetEntity=Path::class, inversedBy="pathMap")
      * @ORM\JoinColumn(nullable=false)
      */
     private Path $path;

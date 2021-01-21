@@ -27,5 +27,10 @@
                 <a href="{{ path('front_security_logout') }}">{% trans %}Logout{% endtrans %}</a>
             </div>
         {% endif %}
+        {% for variant in translated_variants %}
+            <div class="item lang">
+                [<a href="{{ variant.url }}">{{ variant.locale }}</a>]
+            </div>
+        {% endfor %}
     </nav>
 </div>

@@ -1,0 +1,10 @@
+{% extends 'layout/three-columns.html.twig' %}
+
+{% block body %}
+    <article>
+        <h1>{{ path.title }}</h1>
+        {% for article in articles %}
+            {{ article.content|raw }}
+        {% endfor %}
+    </article>
+{% endblock %}

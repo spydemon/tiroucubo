@@ -46,10 +46,17 @@ class Path
      */
     private Collection $pathMap;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Article::class, mappedBy="path")
+     * @ORM\Cache("NONSTRICT_READ_WRITE")
+     */
+    private Collection $articles;
+
     public function __construct()
     {
         $this->child = new ArrayCollection();
         $this->pathMap= new ArrayCollection();
+        $this->articles = new ArrayCollection();
     }
 
     public function getId(): int
@@ -148,6 +155,30 @@ class Path
             // set the owning side to null (unless already changed)
             if ($pathMap->getPath() === $this) {
                 $pathMap->setPath(null);
+            }
+        }
+        return $this;
+    }
+
+    public function getArticles(): Collection
+    {
+        return $this->articles;
+    }
+
+    public function addArticle(Article $article): self
+    {
+        if (!$this->articles->contains($article)) {
+            $this->articles[] = $article;
+            $article->setPath($this);
+        }
+        return $this;
+    }
+
+    public function removeArticle(Article $article): self
+    {
+        if ($this->articles->removeElement($article)) {
+            if ($article->getPath() === $this) {
+                $article->setPath(null);
             }
         }
         return $this;

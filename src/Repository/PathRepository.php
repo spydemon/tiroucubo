@@ -32,16 +32,17 @@ class PathRepository extends ServiceEntityRepository
 
     public function findByPath(string $path) : ?Path
     {
+        // We are caching only the entity ID because the serialization of Doctrine items that contains Collections seems broken.
         $pathId = $this->entityPathCache->get(
             $this->nameManager->encodeCacheKey('find_by_path_' . $path),
             function (ItemInterface $item) use ($path) {
                 return $this->findIdByPathWithoutCache($path);
             }
         );
-        return $this->find($pathId);
+        return $pathId ? $this->find($pathId) : null;
     }
 
-    public function findBySlugAndParent(string $slug, ?Path $parent) : Path
+    public function findBySlugAndParent(string $slug, ?Path $parent) : ?Path
     {
         $queryBuilder = $this->createQueryBuilder('c')
             ->andWhere('c.slug = :slug')
@@ -52,7 +53,7 @@ class PathRepository extends ServiceEntityRepository
         } else {
             $queryBuilder->andWhere('c.parent IS NULL');
         }
-        return $queryBuilder->getQuery()->setCacheable(true)->getSingleResult();
+        return $queryBuilder->getQuery()->setCacheable(true)->getOneOrNullResult();
     }
 
     private function findIdByPathWithoutCache(string $pathString) : ?int
@@ -61,6 +62,9 @@ class PathRepository extends ServiceEntityRepository
         $path = null;
         while ($nextSlug = array_shift($pathString)) {
             $path = $this->findBySlugAndParent($nextSlug, $path);
+            if (is_null($path)) {
+                return null;
+            }
         }
         return $path->getId();
     }

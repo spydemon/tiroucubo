@@ -6,6 +6,7 @@ use App\Entity\Article;
 use App\Repository\PathRepository;
 use Doctrine\Bundle\FixturesBundle\Tests\Fixtures\FooBundle\DataFixtures\WithDependenciesFixtures;
 use Doctrine\Persistence\ObjectManager;
+use \DateTime;
 
 class ArticleFixtures extends WithDependenciesFixtures
 {
@@ -45,18 +46,24 @@ class ArticleFixtures extends WithDependenciesFixtures
                 'title' => 'Docker configuration',
                 'summary' => $this->dumbSummary,
                 'content' => '<p class="article-content-identifier">docker-configuration en</p>' . $this->dumbContent,
+                'creation_date' => '2010-10-10 01:01:01',
+                'update_date' => '2010-10-20 01:01:01',
             ],
             [
                 'path' => 'en/magento/installation/composer',
                 'title' => 'Composer',
                 'summary' => $this->dumbSummary,
                 'content' => '<p class="article-content-identifier">composer en</p>' . $this->dumbContent,
+                'creation_date' => '2009-12-24 17:30:00',
+                'update_date' => '2015-02-19 01:01:01',
             ],
             [
                 'path' => 'fr/magento/installation/configuration-docker',
-                'title' => 'Docker configuration',
+                'title' => 'Configuration Docker',
                 'summary' => $this->dumbSummary,
                 'content' => '<p class="article-content-identifier">docker-configuration fr</p>' . $this->dumbContent,
+                'creation_date' => '2015-02-17 01:01:01',
+                'update_date' => '2015-02-17 01:01:01',
             ],
             [
                 'path' => 'fr/magento/installation/composer',
@@ -81,6 +88,14 @@ class ArticleFixtures extends WithDependenciesFixtures
             $article->setTitle($currentData['title']);
             $article->setSummary($currentData['summary']);
             $article->setContent($currentData['content']);
+            if (isset($currentData['creation_date'])) {
+                $date = DateTime::createFromFormat('Y-m-d H:i:s', $currentData['creation_date']);
+                $article->setCreationDate($date);
+            }
+            if (isset($currentData['update_date'])) {
+                $date = new DateTime($currentData['update_date']);
+                $article->setUpdateDate($date);
+            }
             $manager->persist($article);
         }
         $manager->flush();

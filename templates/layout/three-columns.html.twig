@@ -11,13 +11,15 @@
             {{ render(controller( 'App\\Controller\\Fragment\\LeftColumn::display')) }}
         {% endblock %}
         <div class="right-column in-left-column">
-            {{ render(controller( 'App\\Controller\\Fragment\\RightColumn::display')) }}
+            {% block right_column %}
+                {{ render(controller( 'App\\Controller\\Fragment\\RightColumn::display')) }}
+            {% endblock %}
         </div>
     </div>
     <div class="main-content">
         {% block body %}{% endblock %}
     </div>
     <div class="right-column in-its-own-column">
-        {{ render(controller( 'App\\Controller\\Fragment\\RightColumn::display')) }}
+        {{ block('right_column') }}
     </div>
 {% endblock %}

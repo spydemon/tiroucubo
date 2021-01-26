@@ -23,6 +23,15 @@ a {
   color: $color-font-bgm-main;
 }
 
+table {
+  width: 100%;
+}
+
+th {
+  font-weight: bold;
+  text-align: left;
+}
+
 /**
  * Set page margins and paddings
  */

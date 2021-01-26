@@ -2,6 +2,8 @@ framework:
     cache:
         directory: '%kernel.cache_dir%/pools'
         pools:
+            entity_article.cache:
+                adapter: cache.app
             entity_path.cache:
                 adapter: cache.app
             doctrine_cache.providers.second_level:

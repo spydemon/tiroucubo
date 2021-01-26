@@ -18,6 +18,18 @@
 "Your email address": "Votre adresse email"
 "Subscribe!": "Inscription !"
 
+# templates/back/article/index.html.twig
+"Article management": "Gestion des articles"
+"Actions": "Actions"
+"Create a new article": "Création d'un nouvel article"
+"Existing articles": "Articles existants"
+"ID": "ID"
+"Path": "Chemin"
+"Creation date": "Date de création"
+"Last update": "Dernière MàJ"
+"Edition": "Édition"
+"Unlock": "Déblocage"
+
 # templates/front/home.html.twig
 "Home page of my blog. \\m/": "Page d'accueil de mon blog. \\m/"
 

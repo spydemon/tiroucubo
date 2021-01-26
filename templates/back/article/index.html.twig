@@ -1,0 +1,47 @@
+{% extends 'layout/three-columns.html.twig' %}
+{% block body %}
+    <h1>{% trans %}Article management{% endtrans %}</h1>
+    <div class="actions">
+        <h2>{% trans %}Actions{% endtrans %}</h2>
+        <ul>
+            <li><a href="#">{% trans %}Create a new article{% endtrans %}</a></li>
+        </ul>
+    </div>
+    <div class="list">
+        <h2>{% trans %}Existing articles{% endtrans %}</h2>
+        <table>
+            <tr>
+                <th>
+                    <a href="{{ path('admin_article_index', {'sort' : 'id'}) }}">
+                        {% trans %}ID{% endtrans %}
+                    </a>
+                </th>
+                <th>
+                    <a href="{{ path('admin_article_index', {'sort' : 'path'}) }}">
+                        {% trans %}Path{% endtrans %}
+                    </a>
+                </th>
+                <th>
+                    <a href="{{ path('admin_article_index', {'sort' : 'creation_date'}) }}">
+                        {% trans %}Creation date{% endtrans %}
+                    </a>
+                </th>
+                <th>
+                    <a href="{{ path('admin_article_index', {'sort' : 'update_date'}) }}">
+                        {% trans %}Last update{% endtrans %}
+                    </a>
+                </th>
+                <th>{% trans %}Actions{% endtrans %}</th>
+            </tr>
+            {% for article in articles %}
+                <tr>
+                    <td>{{ article.getId }}</td>
+                    <td>{{ article.getPath }} [<b>{{ article.getTitle }}</b>]</td>
+                    <td>{{ article.getCreationDate|date("d/m/Y") }}</td>
+                    <td>{{ article.getUpdateDate|date("d/m/Y") }}</td>
+                    <td><a href="#">{% trans %}Edition{% endtrans %}</a>|<a href="#">{% trans %}Unlock{% endtrans %}</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

@@ -13,7 +13,7 @@ class PathMapFixtures extends WithDependenciesFixtures
 
     private array $data = [
         // This first entry was added in order to check that the priority field is correctly handled.
-        [ 'root_url' => '/en/', 'root_path' => 'en/magento/installation', 'priority' => -1 ],
+        [ 'root_url' => '/en', 'root_path' => 'en/magento/installation', 'priority' => -1 ],
         [ 'root_url' => '/en/magento', 'root_path' => 'en/magento', 'priority' => 0 ],
         [ 'root_url' => '/fr/magento', 'root_path' => 'fr/magento', 'priority' => 0 ],
         [ 'root_url' => '/admin', 'root_path' => 'admin', 'priority' => 0 ],

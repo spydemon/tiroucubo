@@ -30,6 +30,9 @@ class PathFixtures extends Fixture
         ['slug' => 'utilisation-du-cms', 'parent_path' => 'fr/magento', 'title' => 'Utilisation du CMS'],
         ['slug' => 'tout-a-propos-des-clients', 'parent_path' => 'fr/magento/utilisation-du-cms', 'title' => 'Tout à propos des clients'],
         ['slug' => 'configuration-des-produits', 'parent_path' => 'fr/magento/utilisation-du-cms', 'title' => 'Configuration des produits'],
+        ['slug' => 'admin', 'parent_path' => '', 'title' => 'Admin'],
+        ['slug' => 'dashboard', 'parent_path' => 'admin', 'title' => 'Dashboard'],
+        ['slug' => 'article', 'parent_path' => 'admin', 'title' => 'Articles'],
     ];
 
     public function __construct(

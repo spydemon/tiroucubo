@@ -62,14 +62,36 @@ abstract class IntegrationAbstract extends PantherTestCase
         return $this->client;
     }
 
+    protected function getAllElementsByCssSelector(string $selector, bool $fatal = true) : ?array
+    {
+        return $this->getElements(WebDriverBy::cssSelector($selector), $fatal);
+    }
+
+    protected function getAllElementsByLinkText(string $text, bool $fatal = true) : ?array
+    {
+        return $this->getElements(WebDriverBy::partialLinkText($text), $fatal);
+    }
+
     protected function getElementByCssSelector(string $selector, bool $fatal = true) : ?WebDriverElement
     {
-        return $this->getElement(WebDriverBy::cssSelector($selector), $fatal);
+        $results = $this->getAllElementsByCssSelector($selector, $fatal);
+        if (count($results) > 1) {
+            throw Exception('More than one result fetched with the css selector.');
+        } elseif (count($results) == 1) {
+            return $results[0];
+        }
+        return null;
     }
 
     protected function getElementByLinkText(string $text, bool $fatal = true) : ?WebDriverElement
     {
-        return $this->getElement(WebDriverBy::partialLinkText($text), $fatal);
+        $results = $this->getAllElementsByLinkText($text, $fatal);
+        if (count($results) > 1) {
+            throw Exception('More than one result fetched with the text selector.');
+        } elseif (count($results) == 1) {
+            return $results[0];
+        }
+        return null;
     }
 
     /**
@@ -119,10 +141,10 @@ abstract class IntegrationAbstract extends PantherTestCase
         );
     }
 
-    private function getElement(WebdriverBy $by, bool $fatal) : ?WebDriverElement
+    private function getElements(WebdriverBy $by, bool $fatal) : ?array
     {
         try {
-            return $this->getBrowser()->findElement($by);
+            return $this->getBrowser()->findElements($by);
         } catch (NoSuchElementException $e) {
             if ($fatal) {
                 throw $e;

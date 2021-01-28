@@ -24,7 +24,6 @@ abstract class IntegrationAbstract extends PantherTestCase
     private ?string $envBaseUri = null;
     private ?string $envSeleniumUri = null;
 
-    abstract protected function getBrowserHeight() : int;
     abstract protected function getBrowserWidth() : int;
 
     /**
@@ -62,7 +61,16 @@ abstract class IntegrationAbstract extends PantherTestCase
         return $this->client;
     }
 
-    protected function getAllElementsByCssSelector(string $selector, bool $fatal = true) : ?array
+    /**
+     * We set an arbitrary high height for the browser size in order to avoid the "element click is not clickable" error
+     * throw when we ask to the webdriver to click on an element that is not visible on the screen.
+     */
+    protected function getBrowserHeight() : int
+    {
+        return 10000;
+    }
+
+    protected function getAllElementsByCssSelector(string $selector) : ?array
     {
         return $this->getElements(WebDriverBy::cssSelector($selector), $fatal);
     }

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Exception\InvalidEntityParameterException;
 use App\Repository\ArticleRepository;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -62,10 +63,9 @@ class Article
         return $this->path;
     }
 
-    public function setPath(?Path $path): self
+    public function setPath(Path $path): self
     {
         $this->path = $path;
-
         return $this;
     }
 
@@ -76,8 +76,10 @@ class Article
 
     public function setTitle(string $title): self
     {
+        if (!$title) {
+            throw new InvalidEntityParameterException('The title can not be null.', $this);
+        }
         $this->title = $title;
-
         return $this;
     }
 
@@ -88,6 +90,9 @@ class Article
 
     public function setCreationDate(DateTimeInterface $creation_date): self
     {
+        if (isset($this->update_date) && $creation_date > $this->update_date) {
+            throw new InvalidEntityParameterException('The creation date can not be later than the update one.', $this);
+        }
         $this->creation_date = $creation_date;
         return $this;
     }
@@ -99,8 +104,10 @@ class Article
 
     public function setUpdateDate(DateTimeInterface $update_date): self
     {
+        if (isset($this->creation_date) && $update_date < $this->creation_date) {
+            throw new InvalidEntityParameterException('The update date can not be before the creation one.', $this);
+        }
         $this->update_date = $update_date;
-
         return $this;
     }
 
@@ -122,6 +129,9 @@ class Article
 
     public function setContent(string $content): self
     {
+        if (!$content) {
+            throw new InvalidEntityParameterException('The content can not be null.', $this);
+        }
         $this->content = $content;
         return $this;
     }

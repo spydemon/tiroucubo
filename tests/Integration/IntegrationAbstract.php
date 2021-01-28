@@ -4,7 +4,6 @@ namespace App\Tests\Integration;
 
 use Exception;
 use Facebook\WebDriver\Chrome\ChromeOptions;
-use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
@@ -72,32 +71,38 @@ abstract class IntegrationAbstract extends PantherTestCase
 
     protected function getAllElementsByCssSelector(string $selector) : ?array
     {
-        return $this->getElements(WebDriverBy::cssSelector($selector), $fatal);
+        return $this->getElements(WebDriverBy::cssSelector($selector));
     }
 
-    protected function getAllElementsByLinkText(string $text, bool $fatal = true) : ?array
+    protected function getAllElementsByLinkText(string $text) : ?array
     {
-        return $this->getElements(WebDriverBy::partialLinkText($text), $fatal);
+        return $this->getElements(WebDriverBy::partialLinkText($text));
     }
 
     protected function getElementByCssSelector(string $selector, bool $fatal = true) : ?WebDriverElement
     {
-        $results = $this->getAllElementsByCssSelector($selector, $fatal);
+        $results = $this->getAllElementsByCssSelector($selector);
         if (count($results) > 1) {
-            throw Exception('More than one result fetched with the css selector.');
+            throw new Exception('More than one result fetched with the css selector.');
         } elseif (count($results) == 1) {
             return $results[0];
+        }
+        if ($fatal) {
+            throw new Exception('No item found by the selector.');
         }
         return null;
     }
 
     protected function getElementByLinkText(string $text, bool $fatal = true) : ?WebDriverElement
     {
-        $results = $this->getAllElementsByLinkText($text, $fatal);
+        $results = $this->getAllElementsByLinkText($text);
         if (count($results) > 1) {
-            throw Exception('More than one result fetched with the text selector.');
+            throw new Exception('More than one result fetched with the text selector.');
         } elseif (count($results) == 1) {
             return $results[0];
+        }
+        if ($fatal) {
+            throw new Exception('No item found by the selector.');
         }
         return null;
     }
@@ -149,16 +154,9 @@ abstract class IntegrationAbstract extends PantherTestCase
         );
     }
 
-    private function getElements(WebdriverBy $by, bool $fatal) : ?array
+    private function getElements(WebdriverBy $by) : ?array
     {
-        try {
-            return $this->getBrowser()->findElements($by);
-        } catch (NoSuchElementException $e) {
-            if ($fatal) {
-                throw $e;
-            }
-            return null;
-        }
+        return $this->getBrowser()->findElements($by);
     }
 
     /**

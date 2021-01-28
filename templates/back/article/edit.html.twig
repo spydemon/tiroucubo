@@ -1,0 +1,20 @@
+{% extends 'layout/three-columns.html.twig' %}
+{% block body %}
+    <div class="admin-article-edit">
+        <h1>Edition: {{ article.title }}</h1>
+        <form method="post">
+            <input type="hidden" name="id" value="{{ article.id }}" />
+            <input type="hidden" name="csrf_token" value="{{ csrf_token('admin-article-edit') }}" >
+            <label for="title">{% trans %}Title:{% endtrans %}</label><br />
+            <input type="text" id="title" name="title" value="{{ article.title }}" /><br />
+            <label for="path">{% trans %}Path:{% endtrans %}</label><br />
+            <input type="text" id="path" name="path" value="{{ article.path }}" /><br />
+            <label for="summary">{% trans %}Summary:{% endtrans %}</label><br />
+            <textarea id="summary" name="summary">{{ article.summary}}</textarea>
+            <br />
+            <label for="content">{% trans %}Content:{% endtrans %}</label><br />
+            <textarea id="content" name="content">{{ article.content }}</textarea>
+            <input type="submit" value="{% trans %}Update{% endtrans %}" />
+        </form>
+    </div>
+{% endblock %}

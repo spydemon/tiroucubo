@@ -35,11 +35,19 @@
             </tr>
             {% for article in articles %}
                 <tr>
-                    <td>{{ article.getId }}</td>
-                    <td>{{ article.getPath }} [<b>{{ article.getTitle }}</b>]</td>
-                    <td>{{ article.getCreationDate|date("d/m/Y") }}</td>
-                    <td>{{ article.getUpdateDate|date("d/m/Y") }}</td>
-                    <td><a href="#">{% trans %}Edition{% endtrans %}</a>|<a href="#">{% trans %}Unlock{% endtrans %}</a></td>
+                    <td class="id">{{ article.getId }}</td>
+                    <td class="path">{{ article.getPath }} [<b>{{ article.getTitle }}</b>]</td>
+                    <td class="creation-date">{{ article.getCreationDate|date("d/m/Y") }}</td>
+                    <td class="update-date">{{ article.getUpdateDate|date("d/m/Y") }}</td>
+                    <td class="actions">
+                        <span class="edition">
+                            <a href="{{ path('admin_article_edit', {'article' : article.getId}) }}">{% trans %}Edition{% endtrans %}</a>
+                        </span>
+                        |
+                        <span class="unlock">
+                            <a href="#">{% trans %}Unlock{% endtrans %}</a>
+                        </span>
+                    </td>
                 </tr>
             {% endfor %}
         </table>

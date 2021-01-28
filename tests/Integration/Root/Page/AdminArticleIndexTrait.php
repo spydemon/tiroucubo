@@ -54,6 +54,21 @@ trait AdminArticleIndexTrait
         $this->checkColumnSort('Last update', '?sort=update_date', [0, 2, 1, 3]);
     }
 
+    public function testCheckUpdateLink()
+    {
+        $this->loginCustomer('admin@tiroucubo.local', 'pa$$word');
+        $client = $this->getBrowser();
+        $client->request('GET', '/admin/article');
+        $updateButtons = $this->getAllElementsByCssSelector('table tr td.actions .edition');
+        $updateButtons[0]->click();
+        $url = $this->getAppUrl('/admin/article/edit/4');
+        $this->assertEquals(
+            $url,
+            $this->getBrowser()->getWebDriver()->getCurrentUrl(),
+            'A click on the "edition" link of an article leads to the correct page.'
+        );
+    }
+
     protected function checkColumnSort(?string $linkTextToClickForTheSort, string $expectedGetParam, array $expectedOrder)
     {
         $this->loginCustomer('admin@tiroucubo.local', 'pa$$word');

@@ -19,10 +19,6 @@ trait AdminArticleEditTrait
 
     public function testSuccessfulUpdate()
     {
-        $this->markTestIncomplete(
-            'Need to be able to rollback database between each tests before activating this test.'
-        );
-        return;
         $this->updateArticleContent(
             'New title',
             'fr/magento/new/path',
@@ -48,6 +44,7 @@ trait AdminArticleEditTrait
             $resultContent->getText(),
             'The updated content of the new article page is correctly set.'
         );
+        $this->resetDatabase();
     }
 
     protected function updateArticleContent(string $titleValue, string $pathValue, string $summaryValue, string $contentValue)

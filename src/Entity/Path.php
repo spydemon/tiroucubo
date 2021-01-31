@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Exception\InvalidEntityParameterException;
 use App\Repository\PathRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -71,6 +72,9 @@ class Path
 
     public function setSlug(string $slug): self
     {
+        if (preg_match('#[^a-z\d_-]#', $slug)) {
+            throw new InvalidEntityParameterException('Slug contains invalid characters.', $this);
+        }
         $this->slug = $slug;
         return $this;
     }

@@ -17,6 +17,22 @@ trait AdminArticleEditTrait
         );
     }
 
+    public function testInvalidSlug()
+    {
+        $this->updateArticleContent(
+            'New title',
+            'fr/magento/new/path error',
+            'My new summary',
+            '<p>My new content</p>'
+        );
+        $notification = $this->getElementByCssSelector('.notification .error');
+        $this->assertEquals(
+            'Slug contains invalid characters.',
+            $notification->getText(),
+            'The slug validity checker seems to work.'
+        );
+    }
+
     public function testSuccessfulUpdate()
     {
         $this->updateArticleContent(

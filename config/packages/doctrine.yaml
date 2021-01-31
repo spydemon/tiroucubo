@@ -16,8 +16,11 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Entity'
                 prefix: 'App\Entity'
                 alias: App
-        second_level_cache:
-            enabled: true
-            region_cache_driver:
-                type: pool
-                pool: doctrine_cache.providers.second_level
+#        Doctrine second level cache is currently disabled because it seems to lead to unexpected issues with
+#        acceptation tests. Since this Doctrine function is still in beta, it's maybe safer to wait until they release
+#        a stable implementation of it.
+#        second_level_cache:
+#            enabled: true
+#            region_cache_driver:
+#                type: pool
+#                pool: doctrine_cache.providers.second_level

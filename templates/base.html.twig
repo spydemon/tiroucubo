@@ -21,11 +21,16 @@
             {% endblock %}
         </header>
         {% block main_content %}{% endblock %}
-        {% block javascripts %}{% endblock %}
         <footer>
             {% block footer %}
                 {{ render(controller( 'App\\Controller\\Fragment\\Footer::display')) }}
             {% endblock %}
         </footer>
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+            {% if enableVue is defined and enableVue == true %}
+                {{ encore_entry_script_tags('vue') }}
+            {% endif %}
+        {% endblock %}
     </body>
 </html>

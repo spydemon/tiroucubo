@@ -11,7 +11,7 @@ class PrepareDatabase implements BeforeFirstTestHook
         $this->resetDatabase();
     }
 
-    public function resetDatabase() : void
+    public static function resetDatabase() : void
     {
         // We are unsetting the XDEBUG_CONFIG in order to avoid xdebug and/or PHPStorm to freeze the execution of the process if the debugger is enabled.
         exec('unset XDEBUG_CONFIG && bin/console doctrine:database:drop -e test --force');

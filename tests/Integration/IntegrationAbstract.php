@@ -2,6 +2,7 @@
 
 namespace App\Tests\Integration;
 
+use App\Tests\Extension\PrepareDatabase;
 use Exception;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
@@ -117,6 +118,14 @@ abstract class IntegrationAbstract extends PantherTestCase
     {
         $client = $this->getBrowser();
         $client->request('GET', $url);
+    }
+
+    /**
+     * This function should be run at the end of each tests that alter the database content in order to ensure the consistency between each tests.
+     */
+    protected function resetDatabase() : void
+    {
+        PrepareDatabase::resetDatabase();
     }
 
     protected function loginCustomer(string $email, string $password)

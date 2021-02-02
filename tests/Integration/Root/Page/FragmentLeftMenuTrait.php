@@ -10,7 +10,7 @@ trait FragmentLeftMenuTrait
         $menuEntry = $this->getElementByLinkText('All about customers');
         $menuEntry->click();
         $this->assertEquals(
-            'http://tiroucubo.local/en/magento/use-of-the-cms/all-about-customers',
+            $this->getAppUrl('/en/magento/use-of-the-cms/all-about-customers'),
             $this->getBrowser()->getCurrentURL(),
             'Left menu seems correctly generated and links on it are working.'
         );
@@ -27,7 +27,7 @@ trait FragmentLeftMenuTrait
         $menuEntry = $this->getElementByLinkText('Tout à propos des clients');
         $menuEntry->click();
         $this->assertEquals(
-            'http://tiroucubo.local/fr/magento/utilisation-du-cms/tout-a-propos-des-clients',
+            $this->getAppUrl('/fr/magento/utilisation-du-cms/tout-a-propos-des-clients'),
             $this->getBrowser()->getCurrentURL(),
             'Left menu seems correctly generated and links on it are working.'
         );

@@ -11,7 +11,9 @@ trait AdminArticleEditTrait
         $this->updateArticleContent('', '', '', '');
         $notification = $this->getElementByCssSelector('.notification .error');
         $this->assertEquals(
-            'Missing fields: title, summary, path, content.',
+            // With the current implementation of the text editor, it is not possible to send empty fields, they will always have at least "<p></p>."
+            // 'Missing fields: title, summary, path, content.',
+            'Missing fields: title, path.',
             $notification->getText(),
             'The notification saying that the article was correctly updated is here.'
         );
@@ -56,7 +58,7 @@ trait AdminArticleEditTrait
             'The updated title of the new article page is correctly set.'
         );
         $this->assertEquals(
-            'My new content',
+            '<p>My new content</p>',
             $resultContent->getText(),
             'The updated content of the new article page is correctly set.'
         );
@@ -69,8 +71,8 @@ trait AdminArticleEditTrait
         $this->getBrowser()->request('GET', '/admin/article/edit/4');
         $title = $this->getElementByCssSelector('form #title');
         $path = $this->getElementByCssSelector('form #path');
-        $summary = $this->getElementByCssSelector('form #summary');
-        $content = $this->getElementByCssSelector('form #content');
+        $summary = $this->getElementByCssSelector('form #summary .ProseMirror');
+        $content = $this->getElementByCssSelector('form #content .ProseMirror');
         $submit = $this->getElementByCssSelector('form input[type="submit"]');
         // This sendKeys will press ctrl+A and the backspace, meaning we are cleaning the content of the input field.
         $title->sendKeys(WebDriverKeys::CONTROL . 'A' . WebDriverKeys::BACKSPACE);

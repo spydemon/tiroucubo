@@ -17,133 +17,102 @@
     >
       <div class="button-bar">
         <button
-            class="menubar__button"
+            class="ri-bold"
             :class="{ 'is-active': isActive.bold() }"
             @click.prevent="commands.bold"
         >
-          B
-          <icon name="bold" />
         </button>
         <button
-            class="menubar__button"
+            class="ri-italic"
             :class="{ 'is-active': isActive.italic() }"
             @click.prevent="commands.italic"
         >
-          I
-          <icon name="italic" />
         </button>
         <button
-            class="menubar__button"
+            class="ri-strikethrough"
             :class="{ 'is-active': isActive.strike() }"
             @click.prevent="commands.strike"
         >
-          S
-          <icon name="strike" />
         </button>
         <button
-            class="menubar__button"
+            class="ri-underline"
             :class="{ 'is-active': isActive.underline() }"
             @click.prevent="commands.underline"
         >
-          U
-          <icon name="underline" />
         </button>
         <button
-            class="menubar__button"
+            class="ri-code-line"
             :class="{ 'is-active': isActive.code() }"
             @click.prevent="commands.code"
         >
-          C
-          <icon name="code" />
         </button>
         <button
-            class="menubar__button"
+            class="ri-paragraph"
             :class="{ 'is-active': isActive.paragraph() }"
             @click.prevent="commands.paragraph"
         >
-          P
-          <icon name="paragraph" />
         </button>
         <button
-            class="menubar__button"
+            class="ri-h-1"
             :class="{ 'is-active': isActive.heading({ level: 1 }) }"
             @click.prevent="commands.heading({ level: 1 })"
         >
-          H1
         </button>
         <button
-            class="menubar__button"
+            class="ri-h-2"
             :class="{ 'is-active': isActive.heading({ level: 2 }) }"
             @click.prevent="commands.heading({ level: 2 })"
         >
-          H2
         </button>
         <button
-            class="menubar__button"
+            class="ri-h-3"
             :class="{ 'is-active': isActive.heading({ level: 3 }) }"
             @click.prevent="commands.heading({ level: 3 })"
         >
-          H3
         </button>
         <button
-            class="menubar__button"
+            class="ri-list-check"
             :class="{ 'is-active': isActive.bullet_list() }"
             @click.prevent="commands.bullet_list"
         >
-          UL
-          <icon name="ul" />
         </button>
         <button
-            class="menubar__button"
+            class="ri-list-ordered"
             :class="{ 'is-active': isActive.ordered_list() }"
             @click.prevent="commands.ordered_list"
         >
-          OL
-          <icon name="ol" />
         </button>
         <button
-            class="menubar__button"
+            class="ri-chat-quote-line"
             :class="{ 'is-active': isActive.blockquote() }"
             @click.prevent="commands.blockquote"
         >
-          Q
-          <icon name="quote" />
         </button>
         <button
-            class="menubar__button"
+            class="ri-code-box-line"
             :class="{ 'is-active': isActive.code_block() }"
             @click.prevent="commands.code_block"
         >
-          C
-          <icon name="code" />
         </button>
         <button
-            class="menubar__button"
+            class="ri-separator"
             @click.prevent="commands.horizontal_rule"
         >
-          HR
-          <icon name="hr" />
         </button>
         <button
-            class="menubar__button"
+            class="ri-arrow-go-back-line"
             @click.prevent="commands.undo"
         >
-          &lt;
-          <icon name="undo" />
         </button>
         <button
-            class="menubar__button"
+            class="ri-arrow-go-forward-line"
             @click.prevent="commands.redo"
         >
-          &gt;
-          <icon name="redo" />
         </button>
         <button
-            class="menubar__button"
+            class="ri-image-line"
             @click.prevent="showImagePrompt(commands.image)"
         >
-          Img
-          <icon name="image" />
         </button>
       </div>
     </editor-menu-bar>

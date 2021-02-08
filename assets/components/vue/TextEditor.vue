@@ -111,7 +111,7 @@
         </button>
         <button
             class="ri-image-line"
-            @click.prevent="showImagePrompt(commands.image)"
+            @click.prevent="commands.image"
         >
         </button>
       </div>
@@ -141,8 +141,9 @@ import {
   Strike,
   Underline,
   History,
-  Image,
 } from 'tiptap-extensions'
+
+import { Image } from './TextEditor/Image.js';
 
 export default {
   components: {
@@ -183,20 +184,6 @@ export default {
   },
   beforeDestroy() {
     this.editor.destroy()
-  },
-  methods: {
-    //TODO: find a way to set image dimension.
-    //TODO: find a way to optimize images size on mobile.
-    //TODO: find a way to be able to edit the images.
-    //TODO: find a nicer prompter.
-    showImagePrompt(command) {
-      const src = prompt('URL of the Image')
-      const alt = prompt('Alternative text of the Image')
-      const title = prompt('Title of the Image')
-      if (src !== null) {
-        command({ src, alt: alt, title: title })
-      }
-    },
   },
 }
 </script>

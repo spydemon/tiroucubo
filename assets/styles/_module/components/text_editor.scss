@@ -2,15 +2,35 @@
 
 .text-editor {
   .button-bar {
-
     button {
       border: none;
       font-size: 1.4em;
       height: 30px;
       width: 30px;
     }
+
     .is-active {
       background-color: rgba(255, 255, 255, 0.2);
+    }
+  }
+
+  .ProseMirror {
+    background-color: rgba(255, 255, 255, 0.05);
+
+    .metadata {
+      display: table-row;
+
+      label, input {
+        background-color: unset;
+        border: none;
+        display: table-cell;
+        margin-bottom: 5px;
+        width: unset;
+      }
+
+      input {
+        border-bottom: 1px dashed;
+      }
     }
   }
 }

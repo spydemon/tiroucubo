@@ -10,9 +10,10 @@ class Image extends TiptapImage {
     get schema() {
         return {
             attrs: {
-                src: {},
                 alt: {},
-                caption: {}
+                caption: {},
+                position: {},
+                src: {},
             },
             group: "block",
             draggable: true,
@@ -25,16 +26,17 @@ class Image extends TiptapImage {
                     tag: "figure",
                     // "getAttrs" will hydrate parameters of this javascript object by content fetched in the DOM from the element "locked" by the "tag."
                     getAttrs: dom => ({
-                        src: dom.getElementsByTagName("img")[0].getAttribute("src") || '',
                         alt: dom.getElementsByTagName("img")[0].getAttribute("alt") || '',
-                        caption: dom.getElementsByTagName("figcaption")[0].textContent || ''
+                        caption: dom.getElementsByTagName("figcaption")[0].textContent || '',
+                        position: dom.getAttribute("class") || 'position-center',
+                        src: dom.getElementsByTagName("img")[0].getAttribute("src") || '',
                     })
                 }
             ],
             // "toDOM" will generated the output HTML of this plugin.
             toDOM: node => [
-                // <figure>
-                "figure", {}, [
+                // <figure class="{{node.attrs.position}}">
+                "figure", {'class' : node.attrs.position}, [
                     // <img src="{{node.attrs.src}}" />
                     "img", {'src' : node.attrs.src, 'alt' : node.attrs.alt}],
                     // <figcaption>{{node.attrs.caption}}</figcaption>
@@ -70,6 +72,11 @@ class Image extends TiptapImage {
             data() {
                 return {
                     editor: null,
+                    positions_available: [
+                        {value: 'position-left', label : 'Float left'},
+                        {value: 'position-center', label : 'Centered'},
+                        {value: 'position-right', label : 'Float right'},
+                    ]
                 };
             },
             watch: {
@@ -91,19 +98,35 @@ class Image extends TiptapImage {
                 caption: {
                     get() {return this.node.attrs.caption;},
                     set(caption) {this.updateAttrs({caption});}
+                },
+                position: {
+                    get() {return this.node.attrs.position;},
+                    set(position) {this.updateAttrs({position});}
                 }
             },
             template: `
-          <figure>
+          <figure :class="position">
             <img :src="src" />
             <figcaption>
               <div class="metadata">
-                  <label>Caption</label>
-                  <input v-model="caption" type="text"/>
+                <label>Caption</label>
+                <input v-model="caption" type="text"/>
               </div>
               <div class="metadata">
-                  <label>Alt</label>
-                  <input v-model="alt" type="text" />
+                <label>Alt</label>
+                <input v-model="alt" type="text" />
+              </div>
+              <div class="metadata">
+                <label>Alignment</label>
+                <select v-model="position">
+                  <option 
+                      v-for="current_position in positions_available"
+                      :value="current_position.value"
+                      :selected="current_position.value === position"
+                  >
+                    {{current_position.label}}
+                  </option>
+                </select>
               </div>
             </figcaption>
           </figure>

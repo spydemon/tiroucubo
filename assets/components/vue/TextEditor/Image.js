@@ -10,9 +10,9 @@ class Image extends TiptapImage {
     get schema() {
         return {
             attrs: {
-                alt: {},
-                caption: {},
-                position: {},
+                alt: { default: '' },
+                caption: { default: '' },
+                position: { default: 'position-center' },
                 src: {},
             },
             group: "block",

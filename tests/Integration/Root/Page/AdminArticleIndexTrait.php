@@ -14,7 +14,8 @@ trait AdminArticleIndexTrait
         'fr/magento/installation/composer [Composer]',
         'fr/magento/installation/configuration-docker [Configuration Docker]',
         'en/magento/installation/composer [Composer]',
-        'en/magento/installation/docker-configuration [Docker configuration]'
+        'en/magento/installation/docker-configuration [Docker configuration]',
+        'fr/linux/theorie/histoire-de-la-creation [L\'histoire de la création de Linux]'
     ];
 
     public function testLoginProtected()
@@ -31,27 +32,27 @@ trait AdminArticleIndexTrait
 
     public function testArticlesDisplayedByDefaultOrder()
     {
-        $this->checkColumnSort(null, '', [0, 1, 2, 3]);
+        $this->checkColumnSort(null, '', [4, 0, 1, 2, 3]);
     }
 
     public function testArticlesDisplayedById()
     {
-        $this->checkColumnSort('ID', '?sort=id', [0, 1, 2, 3]);
+        $this->checkColumnSort('ID', '?sort=id', [4, 0, 1, 2, 3]);
     }
 
     public function testArticlesDisplayedByPath()
     {
-        $this->checkColumnSort('Path', '?sort=path', [2, 3, 0, 1]);
+        $this->checkColumnSort('Path', '?sort=path', [2, 3, 4, 0, 1]);
     }
 
     public function testArticlesDisplayedByCreationDate()
     {
-        $this->checkColumnSort('Creation date', '?sort=creation_date', [0, 1, 3, 2]);
+        $this->checkColumnSort('Creation date', '?sort=creation_date', [0, 4, 1, 3, 2]);
     }
 
     public function testArticleDisplayedByUpdateDate()
     {
-        $this->checkColumnSort('Last update', '?sort=update_date', [0, 2, 1, 3]);
+        $this->checkColumnSort('Last update', '?sort=update_date', [4, 0, 2, 1, 3]);
     }
 
     public function testCheckUpdateLink()
@@ -61,7 +62,7 @@ trait AdminArticleIndexTrait
         $client->request('GET', '/admin/article');
         $updateButtons = $this->getAllElementsByCssSelector('table tr td.actions .edition');
         $updateButtons[0]->click();
-        $url = $this->getAppUrl('/admin/article/edit/4');
+        $url = $this->getAppUrl('/admin/article/edit/5');
         $this->assertEquals(
             $url,
             $this->getBrowser()->getWebDriver()->getCurrentUrl(),

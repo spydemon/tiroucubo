@@ -16,6 +16,7 @@ class PathMapFixtures extends WithDependenciesFixtures
         [ 'root_url' => '/en', 'root_path' => 'en/magento/installation', 'priority' => -1 ],
         [ 'root_url' => '/en/magento', 'root_path' => 'en/magento', 'priority' => 0 ],
         [ 'root_url' => '/fr/magento', 'root_path' => 'fr/magento', 'priority' => 0 ],
+        [ 'root_url' => '/fr/linux', 'root_path' => 'fr/linux', 'priority' => 0 ],
         [ 'root_url' => '/admin', 'root_path' => 'admin', 'priority' => 0 ],
     ];
 

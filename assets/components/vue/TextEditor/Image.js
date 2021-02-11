@@ -5,6 +5,34 @@ import { Image as TiptapImage } from "tiptap-extensions";
 
 class Image extends TiptapImage {
 
+    getAttrPosition(dom) {
+        let positionClass = 'position-center';
+        dom.classList.forEach(item => {
+            if (/^position-.*/.test(item)) {
+                positionClass = item;
+            }
+        })
+        return positionClass;
+    }
+
+    getAttrReverseColorOnLightTheme(dom) {
+        let isClassPresent = false;
+        dom.classList.forEach(item => {
+            if (/^reverse-color-on-light-theme$/.test(item)) {
+                isClassPresent = true;
+            }
+        })
+        return isClassPresent;
+    }
+
+    getClassToString(node) {
+        let classes = node.attrs.position;
+        if (node.attrs.reverse_color_on_light_theme) {
+            classes = classes + ' reverse-color-on-light-theme';
+        }
+        return classes;
+    }
+
     // The prosemirror schema object
     // Take a look at https://prosemirror.net/docs/guide/#schema for a detailed explanation
     get schema() {
@@ -13,6 +41,7 @@ class Image extends TiptapImage {
                 alt: { default: '' },
                 caption: { default: '' },
                 position: { default: 'position-center' },
+                reverse_color_on_light_theme: { default: false },
                 src: {},
             },
             group: "block",
@@ -26,23 +55,24 @@ class Image extends TiptapImage {
                     tag: "figure",
                     // "getAttrs" will hydrate parameters of this javascript object by content fetched in the DOM from the element "locked" by the "tag."
                     getAttrs: dom => ({
-                        alt: dom.getElementsByTagName("img")[0].getAttribute("alt") || '',
-                        caption: dom.getElementsByTagName("figcaption")[0].textContent || '',
-                        position: dom.getAttribute("class") || 'position-center',
-                        src: dom.getElementsByTagName("img")[0].getAttribute("src") || '',
+                        alt: dom.getElementsByTagName("img")[0].getAttribute("alt"),
+                        caption: dom.getElementsByTagName("figcaption")[0].textContent,
+                        position: this.getAttrPosition(dom),
+                        reverse_color_on_light_theme: this.getAttrReverseColorOnLightTheme(dom),
+                        src: dom.getElementsByTagName("img")[0].getAttribute("src"),
                     })
                 }
             ],
             // "toDOM" will generated the output HTML of this plugin.
             toDOM: node => [
                 // <figure class="{{node.attrs.position}}">
-                "figure", {'class' : node.attrs.position}, [
+                "figure", {'class' : this.getClassToString(node)}, [
                     // <img src="{{node.attrs.src}}" />
                     "img", {'src' : node.attrs.src, 'alt' : node.attrs.alt}],
                     // <figcaption>{{node.attrs.caption}}</figcaption>
                     ['figcaption', {}, node.attrs.caption]
                 // </figure>
-            ]
+            ],
         };
     }
 
@@ -99,13 +129,17 @@ class Image extends TiptapImage {
                     get() {return this.node.attrs.caption;},
                     set(caption) {this.updateAttrs({caption});}
                 },
+                reverse_color_on_light_theme: {
+                    get() {return this.node.attrs.reverse_color_on_light_theme;},
+                    set(reverse_color_on_light_theme) {this.updateAttrs({reverse_color_on_light_theme});}
+                },
                 position: {
                     get() {return this.node.attrs.position;},
                     set(position) {this.updateAttrs({position});}
                 }
             },
             template: `
-          <figure :class="position">
+          <figure :class="[position, {'reverse-color-on-light-theme' : reverse_color_on_light_theme}]">
             <img :src="src" />
             <figcaption>
               <div class="metadata">
@@ -127,6 +161,12 @@ class Image extends TiptapImage {
                     {{current_position.label}}
                   </option>
                 </select>
+              </div>
+              <div class="metadata">
+                <label>Revert color</label>
+                <input
+                    v-model="reverse_color_on_light_theme"
+                    type="checkbox" />
               </div>
             </figcaption>
           </figure>

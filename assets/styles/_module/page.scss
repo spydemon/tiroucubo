@@ -27,6 +27,12 @@ article {
   overflow: auto;
 }
 
+blockquote {
+  border-left: 5px $color-font-bgm-main solid;
+  font-style: italic;
+  padding-left: 5px;
+}
+
 figure {
   margin: 0;
   @include for-tablet-portrait-up {
@@ -67,6 +73,10 @@ figure.position-right {
   @include for-tablet-portrait-up {
     float: right;
   }
+}
+
+p {
+  text-align: justify;
 }
 
 table {

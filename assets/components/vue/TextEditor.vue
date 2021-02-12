@@ -124,7 +124,6 @@
 <script>
 import { Editor, EditorContent, EditorMenuBar } from 'tiptap';
 import {
-  Blockquote,
   CodeBlock,
   HardBreak,
   Heading,
@@ -142,8 +141,8 @@ import {
   Underline,
   History,
 } from 'tiptap-extensions'
-
-import { Image } from './TextEditor/Image.js';
+import {Image} from './TextEditor/Image.js';
+import {Blockquote} from './TextEditor/Blockquote.js'
 
 export default {
   components: {

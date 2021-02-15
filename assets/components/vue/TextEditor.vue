@@ -142,7 +142,7 @@ import {
   History,
 } from 'tiptap-extensions'
 import {Image} from './TextEditor/Image.js';
-import {Blockquote} from './TextEditor/Blockquote.js'
+import {Blockquote, Quote, Source} from './TextEditor/Blockquote.js'
 
 export default {
   components: {
@@ -159,6 +159,8 @@ export default {
         // Content that will be displayed in the editor when we initialize it.
         content: this.value,
         extensions: [
+          new Source(),
+          new Quote(),
           new Blockquote(),
           new BulletList(),
           new CodeBlock(),

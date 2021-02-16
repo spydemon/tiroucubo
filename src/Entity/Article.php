@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Exception\InvalidEntityParameterException;
 use App\Repository\ArticleRepository;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -52,6 +54,17 @@ class Article
      * @ORM\Column(type="text")
      */
     private string $content;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ArticleVersion::class, mappedBy="article", orphanRemoval=true)
+     * @ORM\Cache("NONSTRICT_READ_WRITE")
+     */
+    private Collection $articleVersions;
+
+    public function __construct()
+    {
+        $this->articleVersions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -133,6 +146,34 @@ class Article
             throw new InvalidEntityParameterException('The content can not be null.', $this);
         }
         $this->content = $content;
+        return $this;
+    }
+
+    /**
+     * @return Collection|ArticleVersion[]
+     */
+    public function getArticleVersions(): Collection
+    {
+        return $this->articleVersions;
+    }
+
+    public function addArticleVersion(ArticleVersion $articleVersion): self
+    {
+        if (!$this->articleVersions->contains($articleVersion)) {
+            $this->articleVersions[] = $articleVersion;
+            $articleVersion->setArticle($this);
+        }
+        return $this;
+    }
+
+    public function removeArticleVersion(ArticleVersion $articleVersion): self
+    {
+        if ($this->articleVersions->removeElement($articleVersion)) {
+            // set the owning side to null (unless already changed)
+            if ($articleVersion->getArticle() === $this) {
+                $articleVersion->setArticle(null);
+            }
+        }
         return $this;
     }
 }

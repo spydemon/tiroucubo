@@ -26,4 +26,15 @@ class ArticleVersionRepository extends ServiceEntityRepository
         $version->setArticle($article);
         return $version;
     }
+
+    public function findActiveVersionForArticle(Article $article): ?ArticleVersion
+    {
+        return $this->createQueryBuilder('q')
+            ->andWhere('q.article = :article')
+            ->andWhere('q.active = true')
+            ->setParameter('article', $article)
+            ->getQuery()
+            ->setCacheable(true)
+            ->getOneOrNullResult();
+    }
 }

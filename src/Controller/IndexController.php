@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\ArticleVersionRepository;
 use App\Repository\PathRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -9,16 +10,17 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class IndexController extends AbstractBaseController
 {
+    private ArticleVersionRepository $articleVersionRepository;
     private PathRepository $pathRepository;
-
     private RequestStack $requestStack;
-
     private ?string $requestUri;
 
     public function __construct(
+        ArticleVersionRepository $articleVersionRepository,
         PathRepository $pathRepository,
         RequestStack $requestStack
     ) {
+        $this->articleVersionRepository = $articleVersionRepository;
         $this->pathRepository = $pathRepository;
         $this->requestStack = $requestStack;
     }
@@ -33,10 +35,21 @@ class IndexController extends AbstractBaseController
         if ($this->isRootUrlAsked()) {
             //TODO: handle redirection to preferred homepage.
         } elseif ($pathObject = $this->pathRepository->findByPath($this->requestUri)) {
+            $articles = $pathObject->getArticles();
+            $articlesToDisplay = [];
+            foreach ($articles as $currentArticle) {
+                $activeVersion = $this->articleVersionRepository->findActiveVersionForArticle($currentArticle);
+                if (!is_null($activeVersion)) {
+                    $articlesToDisplay[] = ['article' => $currentArticle, 'version' => $activeVersion];
+                }
+            }
+            if (count($articlesToDisplay) == 0) {
+                //TODO: handle 404.
+            }
             // TODO: cache result
             return $this->render('front/index/articles.html.twig', [
                 'path' => $pathObject,
-                'articles' => $pathObject->getArticles()
+                'articles' => $articlesToDisplay
             ]);
         } else {
             // TODO: handle 404.

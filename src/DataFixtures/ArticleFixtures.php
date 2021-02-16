@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Article;
+use App\Repository\ArticleVersionRepository;
 use App\Repository\PathRepository;
 use Doctrine\Bundle\FixturesBundle\Tests\Fixtures\FooBundle\DataFixtures\WithDependenciesFixtures;
 use Doctrine\Persistence\ObjectManager;
@@ -72,13 +73,15 @@ class ArticleFixtures extends WithDependenciesFixtures
         <ul><li><p><a href="https://fr.freepik.com/icones-gratuites/linux-logo_744494.htm" rel="noopener noreferrer nofollow">Le Tux en couverture</a> par Flaticon.</p></li><li><p><a href="https://en.wikipedia.org/wiki/PDP-7#/media/File:Pdp7-oslo-2005.jpeg" rel="noopener noreferrer nofollow">Le PDP-7</a> par Toresbe.</p></li><li><p><a href="https://fr.wikipedia.org/wiki/Space_Travel#/media/File:Space_Travel_Screenshot.png" rel="noopener noreferrer nofollow">L’image du jeu <em>Space Travel</em></a> par Ken Thompson.</p></li></ul><p>Sources&nbsp;:</p><ul><li><p>[1] The Evolution of the Unix Time-sharing System — <em>Dennis M. Ritchie, Bell Laboratories, Murray Hill NJ, 07974</em> — <a href="https://sites.fas.harvard.edu/~lib215/reference/history/spacetravel.html" rel="noopener noreferrer nofollow">PDF</a></p></li><li><p>[2] De Multics à Unix et au logiciel libre — <em>Laurent Bloch</em> — <a href="https://www.laurentbloch.org/MySpip3/De-Multics-a-Unix-et-au-logiciel-libre" rel="noopener noreferrer nofollow">Article de blog</a></p></li><li><p>[3] Voices from the Open Source Revolution (ISBN : 1-56592-582-3), partie : “DARPA Support” — <em>Marshall Kirk McKusick</em> — <a href="http://www.oreilly.com/openbook/opensources/book/kirkmck.html" rel="noopener noreferrer nofollow">Article HTML</a></p></li><li><p>[4] The POSIX Family of Standards — <em>Stephen R. Walli</em> — <a href="http://stephesblog.blogs.com/papers/acm-posix.pdf" rel="noopener noreferrer nofollow">PDF</a></p></li><li><p>[5] Article de newsgroup : « LINUX is obsolete? » — <a href="https://groups.google.com/forum/?fromgroups=#!topic/comp.os.minix/wlhw16QWltI%5B1-25%5D" rel="noopener noreferrer nofollow">Lien Google Group</a></p></li><li><p>[6] Article de newsgroup : « What would you like to see most in minix? » — <a href="https://groups.google.com/forum/#!msg/comp.os.minix/dlNtH7RRrGA/SwRavCzVE7gJ" rel="noopener noreferrer nofollow">Lien Google Group</a></p></li><li><p>[7] How patches get into the Kernel — <a href="https://www.kernel.org/doc/html/v4.11/process/2.Process.html#how-patches-get-into-the-kernel" rel="noopener noreferrer nofollow">Page Web</a></p></li><li><p>[8] Linux Kernel Development Report – <em>Jonathan Corbet (LWN.net), Greg Kroah-Hartman (The Linux Foundation)</em> — <a href="https://s3.amazonaws.com/storage.pardot.com/6342/188781/Publication_LinuxKernelReport_2017.pdf" rel="noopener noreferrer nofollow">Présentation PDF</a></p></li><li><p>[JFF] Just For Fun&nbsp;(ISBN 0-06-662072-4) — <em>Linus Torvalds, David Diamond</em> — <a href="https://archive.org/details/JustForFun" rel="noopener noreferrer nofollow">Lien de téléchargement</a></p></li></ul>
     HTML;
 
+    private ArticleVersionRepository $articleVersionRepository;
+    private PathRepository $pathRepository;
     private array $data;
 
-    private PathRepository $pathRepository;
-
     public function __construct(
+        ArticleVersionRepository $articleVersionRepository,
         PathRepository $pathRepository
     ) {
+        $this->articleVersionRepository = $articleVersionRepository;
         $this->pathRepository = $pathRepository;
         $this->data = [
             [
@@ -133,11 +136,10 @@ class ArticleFixtures extends WithDependenciesFixtures
     {
         foreach ($this->data as $currentData) {
             $article = new Article();
+            $version = $this->articleVersionRepository->createNewVersionForArticle($article);
             $path = $this->pathRepository->findByPath($currentData['path']);
             $article->setPath($path);
             $article->setTitle($currentData['title']);
-            $article->setSummary($currentData['summary']);
-            $article->setContent($currentData['content']);
             if (isset($currentData['creation_date'])) {
                 $date = DateTime::createFromFormat('Y-m-d H:i:s', $currentData['creation_date']);
                 $article->setCreationDate($date);
@@ -146,7 +148,12 @@ class ArticleFixtures extends WithDependenciesFixtures
                 $date = new DateTime($currentData['update_date']);
                 $article->setUpdateDate($date);
             }
+            $version->setSummary($currentData['summary']);
+            $version->setContent($currentData['content']);
+            $version->setActive(true);
+            $version->setCommitMessage('Version added from ArticleVersion fixture.');
             $manager->persist($article);
+            $manager->persist($version);
         }
         $manager->flush();
     }

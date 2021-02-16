@@ -46,16 +46,6 @@ class Article
     private DateTimeInterface $update_date;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private ?string $summary;
-
-    /**
-     * @ORM\Column(type="text")
-     */
-    private string $content;
-
-    /**
      * @ORM\OneToMany(targetEntity=ArticleVersion::class, mappedBy="article", orphanRemoval=true)
      * @ORM\Cache("NONSTRICT_READ_WRITE")
      */
@@ -121,31 +111,6 @@ class Article
             throw new InvalidEntityParameterException('The update date can not be before the creation one.', $this);
         }
         $this->update_date = $update_date;
-        return $this;
-    }
-
-    public function getSummary(): ?string
-    {
-        return $this->summary;
-    }
-
-    public function setSummary(?string $summary): self
-    {
-        $this->summary = $summary;
-        return $this;
-    }
-
-    public function getContent(): ?string
-    {
-        return $this->content;
-    }
-
-    public function setContent(string $content): self
-    {
-        if (!$content) {
-            throw new InvalidEntityParameterException('The content can not be null.', $this);
-        }
-        $this->content = $content;
         return $this;
     }
 

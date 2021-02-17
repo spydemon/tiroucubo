@@ -11,4 +11,17 @@
   textarea#summary {
     min-height: 150px;
   }
+
+  table.version {
+    td.active {
+      font-family: 'remixicon' !important;
+      font-style: normal;
+      text-align: center;
+      width: 50px;
+    }
+
+    a {
+      text-decoration: none;
+    }
+  }
 }

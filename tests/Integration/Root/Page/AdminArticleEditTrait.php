@@ -6,6 +6,8 @@ use Facebook\WebDriver\WebDriverKeys;
 
 trait AdminArticleEditTrait
 {
+    private string $workingArticleEditionPath = '/admin/article/edit/4';
+
     public function testEmptyFieldsUpdate()
     {
         $this->updateArticleContent('', '', '', '', '');
@@ -38,6 +40,9 @@ trait AdminArticleEditTrait
 
     public function testSuccessfulUpdate()
     {
+        /**
+         * Creation of a new version of the article.
+         */
         $newCommitMessageContent = 'New version released from the testSuccessfulUpdate test!';
         $this->updateArticleContent(
             'New title',
@@ -58,6 +63,10 @@ trait AdminArticleEditTrait
             $newCommitMessage->getText(),
             'The new version is the selected one by default and its commit message is saved.'
         );
+
+        /**
+         * Check that the displayed version on the front is still the original one.
+         */
         $this->getBrowser()->request('GET', '/fr/magento/new/path');
         $resultTitle = $this->getElementByCssSelector('h1');
         $resultContent = $this->getElementByCssSelector('article p:first-of-type');
@@ -71,6 +80,30 @@ trait AdminArticleEditTrait
             $resultContent->getText(),
             'Old version is still displayed in front since new one was not enabled.'
         );
+
+        /**
+         * Enabled the new version of the article.
+         */
+        $this->getBrowser()->request('GET', $this->workingArticleEditionPath);
+        $newVersionActivationLink = $this->getElementByCssSelector('.admin-article-edit table.version .active .is-not-active');
+        $newVersionActivationLink->click();
+        $notification = $this->getElementByCssSelector('.notification .notice');
+        $this->assertRegExp(
+            '/The \w{8} version of the article is now enabled!/',
+            $notification->getText(),
+            'The notification saying that the version was enabled is here.'
+        );
+
+        /**
+         * Check that the displayed version on the front is now the new one.
+         */
+        $this->getBrowser()->request('GET', '/fr/magento/new/path');
+        $resultContent = $this->getElementByCssSelector('article p:first-of-type');
+        $this->assertEquals(
+            '<p>My new content</p>',
+            $resultContent->getText(),
+            'New version of the article is now displayed on the front-end.'
+        );
         $this->resetDatabase();
     }
 
@@ -82,7 +115,7 @@ trait AdminArticleEditTrait
         string $commitMessage
     ) {
         $this->loginCustomer('admin@tiroucubo.local', 'pa$$word');
-        $this->getBrowser()->request('GET', '/admin/article/edit/4');
+        $this->getBrowser()->request('GET', $this->workingArticleEditionPath);
         $title = $this->getElementByCssSelector('form #title');
         $path = $this->getElementByCssSelector('form #path');
         $summary = $this->getElementByCssSelector('form #summary .ProseMirror');

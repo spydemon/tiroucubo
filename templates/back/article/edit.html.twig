@@ -12,7 +12,7 @@
             <input type="text" id="path" name="path" value="{{ article.path }}" /><br />
             <hr />
             <h2>{% trans %}Versions{% endtrans %}</h2>
-            <table>
+            <table class="version">
                 <tr>
                     <th class="slug">{% trans %}Slug{% endtrans %}</th>
                     <th class="date">{% trans %}Date{% endtrans %}</th>
@@ -31,7 +31,17 @@
                         <td class="commit">{{ currentVersion.commitMessage}}</td>
                         <td class="active">
                             {% if currentVersion.active %}
-                                {% trans %}ACTIVE{% endtrans %}
+                                <span class="is-active" title="{% trans %}Click to disable{% endtrans %}">
+                                    <a href="{{ path("admin_article_version_deactivate", {'version': currentVersion.id}) }}">
+                                        &#xeb7c;
+                                    </a>
+                                </span>
+                            {% else %}
+                                <span class="is-not-active" title="{% trans %}Click to enable{% endtrans %}">
+                                    <a href="{{ path("admin_article_version_activate", {'version': currentVersion.id}) }}">
+                                        &#xeb7d;
+                                    </a>
+                                </span>
                             {% endif %}
                         </td>
                         <td class="actions">TODO</td>

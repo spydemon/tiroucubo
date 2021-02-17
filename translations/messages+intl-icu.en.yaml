@@ -1,2 +1,8 @@
 # Controller/Admin/Article/EditArticleController.php
-"The \"{slug}\" version of the article is not existing.": "The \"{slug}\" version of the article is not existing."
+"The {slug} version of the article is not existing.": "The {slug} version of the article is not existing."
+
+# Controller/Admin/ArticleVersion/SetStateController.php
+"The version {slug} was already disabled.": "The version {slug} was already disabled."
+"The {slug} version of the article was disabled. The article is now invisible on the front-end.": "The {slug} version of the article was disabled. The article is now invisible on the front-end."
+"The version {slug} was already enabled.": "The version {slug} was already enabled."
+"The {slug} version of the article is now enabled!": "The {slug} version of the article is now enabled!"

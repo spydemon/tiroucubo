@@ -46,7 +46,7 @@ class EditArticle extends AbstractAdminController
                 $request->getSession()->getFlashBag()->add(
                     'error',
                     $this->translator->trans(
-                        'The "{slug}" version of the article is not existing.',
+                        'The {slug} version of the article is not existing.',
                         ['slug' => $versionSlug]
                     )
                 );

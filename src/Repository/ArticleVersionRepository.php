@@ -5,7 +5,9 @@ namespace App\Repository;
 use App\Entity\Article;
 use App\Entity\ArticleVersion;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Driver\Connection;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @method ArticleVersion|null find($id, $lockMode = null, $lockVersion = null)
@@ -15,9 +17,32 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ArticleVersionRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private Connection $connection;
+
+    public function __construct(Connection $connection, ManagerRegistry $registry)
     {
+        $this->connection = $connection;
         parent::__construct($registry, ArticleVersion::class);
+    }
+
+    public function activeVersion(ArticleVersion $version) : void
+    {
+        try {
+            $this->getEntityManager()->getConnection()->beginTransaction();
+            // Only a single version can be activated for a given product. This SQL instruction will thus disable all
+            // versions that exists for the product that owns the version to activate beforehand.
+            $this->getEntityManager()->createQuery(
+                'UPDATE App\Entity\ArticleVersion t SET t.active = 0 WHERE t.article = :article'
+            )->setParameter('article', $version->getArticle())
+                ->execute();
+            $version->setActive(true);
+            $this->getEntityManager()->persist($version);
+            $this->getEntityManager()->flush();
+            $this->getEntityManager()->getConnection()->commit();
+        } catch (Exception $e) {
+            $this->getEntityManager()->getConnection()->rollback();
+            throw $e;
+        }
     }
 
     public function createNewVersionForArticle(Article $article): ArticleVersion

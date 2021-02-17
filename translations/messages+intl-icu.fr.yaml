@@ -2,7 +2,13 @@
 "Admin dashboard": "Tableau de bord administrateur"
 
 # Controller/Admin/Article/EditArticleController.php
-"The \"{slug}\" version of the article is not existing.": "La version \"{slug}\" de l'article est inexistante."
+"The {slug} version of the article is not existing.": "La version {slug} de l'article est inexistante."
+
+# Controller/Admin/ArticleVersion/SetStateController.php
+"The version {slug} was already disabled.": "La version {slug} est déjà désactivée."
+"The {slug} version of the article was disabled. The article is now invisible on the front-end.": "La version {slug} de l'article a été désactivée. L'article est à présent invisible sur le front-end."
+"The version {slug} was already enabled.": "La version {slug} était déjà activée."
+"The {slug} version of the article is now enabled!": "La version {slug} de l'article est à présent activée !"
 
 # templates/fragment/_footer.html.twig
 "Footer of the website.": "Footer du site web."
@@ -20,7 +26,7 @@
 # templates/fragment/_right-column.html.twig
 "Feel free to subscribe to my (currently) useless mailing list!": "N'hésitez pas à vous abonner à ma mailing-list inutile (pour le moment) !"
 "Your email address": "Votre adresse email"
-"Subscribe!": "Inscription !"
+"Subscribe!": "Inscription !"
 
 # templates/back/article/edit.html.twig
 "Edition:": "Édition :"

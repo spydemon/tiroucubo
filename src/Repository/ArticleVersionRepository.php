@@ -37,4 +37,28 @@ class ArticleVersionRepository extends ServiceEntityRepository
             ->setCacheable(true)
             ->getOneOrNullResult();
     }
+
+    public function findLastVersionForArticle(Article $article): ?ArticleVersion
+    {
+        return $this->createQueryBuilder('q')
+            ->andWhere('q.article = :article')
+            ->orderBy('q.creation_date', 'DESC')
+            ->setParameter('article', $article)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->setCacheable(true)
+            ->getOneOrNullResult();
+    }
+
+    public function findVersionByArticleAndSlug(Article $article, string $slug): ?ArticleVersion
+    {
+        return $this->createQueryBuilder('q')
+            ->andWhere('q.article = :article')
+            ->andWhere('q.slug = :slug')
+            ->setParameter('article', $article)
+            ->setParameter('slug', $slug)
+            ->getQuery()
+            ->setCacheable(true)
+            ->getOneOrNullResult();
+    }
 }

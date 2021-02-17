@@ -3,35 +3,65 @@
 namespace App\Controller\Admin\Article;
 
 use App\Entity\Article;
+use App\Repository\ArticleVersionRepository;
 use App\Controller\Admin\AbstractAdminController;
 use App\Manager\Path\PathCreatorManager;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Exception;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * TODO: handle translations.
  */
 class EditArticle extends AbstractAdminController
 {
-
+    private ArticleVersionRepository $articleVersionRepository;
     private PathCreatorManager $pathCreatorManager;
+    private TranslatorInterface $translator;
 
     public function __construct(
-        PathCreatormanager $pathCreatorManager
+        ArticleVersionRepository $articleVersionRepository,
+        PathCreatormanager $pathCreatorManager,
+        TranslatorInterface $translator
     ) {
+        $this->articleVersionRepository = $articleVersionRepository;
         $this->pathCreatorManager = $pathCreatorManager;
+        $this->translator = $translator;
     }
 
     /**
      * @Route("article/edit/{article}", name="admin_article_edit", methods={"GET"})
      * @IsGranted("ROLE_ADMIN")
      */
-    public function display(Article $article) : Response
+    public function display(Request $request, Article $article) : Response
     {
-        return $this->render('back/article/edit.html.twig', ['article' => $article]);
+        $versionSlug = $request->query->get('version');
+        $version = null;
+        if ($versionSlug) {
+            $version = $this->articleVersionRepository->findVersionByArticleAndSlug($article, $versionSlug);
+            if (is_null($version)) {
+                $request->getSession()->getFlashBag()->add(
+                    'error',
+                    $this->translator->trans(
+                        'The "{slug}" version of the article is not existing.',
+                        ['slug' => $versionSlug]
+                    )
+                );
+            }
+        }
+        if (is_null($version)) {
+            $version = $this->articleVersionRepository->findLastVersionForArticle($article);
+        }
+        return $this->render(
+            'back/article/edit.html.twig',
+            [
+                'article' => $article,
+                'version' => $version
+            ]
+        );
     }
 
     /**
@@ -62,11 +92,13 @@ class EditArticle extends AbstractAdminController
     protected function updateArticle(Article $article, Request $request) : void
     {
         $this->getDoctrine()->getConnection()->beginTransaction();
+        $version = $this->articleVersionRepository->createNewVersionForArticle($article);
         try {
             $title = $request->request->get('title');
             $summary = $request->request->get('summary');
             $path = $request->request->get('path');
             $content = $request->request->get('content');
+            $commitMessage = $request->request->get('commit_message');
             $missingFields = [];
             if (!$title) {
                 $missingFields[] = 'title';
@@ -80,15 +112,20 @@ class EditArticle extends AbstractAdminController
             if (!$content) {
                 $missingFields[] = 'content';
             }
+            if (!$commitMessage) {
+                $missingFields[] = 'commit_message';
+            }
             if (count($missingFields)) {
                 throw new Exception('Missing fields: ' . implode(', ', $missingFields) . '.');
             }
-            $article->setContent($content);
+            $version->setContent($content);
+            $version->setSummary($summary);
+            $version->setCommitMessage($commitMessage);
             $path = $this->pathCreatorManager->createFromString($path);
             $article->setPath($path);
-            $article->setSummary($summary);
             $article->setTitle($title);
             $this->getDoctrine()->getManager()->persist($article);
+            $this->getDoctrine()->getManager()->persist($version);
             $this->getDoctrine()->getManager()->flush();
             $this->getDoctrine()->getConnection()->commit();
         } catch (Exception $e) {

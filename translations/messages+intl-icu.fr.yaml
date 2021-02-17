@@ -1,6 +1,9 @@
 # Controller/Admin/DashboardController.php
 "Admin dashboard": "Tableau de bord administrateur"
 
+# Controller/Admin/Article/EditArticleController.php
+"The \"{slug}\" version of the article is not existing.": "La version \"{slug}\" de l'article est inexistante."
+
 # templates/fragment/_footer.html.twig
 "Footer of the website.": "Footer du site web."
 "Home": "Accueil"
@@ -9,6 +12,7 @@
 "Whatever…": "Etc."
 "Admin": "Admin"
 "Logout": "Déconnexion"
+"Linux": "Linux"
 
 # templates/fragment/_navigation.html.twig
 "Spydemon personal blog": "Blog personnel de Spydemon"
@@ -18,9 +22,25 @@
 "Your email address": "Votre adresse email"
 "Subscribe!": "Inscription !"
 
+# templates/back/article/edit.html.twig
+"Edition:": "Édition :"
+"Title:": "Titre :"
+"Path:": "Chemin :"
+"Versions": "Version"
+"Slug": "Slug"
+"Date": "Date"
+"Commit": "Commit"
+"Active": "Activé"
+"Actions": "Actions"
+"ACTIVE": "ACTIVÉ"
+"Content": "Contenu"
+"Summary:": "Résumé :"
+"Body:": "Corps :"
+"Commit message:": "Message de commit :"
+"Update": "Mise à jour"
+
 # templates/back/article/index.html.twig
 "Article management": "Gestion des articles"
-"Actions": "Actions"
 "Create a new article": "Création d'un nouvel article"
 "Existing articles": "Articles existants"
 "ID": "ID"

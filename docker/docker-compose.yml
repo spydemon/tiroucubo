@@ -38,12 +38,12 @@ services:
     expose:
       - "80"
     environment:
-      - APP=test
       - VIRTUAL_HOST=tiroucubo-test.local
     hostname: tiroucubo-web_test
     image: spydemon/php74-symfony:0.1
     volumes:
       - ..:/var/www
+      - ./config/test.env:/var/www/.env
       - home:/root
     networks:
       - base

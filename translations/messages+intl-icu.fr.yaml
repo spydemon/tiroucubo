@@ -1,3 +1,6 @@
+# Controller/Admin/Article/EditArticleController.php
+"Article management": "Gestion des articles"
+
 # Controller/Admin/Article/IndexArticleController.php
 "Article edition": "Édition d'article"
 
@@ -49,7 +52,6 @@
 "Update": "Mise à jour"
 
 # templates/back/article/index.html.twig
-"Article management": "Gestion des articles"
 "Create a new article": "Création d'un nouvel article"
 "Existing articles": "Articles existants"
 "ID": "ID"

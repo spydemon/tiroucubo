@@ -30,6 +30,7 @@ class EditArticle extends AbstractAdminController
         $this->articleVersionRepository = $articleVersionRepository;
         $this->pathCreatorManager = $pathCreatorManager;
         $this->translator = $translator;
+        $this->setPageTitle($this->translator->trans('Article edition'));
     }
 
     /**

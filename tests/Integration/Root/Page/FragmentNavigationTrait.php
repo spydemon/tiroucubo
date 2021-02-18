@@ -51,18 +51,18 @@ trait FragmentNavigationTrait
 
     public function testTranslationLinkTest()
     {
-        $this->goToUrl('http://tiroucubo.local/en/magento/use-of-the-cms/all-about-customers');
+        $this->goToUrl('http://tiroucubo-test.local/en/magento/use-of-the-cms/all-about-customers');
         $translationButton = $this->getElementByCssSelector('header > .navigation > nav > .item.lang');
         $translationButton->click();
         $this->assertEquals(
-            'http://tiroucubo.local/fr/magento/utilisation-du-cms/tout-a-propos-des-clients',
+            $this->getAppUrl('/fr/magento/utilisation-du-cms/tout-a-propos-des-clients'),
             $this->getBrowser()->getCurrentURL(),
             'Translation en to fr is working.'
         );
         $translationButton = $this->getElementByCssSelector('header > .navigation > nav > .item.lang');
         $translationButton->click();
         $this->assertEquals(
-            'http://tiroucubo.local/en/magento/use-of-the-cms/all-about-customers',
+            $this->getAppUrl('/en/magento/use-of-the-cms/all-about-customers'),
             $this->getBrowser()->getCurrentURL(),
             'Translation fr to en is working.'
         );
@@ -70,19 +70,19 @@ trait FragmentNavigationTrait
 
     public function testTranslationLinkFallbackTest()
     {
-        $this->goToUrl('http://tiroucubo.local/en/not-existing');
+        $this->goToUrl($this->getAppUrl('/en/not-existing'));
         $translationButton = $this->getElementByCssSelector('header > .navigation > nav > .item.lang');
         $translationButton->click();
         $this->assertEquals(
-            'http://tiroucubo.local/fr',
+            $this->getAppUrl('/fr'),
             $this->getBrowser()->getCurrentURL(),
             'Fallback translation en to fr is working.'
         );
-        $this->goToUrl('http://tiroucubo.local/fr/non-existant');
+        $this->goToUrl($this->getAppUrl('/fr/non-existant'));
         $translationButton = $this->getElementByCssSelector('header > .navigation > nav > .item.lang');
         $translationButton->click();
         $this->assertEquals(
-            'http://tiroucubo.local/en',
+            $this->getAppUrl('/en'),
             $this->getBrowser()->getCurrentURL(),
             'Fallback translation fr to en is working.'
         );

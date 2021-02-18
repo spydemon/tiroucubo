@@ -2,6 +2,7 @@
 
 namespace App\Tests\Integration;
 
+use App\Tests\Exception\ElementNotExpectedException;
 use App\Tests\Extension\PrepareDatabase;
 use Exception;
 use Facebook\WebDriver\Chrome\ChromeOptions;
@@ -47,7 +48,7 @@ abstract class IntegrationAbstract extends PantherTestCase
     {
         try {
             $this->getElementByCssSelector('article.error404');
-        } catch (Exception $e) {
+        } catch (ElementNotExpectedException $e) {
             $this->fail('Displaying the 404 error page.');
         }
     }
@@ -98,12 +99,12 @@ abstract class IntegrationAbstract extends PantherTestCase
     {
         $results = $this->getAllElementsByCssSelector($selector);
         if (count($results) > 1) {
-            throw new Exception('More than one result fetched with the css selector.');
+            throw new ElementNotExpectedException('More than one result fetched with the css selector.', 3);
         } elseif (count($results) == 1) {
             return $results[0];
         }
         if ($fatal) {
-            throw new Exception('No item found by the selector.');
+            throw new ElementNotExpectedException('No item found by the selector.', 4);
         }
         return null;
     }
@@ -112,12 +113,12 @@ abstract class IntegrationAbstract extends PantherTestCase
     {
         $results = $this->getAllElementsByLinkText($text);
         if (count($results) > 1) {
-            throw new Exception('More than one result fetched with the text selector.');
+            throw new ElementNotExpectedException('More than one result fetched with the text selector.', 1);
         } elseif (count($results) == 1) {
             return $results[0];
         }
         if ($fatal) {
-            throw new Exception('No item found by the selector.');
+            throw new ElementNotExpectedException('No item found by the selector.', 2);
         }
         return null;
     }

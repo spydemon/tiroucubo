@@ -2,7 +2,6 @@
 
 namespace App\EventListener;
 
-use App\Entity\Path;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Psr\Cache\CacheItemPoolInterface;
 
@@ -22,7 +21,12 @@ class EntityPathFlushCache
         $this->entityPathCache = $entityPathCache;
     }
 
-    public function postPersist(Path $path, LifecycleEventArgs $event) : void
+    /**
+     * @param $entity, don't rely on this parameter since its type is undefined. It will in fact depends of the entity
+     *                 that triggers the event.
+     * @param LifecycleEventArgs $event
+     */
+    public function execute($entity, LifecycleEventArgs $event) : void
     {
         $this->entityPathCache->clear();
     }

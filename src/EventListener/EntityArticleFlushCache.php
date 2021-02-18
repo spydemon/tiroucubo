@@ -2,7 +2,6 @@
 
 namespace App\EventListener;
 
-use App\Entity\Article;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Psr\Cache\CacheItemPoolInterface;
 
@@ -16,7 +15,12 @@ class EntityArticleFlushCache
         $this->entityArticleCache = $entityArticleCache;
     }
 
-    public function postPersist(Article $article, LifecycleEventArgs $event) : void
+    /**
+     * @param $entity, don't rely on this parameter since its type is undefined. It will in fact depends of the entity
+     *                 that triggers the event.
+     * @param LifecycleEventArgs $event
+     */
+    public function execute($entity, LifecycleEventArgs $event) : void
     {
         $this->entityArticleCache->clear();
     }

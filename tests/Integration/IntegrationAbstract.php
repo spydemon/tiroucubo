@@ -38,6 +38,20 @@ abstract class IntegrationAbstract extends PantherTestCase
         $this->setConfiguration();
     }
 
+    /**
+     * It looks like Selenium WebDriver is not able to deal with HTTP response code. :-/
+     * https://github.com/symfony/panther/issues/67
+     * We thus have to do this hack for trying to guess if we are displaying a 404 error page or not.
+     */
+    protected function checkResponseIsA404() : void
+    {
+        try {
+            $this->getElementByCssSelector('article.error404');
+        } catch (Exception $e) {
+            $this->fail('Displaying the 404 error page.');
+        }
+    }
+
     protected function closeBrowser() : void
     {
         if (is_null($this->client)) {

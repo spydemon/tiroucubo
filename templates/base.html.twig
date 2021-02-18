@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="{{ page.lang }}">
+<html lang="{{ page.lang|default('') }}">
     <head>
         <meta charset="UTF-8">
-        <meta name="author" content="{{ page.author }}" />
+        <meta name="author" content="{{ page.author|default('') }}" />
         <title>
-            {% if page.title %}
+            {% if page.title is defined and page.title != '' %}
                 {{ page.title }} —
             {% endif %}
-            {{ website.title }}
+            {# TODO: set the default title in configuration? #}
+            {{ website.title|default('Spyzone') }}
         </title>
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}

@@ -123,6 +123,22 @@ class ArticleFixtures extends WithDependenciesFixtures
                 'content' => $this->linuxHistoryFrContent,
                 'creation_date' => '2020-02-11 01:01:01',
                 'update_date' => '2020-02-11 05:01:01',
+            ],
+            [
+                'path' => 'fr/magento/utilisation-du-cms/tout-a-propos-des-clients',
+                'title' => 'Tout à propos des clients',
+                'summary' => $this->dumbSummary,
+                'content' => $this->dumbContent,
+                'creation_date' => '2020-02-12 01:01:01',
+                'update_date' => '2020-02-12 05:01:01',
+            ],
+            [
+                'path' => 'en/magento/use-of-the-cms/all-about-customers',
+                'title' => 'All about customers',
+                'summary' => $this->dumbSummary,
+                'content' => $this->dumbContent,
+                'creation_date' => '2020-02-13 01:01:01',
+                'update_date' => '2020-02-13 05:01:01',
             ]
         ];
     }

@@ -17,17 +17,30 @@ use Symfony\Contracts\Cache\ItemInterface;
  */
 class PathRepository extends ServiceEntityRepository
 {
+    private ArticleVersionRepository $articleVersionRepository;
     private CacheInterface $entityPathCache;
     private NameManager $nameManager;
 
     public function __construct(
+        ArticleVersionRepository $articleVersionRepository,
         CacheInterface $entityPathCache,
         ManagerRegistry $registry,
         NameManager $nameManager
     ) {
+        $this->articleVersionRepository = $articleVersionRepository;
         $this->entityPathCache = $entityPathCache;
         $this->nameManager = $nameManager;
         parent::__construct($registry, Path::class);
+    }
+
+    public function countActiveContent(Path $path, bool $recursive = true) : int
+    {
+        return $this->entityPathCache->get(
+            $this->nameManager->encodeCacheKey('count_active_content_' . $path),
+            function (ItemInterface $item) use ($path, $recursive) {
+                return $this->countActiveContentWithoutCache($path, $recursive);
+            }
+        );
     }
 
     public function findByPath(string $path) : ?Path
@@ -54,6 +67,23 @@ class PathRepository extends ServiceEntityRepository
             $queryBuilder->andWhere('c.parent IS NULL');
         }
         return $queryBuilder->getQuery()->setCacheable(true)->getOneOrNullResult();
+    }
+
+    private function countActiveContentWithoutCache(Path $path, bool $recursive = true) : int
+    {
+        $count = 0;
+        foreach ($path->getArticles() as $currentArticle) {
+            if ($this->articleVersionRepository->findActiveVersionForArticle($currentArticle)) {
+                $count++;
+            }
+        }
+        if (!$recursive) {
+            return $count;
+        }
+        foreach ($path->getChild() as $currentChild) {
+            $count += $this->countActiveContent($currentChild);
+        }
+        return $count;
     }
 
     private function findIdByPathWithoutCache(string $pathString) : ?int

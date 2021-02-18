@@ -71,6 +71,11 @@ class LeftColumn extends AbstractController
     protected function generateMenu(Path $parent, bool $include) : string
     {
         $html = '';
+        // We don't display the menu item if neither it nor its children contain any article with an activated
+        // version.
+        if (!$this->pathRepository->countActiveContent($parent)) {
+            return $html;
+        }
         if ($include) {
             $html .= '<ul>';
             $html .= "<li><a href='{$this->rootUrl}{$parent}'>{$parent->getTitle()}</a></li>";

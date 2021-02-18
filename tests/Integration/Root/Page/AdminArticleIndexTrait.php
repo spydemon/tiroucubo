@@ -15,7 +15,9 @@ trait AdminArticleIndexTrait
         'fr/magento/installation/configuration-docker [Configuration Docker]',
         'en/magento/installation/composer [Composer]',
         'en/magento/installation/docker-configuration [Docker configuration]',
-        'fr/linux/theorie/histoire-de-la-creation [L\'histoire de la création de Linux]'
+        'fr/linux/theorie/histoire-de-la-creation [L\'histoire de la création de Linux]',
+        'fr/magento/utilisation-du-cms/tout-a-propos-des-clients [Tout à propos des clients]',
+        'en/magento/use-of-the-cms/all-about-customers [All about customers]'
     ];
 
     public function testLoginProtected()
@@ -32,27 +34,27 @@ trait AdminArticleIndexTrait
 
     public function testArticlesDisplayedByDefaultOrder()
     {
-        $this->checkColumnSort(null, '', [4, 0, 1, 2, 3]);
+        $this->checkColumnSort(null, '', [6, 5, 4, 0, 1, 2, 3]);
     }
 
     public function testArticlesDisplayedById()
     {
-        $this->checkColumnSort('ID', '?sort=id', [4, 0, 1, 2, 3]);
+        $this->checkColumnSort('ID', '?sort=id', [6, 5, 4, 0, 1, 2, 3]);
     }
 
     public function testArticlesDisplayedByPath()
     {
-        $this->checkColumnSort('Path', '?sort=path', [2, 3, 4, 0, 1]);
+        $this->checkColumnSort('Path', '?sort=path', [2, 3, 6, 4, 0, 1, 5]);
     }
 
     public function testArticlesDisplayedByCreationDate()
     {
-        $this->checkColumnSort('Creation date', '?sort=creation_date', [0, 4, 1, 3, 2]);
+        $this->checkColumnSort('Creation date', '?sort=creation_date', [6, 5, 0, 4, 1, 3, 2]);
     }
 
     public function testArticleDisplayedByUpdateDate()
     {
-        $this->checkColumnSort('Last update', '?sort=update_date', [4, 0, 2, 1, 3]);
+        $this->checkColumnSort('Last update', '?sort=update_date', [6, 5, 4, 0, 2, 1, 3]);
     }
 
     public function testCheckUpdateLink()
@@ -62,7 +64,7 @@ trait AdminArticleIndexTrait
         $client->request('GET', '/admin/article');
         $updateButtons = $this->getAllElementsByCssSelector('table tr td.actions .edition');
         $updateButtons[0]->click();
-        $url = $this->getAppUrl('/admin/article/edit/5');
+        $url = $this->getAppUrl('/admin/article/edit/7');
         $this->assertEquals(
             $url,
             $this->getBrowser()->getWebDriver()->getCurrentUrl(),
@@ -93,7 +95,7 @@ trait AdminArticleIndexTrait
             $this->assertEquals(
                 $this->articleRowMapping[$expectedOrder[$i]],
                 $currentRow->getText(),
-                "The current row is at the good position with articles sorted by ID (iteration: $i)."
+                "The current row is at the good position with articles sorted by $linkTextToClickForTheSort (iteration: $i)."
             );
             $i++;
         }

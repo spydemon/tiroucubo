@@ -51,7 +51,7 @@ trait FragmentNavigationTrait
 
     public function testTranslationLinkTest()
     {
-        $this->goToUrl('http://tiroucubo-test.local/en/magento/use-of-the-cms/all-about-customers');
+        $this->goToUrl($this->getAppUrl('/en/magento/use-of-the-cms/all-about-customers'));
         $translationButton = $this->getElementByCssSelector('header > .navigation > nav > .item.lang');
         $translationButton->click();
         $this->assertEquals(

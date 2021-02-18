@@ -6,7 +6,8 @@ use Facebook\WebDriver\WebDriverKeys;
 
 trait AdminArticleEditTrait
 {
-    private string $workingArticleEditionPath = '/admin/article/edit/4';
+    private string $workingArticleEditionPath = 'admin/article/edit/4';
+    private string $workingArticleReadingPath = 'fr/magento/new/path';
 
     public function testEmptyFieldsUpdate()
     {
@@ -46,7 +47,7 @@ trait AdminArticleEditTrait
         $newCommitMessageContent = 'New version released from the testSuccessfulUpdate test!';
         $this->updateArticleContent(
             'New title',
-            'fr/magento/new/path',
+            $this->workingArticleReadingPath,
             'My new summary',
             '<p>My new content</p>',
             $newCommitMessageContent
@@ -67,7 +68,7 @@ trait AdminArticleEditTrait
         /**
          * Check that the displayed version on the front is still the original one.
          */
-        $this->getBrowser()->request('GET', '/fr/magento/new/path');
+        $this->getBrowser()->request('GET', "/{$this->workingArticleReadingPath}");
         $resultTitle = $this->getElementByCssSelector('h1');
         $resultContent = $this->getElementByCssSelector('article p:first-of-type');
         $this->assertEquals(
@@ -84,7 +85,7 @@ trait AdminArticleEditTrait
         /**
          * Enabled the new version of the article.
          */
-        $this->getBrowser()->request('GET', $this->workingArticleEditionPath);
+        $this->getBrowser()->request('GET', "/{$this->workingArticleEditionPath}");
         $newVersionActivationLink = $this->getElementByCssSelector('.admin-article-edit table.version .active .is-not-active');
         $newVersionActivationLink->click();
         $notification = $this->getElementByCssSelector('.notification .notice');
@@ -97,13 +98,35 @@ trait AdminArticleEditTrait
         /**
          * Check that the displayed version on the front is now the new one.
          */
-        $this->getBrowser()->request('GET', '/fr/magento/new/path');
+        $this->getBrowser()->request('GET', "/{$this->workingArticleReadingPath}");
         $resultContent = $this->getElementByCssSelector('article p:first-of-type');
         $this->assertEquals(
             '<p>My new content</p>',
             $resultContent->getText(),
             'New version of the article is now displayed on the front-end.'
         );
+
+        /**
+         * Disable all version of the article.
+         */
+        $this->getBrowser()->request('GET', "/{$this->workingArticleEditionPath}");
+        $newVersionActivationLink = $this->getElementByCssSelector('.admin-article-edit table.version .active .is-active');
+        $newVersionActivationLink->click();
+        $notification = $this->getElementByCssSelector('.notification .notice');
+        $this->assertRegExp(
+            '/The \w{8} version of the article was disabled. The article is now invisible on the front-end./',
+            $notification->getText(),
+            'The notification saying that the version was disabled is here.'
+        );
+
+        /**
+         * Check that the link leading to the article returns now a 404.
+        /**
+         * Check that the displayed version on the front is now the new one.
+         */
+        $this->getBrowser()->request('GET', "/{$this->workingArticleReadingPath}");
+        $this->checkResponseIsA404();
+
         $this->resetDatabase();
     }
 
@@ -115,7 +138,7 @@ trait AdminArticleEditTrait
         string $commitMessage
     ) {
         $this->loginCustomer('admin@tiroucubo.local', 'pa$$word');
-        $this->getBrowser()->request('GET', $this->workingArticleEditionPath);
+        $this->getBrowser()->request('GET', "/{$this->workingArticleEditionPath}");
         $title = $this->getElementByCssSelector('form #title');
         $path = $this->getElementByCssSelector('form #path');
         $summary = $this->getElementByCssSelector('form #summary .ProseMirror');

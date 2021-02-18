@@ -6,6 +6,7 @@ use App\Repository\ArticleVersionRepository;
 use App\Repository\PathRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class IndexController extends AbstractBaseController
@@ -43,8 +44,10 @@ class IndexController extends AbstractBaseController
                     $articlesToDisplay[] = ['article' => $currentArticle, 'version' => $activeVersion];
                 }
             }
+            // If none of the articles to display for the given path has an active version, it mean that we actually
+            // have nothing to display. We thus return a 404 instead of an empty page.
             if (count($articlesToDisplay) == 0) {
-                //TODO: handle 404.
+                throw new NotFoundHttpException();
             }
             // TODO: cache result
             return $this->render('front/index/articles.html.twig', [
@@ -52,7 +55,7 @@ class IndexController extends AbstractBaseController
                 'articles' => $articlesToDisplay
             ]);
         } else {
-            // TODO: handle 404.
+            throw new NotFoundHttpException();
         }
         return $this->render('front/path.twig.html');
     }

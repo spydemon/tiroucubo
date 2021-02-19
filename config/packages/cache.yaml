@@ -8,16 +8,20 @@ framework:
                 adapter: cache.app
             doctrine_cache.providers.second_level:
                 adapter: cache.app
+            doctrine.result_cache_pool:
+                adapter: cache.app
         # Unique name of your app: used to compute stable namespaces for cache keys.
-        #prefix_seed: your_vendor_name/app_name
+        # Using the %kernel.environment% value as seed avoid us to mix the cache between the dev and the test
+        # environments if they run both on the same infrastructure.
+        prefix_seed: '%kernel.environment%'
 
         # The "app" cache stores to the filesystem by default.
         # The data in this cache should persist between deploys.
         # Other options include:
 
         # Redis
-        #app: cache.adapter.redis
-        #default_redis_provider: redis://localhost
+        app: cache.adapter.redis_tag_aware
+        default_redis_provider: redis://cache
 
         # APCu (not recommended with heavy random-write workloads as memory fragmentation can cause perf issues)
         #app: cache.adapter.apcu

@@ -3,6 +3,14 @@
 version: '2.0'
 
 services:
+  cache:
+    container_name: tiroucubo-cache
+    expose:
+      - "6379"
+    hostname: tiroucubo-cache
+    image: redis:alpine3.13
+    ports:
+      - "6401:6379" #Redis is bind to the port 6401 on the host.
   db:
     container_name: tiroucubo-db
     environment:

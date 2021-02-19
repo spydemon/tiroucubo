@@ -70,4 +70,16 @@ trait FragmentLeftMenuTrait
         }
         $this->assertTrue(true, 'The test did not fail.');
     }
+
+    public function testAlwaysEnabledPathDisplaying()
+    {
+        $this->loginCustomer('admin@tiroucubo.local', 'pa$$word');
+        $this->goToUrl('/admin/article');
+        try {
+            $this->getElementByLinkText('Dashboard');
+        } catch (ElementNotExpectedException $e) {
+            $this->fail('Menu "Dashboard" entry exists.');
+        }
+        $this->assertTrue(true, 'The test did not fail.');
+    }
 }

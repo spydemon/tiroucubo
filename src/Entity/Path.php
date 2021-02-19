@@ -7,6 +7,7 @@ use App\Repository\PathRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 
 /**
  * @ORM\Entity(repositoryClass=PathRepository::class)
@@ -53,11 +54,30 @@ class Path
      */
     private Collection $articles;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private int $type;
+
+    /**
+     * If the path has the "dynamic" type, it means that it represents stuff that could be edited from the back-office.
+     * It's displaying state should thus be computed in order to determine if the path should be displayed on the menu
+     * and if it should return a 404 error or not.
+     */
+    public const TYPE_DYNAMIC = 1;
+
+    /**
+     * If the path has the "always visible" type, it means that its content is static and that its displaying state
+     * has be set manually to visible.
+     */
+    public const TYPE_ALWAYS_VISIBLE = 2;
+
     public function __construct()
     {
         $this->child = new ArrayCollection();
         $this->pathMap= new ArrayCollection();
         $this->articles = new ArrayCollection();
+        $this->setType(self::TYPE_DYNAMIC);
     }
 
     public function getId(): int
@@ -185,6 +205,21 @@ class Path
                 $article->setPath(null);
             }
         }
+        return $this;
+    }
+
+    public function getType(): int
+    {
+        return $this->type;
+    }
+
+    public function setType(int $type): self
+    {
+        $allowedValues = [self::TYPE_DYNAMIC, self::TYPE_ALWAYS_VISIBLE];
+        if (!in_array($type, $allowedValues)) {
+            throw new Exception('Invalid type set.');
+        }
+        $this->type = $type;
         return $this;
     }
 }

@@ -30,9 +30,9 @@ class PathFixtures extends Fixture
         ['slug' => 'utilisation-du-cms', 'parent_path' => 'fr/magento', 'title' => 'Utilisation du CMS'],
         ['slug' => 'tout-a-propos-des-clients', 'parent_path' => 'fr/magento/utilisation-du-cms', 'title' => 'Tout à propos des clients'],
         ['slug' => 'configuration-des-produits', 'parent_path' => 'fr/magento/utilisation-du-cms', 'title' => 'Configuration des produits'],
-        ['slug' => 'admin', 'parent_path' => '', 'title' => 'Admin'],
-        ['slug' => 'dashboard', 'parent_path' => 'admin', 'title' => 'Dashboard'],
-        ['slug' => 'article', 'parent_path' => 'admin', 'title' => 'Articles'],
+        ['slug' => 'admin', 'parent_path' => '', 'title' => 'Admin', 'type' => Path::TYPE_ALWAYS_VISIBLE],
+        ['slug' => 'dashboard', 'parent_path' => 'admin', 'title' => 'Dashboard', 'type' => Path::TYPE_ALWAYS_VISIBLE],
+        ['slug' => 'article', 'parent_path' => 'admin', 'title' => 'Articles', 'type' => Path::TYPE_ALWAYS_VISIBLE],
         ['slug' => 'linux', 'parent_path' => 'fr', 'title' => 'Linux'],
         ['slug' => 'theorie', 'parent_path' => 'fr/linux', 'title' => 'Théorie'],
         ['slug' => 'histoire-de-la-creation', 'parent_path' => 'fr/linux/theorie', 'title' => 'L\'histoire de la création de Linux'],
@@ -55,6 +55,9 @@ class PathFixtures extends Fixture
             $path->setParent($parent);
             $path->setSlug($currentPathData['slug']);
             $path->setTitle($currentPathData['title']);
+            if (isset($currentPathData['type'])) {
+                $path->setType($currentPathData['type']);
+            }
             $objectManager->persist($path);
             // The flush should be in the foreach for allowing children to fetch their parent.
             $objectManager->flush();

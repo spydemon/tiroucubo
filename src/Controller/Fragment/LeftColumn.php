@@ -72,8 +72,8 @@ class LeftColumn extends AbstractController
     {
         $html = '';
         // We don't display the menu item if neither it nor its children contain any article with an activated
-        // version.
-        if (!$this->pathRepository->countActiveContent($parent)) {
+        // version if the path has the "dynamic" type.
+        if ($parent->getType() == Path::TYPE_DYNAMIC && !$this->pathRepository->countActiveContent($parent)) {
             return $html;
         }
         if ($include) {

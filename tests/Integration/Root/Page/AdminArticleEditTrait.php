@@ -2,6 +2,7 @@
 
 namespace App\Tests\Integration\Root\Page;
 
+use Exception;
 use Facebook\WebDriver\WebDriverKeys;
 
 trait AdminArticleEditTrait
@@ -41,93 +42,96 @@ trait AdminArticleEditTrait
 
     public function testSuccessfulUpdate()
     {
-        /**
-         * Creation of a new version of the article.
-         */
-        $newCommitMessageContent = 'New version released from the testSuccessfulUpdate test!';
-        $this->updateArticleContent(
-            'New title',
-            $this->workingArticleReadingPath,
-            'My new summary',
-            '<p>My new content</p>',
-            $newCommitMessageContent
-        );
-        $notification = $this->getElementByCssSelector('.notification .notice');
-        $this->assertEquals(
-            'Article updated!',
-            $notification->getText(),
-            'The notification saying that the article was correctly updated is here.'
-        );
-        $newCommitMessage = $this->getElementByCssSelector('.admin-article-edit table .is-displayed .commit');
-        $this->assertEquals(
-            $newCommitMessageContent,
-            $newCommitMessage->getText(),
-            'The new version is the selected one by default and its commit message is saved.'
-        );
+        try {
+            /**
+             * Creation of a new version of the article.
+             */
+            $newCommitMessageContent = 'New version released from the testSuccessfulUpdate test!';
+            $this->updateArticleContent(
+                'New title',
+                $this->workingArticleReadingPath,
+                'My new summary',
+                '<p>My new content</p>',
+                $newCommitMessageContent
+            );
+            $notification = $this->getElementByCssSelector('.notification .notice');
+            $this->assertEquals(
+                'Article updated!',
+                $notification->getText(),
+                'The notification saying that the article was correctly updated is here.'
+            );
+            $newCommitMessage = $this->getElementByCssSelector('.admin-article-edit table .is-displayed .commit');
+            $this->assertEquals(
+                $newCommitMessageContent,
+                $newCommitMessage->getText(),
+                'The new version is the selected one by default and its commit message is saved.'
+            );
 
-        /**
-         * Check that the displayed version on the front is still the original one.
-         */
-        $this->getBrowser()->request('GET', "/{$this->workingArticleReadingPath}");
-        $resultTitle = $this->getElementByCssSelector('h1');
-        $resultContent = $this->getElementByCssSelector('article p:first-of-type');
-        $this->assertEquals(
-            'path',
-            $resultTitle->getText(),
-            'The updated title of the new article page is correctly set.'
-        );
-        $this->assertEquals(
-            'composer fr',
-            $resultContent->getText(),
-            'Old version is still displayed in front since new one was not enabled.'
-        );
+            /**
+             * Check that the displayed version on the front is still the original one.
+             */
+            $this->getBrowser()->request('GET', "/{$this->workingArticleReadingPath}");
+            $resultTitle = $this->getElementByCssSelector('h1');
+            $resultContent = $this->getElementByCssSelector('article p:first-of-type');
+            $this->assertEquals(
+                'path',
+                $resultTitle->getText(),
+                'The updated title of the new article page is correctly set.'
+            );
+            $this->assertEquals(
+                'composer fr',
+                $resultContent->getText(),
+                'Old version is still displayed in front since new one was not enabled.'
+            );
 
-        /**
-         * Enabled the new version of the article.
-         */
-        $this->getBrowser()->request('GET', "/{$this->workingArticleEditionPath}");
-        $newVersionActivationLink = $this->getElementByCssSelector('.admin-article-edit table.version .active .is-not-active');
-        $newVersionActivationLink->click();
-        $notification = $this->getElementByCssSelector('.notification .notice');
-        $this->assertRegExp(
-            '/The \w{8} version of the article is now enabled!/',
-            $notification->getText(),
-            'The notification saying that the version was enabled is here.'
-        );
+            /**
+             * Enabled the new version of the article.
+             */
+            $this->getBrowser()->request('GET', "/{$this->workingArticleEditionPath}");
+            $newVersionActivationLink = $this->getElementByCssSelector('.admin-article-edit table.version .active .is-not-active');
+            $newVersionActivationLink->click();
+            $notification = $this->getElementByCssSelector('.notification .notice');
+            $this->assertRegExp(
+                '/The \w{8} version of the article is now enabled!/',
+                $notification->getText(),
+                'The notification saying that the version was enabled is here.'
+            );
 
-        /**
-         * Check that the displayed version on the front is now the new one.
-         */
-        $this->getBrowser()->request('GET', "/{$this->workingArticleReadingPath}");
-        $resultContent = $this->getElementByCssSelector('article p:first-of-type');
-        $this->assertEquals(
-            '<p>My new content</p>',
-            $resultContent->getText(),
-            'New version of the article is now displayed on the front-end.'
-        );
+            /**
+             * Check that the displayed version on the front is now the new one.
+             */
+            $this->getBrowser()->request('GET', "/{$this->workingArticleReadingPath}");
+            $resultContent = $this->getElementByCssSelector('article p:first-of-type');
+            $this->assertEquals(
+                '<p>My new content</p>',
+                $resultContent->getText(),
+                'New version of the article is now displayed on the front-end.'
+            );
 
-        /**
-         * Disable all version of the article.
-         */
-        $this->getBrowser()->request('GET', "/{$this->workingArticleEditionPath}");
-        $newVersionActivationLink = $this->getElementByCssSelector('.admin-article-edit table.version .active .is-active');
-        $newVersionActivationLink->click();
-        $notification = $this->getElementByCssSelector('.notification .notice');
-        $this->assertRegExp(
-            '/The \w{8} version of the article was disabled. The article is now invisible on the front-end./',
-            $notification->getText(),
-            'The notification saying that the version was disabled is here.'
-        );
+            /**
+             * Disable all version of the article.
+             */
+            $this->getBrowser()->request('GET', "/{$this->workingArticleEditionPath}");
+            $newVersionActivationLink = $this->getElementByCssSelector('.admin-article-edit table.version .active .is-active');
+            $newVersionActivationLink->click();
+            $notification = $this->getElementByCssSelector('.notification .notice');
+            $this->assertRegExp(
+                '/The \w{8} version of the article was disabled. The article is now invisible on the front-end./',
+                $notification->getText(),
+                'The notification saying that the version was disabled is here.'
+            );
 
-        /**
-         * Check that the link leading to the article returns now a 404.
-        /**
-         * Check that the displayed version on the front is now the new one.
-         */
-        $this->getBrowser()->request('GET', "/{$this->workingArticleReadingPath}");
-        $this->checkResponseIsA404();
+            /**
+             * Check that the displayed version on the front is now the new one.
+             */
+            $this->getBrowser()->request('GET', "/{$this->workingArticleReadingPath}");
+            $this->checkResponseIsA404();
 
-        $this->resetDatabase();
+            $this->resetDatabase();
+        } catch (Exception $e) {
+            $this->resetDatabase();
+            throw $e;
+        }
     }
 
     protected function updateArticleContent(

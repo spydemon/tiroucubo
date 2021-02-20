@@ -32,7 +32,7 @@ class ArticleVersionRepository extends ServiceEntityRepository
             // Only a single version can be activated for a given product. This SQL instruction will thus disable all
             // versions that exists for the product that owns the version to activate beforehand.
             $this->getEntityManager()->createQuery(
-                'UPDATE App\Entity\ArticleVersion t SET t.active = 0 WHERE t.article = :article'
+                'UPDATE App\Entity\ArticleVersion t SET t.active = false WHERE t.article = :article'
             )->setParameter('article', $version->getArticle())
                 ->execute();
             $version->setActive(true);

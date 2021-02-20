@@ -14,18 +14,20 @@ services:
   db:
     container_name: tiroucubo-db
     environment:
-      - MYSQL_DATABASE=tiroucubo
-      - MYSQL_ROOT_PASSWORD=toor
+      - POSTGRES_DB=tiroucubo
+      - POSTGRES_PASSWORD=toor
+      - POSTGRES_USER=root
     expose:
-      - "3306"
+      - "5432"
     hostname: tiroucubo-db
-    image: mariadb:10.5.8
+    image: postgres:13-alpine
     ports:
-      - "3455:3306" #MySQL is bind to the port 3452 on the host.
+      - "5440:5432" #Postgres is bind to the port 5440 on the host.
     networks:
+      - base
       - default
     volumes:
-      - ./db/db:/var/lib/mysql
+      - ./db/db:/var/lib/postgresql/data
   web:
     container_name: tiroucubo-web
     expose:

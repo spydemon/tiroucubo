@@ -2,61 +2,74 @@
 {% set enableVue = true %}
 {% block body %}
     <div class="admin-article-edit">
-        <h1>{% trans %}Edition:{% endtrans %} {{ article.title }}</h1>
+        {% if article is not null %}
+            <h1>{% trans %}Edition:{% endtrans %} {{ article.title|default('') }}</h1>
+        {% else %}
+            <h1>{% trans %}Creation of a new article{% endtrans %}</h1>
+        {% endif %}
         <form method="post">
-            <input type="hidden" name="id" value="{{ article.id }}" />
+            <input type="hidden" name="id" value="{{ article.id|default('') }}" />
             <input type="hidden" name="csrf_token" value="{{ csrf_token('admin-article-edit') }}" >
             <label for="title">{% trans %}Title:{% endtrans %}</label><br />
-            <input type="text" id="title" name="title" value="{{ article.title }}" /><br />
+            <input type="text" id="title" name="title" value="{{ article.title|default('') }}" /><br />
             <label for="path">{% trans %}Path:{% endtrans %}</label><br />
-            <input type="text" id="path" name="path" value="{{ article.path }}" /><br />
+            <input type="text" id="path" name="path" value="{{ article.path|default('') }}" /><br />
             <hr />
-            <h2>{% trans %}Versions{% endtrans %}</h2>
-            <table class="version">
-                <tr>
-                    <th class="slug">{% trans %}Slug{% endtrans %}</th>
-                    <th class="date">{% trans %}Date{% endtrans %}</th>
-                    <th class="commit">{% trans %}Commit{% endtrans %}</th>
-                    <th class="active">{% trans %}Active{% endtrans %}</th>
-                    <th class="actions">{% trans %}Actions{% endtrans %}</th>
-                </tr>
-                {% for currentVersion in article.articleVersions %}
-                    <tr
-                        {% if currentVersion.id ==  version.id %}
-                            class="is-displayed"
-                        {% endif %}
-                    >
-                        <td class="slug">{{ currentVersion.slug }}</td>
-                        <td class="date">{{ currentVersion.creationDate|date("d/m/Y H:i:s")}}</td>
-                        <td class="commit">{{ currentVersion.commitMessage}}</td>
-                        <td class="active">
-                            {% if currentVersion.active %}
-                                <span class="is-active" title="{% trans %}Click to disable{% endtrans %}">
-                                    <a href="{{ path("admin_article_version_deactivate", {'version': currentVersion.id}) }}">
-                                        &#xeb7c;
-                                    </a>
-                                </span>
-                            {% else %}
-                                <span class="is-not-active" title="{% trans %}Click to enable{% endtrans %}">
-                                    <a href="{{ path("admin_article_version_activate", {'version': currentVersion.id}) }}">
-                                        &#xeb7d;
-                                    </a>
-                                </span>
-                            {% endif %}
-                        </td>
-                        <td class="actions">TODO</td>
+            {% if article.articleVersions is defined %}
+                <h2>{% trans %}Versions{% endtrans %}</h2>
+                <table class="version">
+                    <tr>
+                        <th class="slug">{% trans %}Slug{% endtrans %}</th>
+                        <th class="date">{% trans %}Date{% endtrans %}</th>
+                        <th class="commit">{% trans %}Commit{% endtrans %}</th>
+                        <th class="active">{% trans %}Active{% endtrans %}</th>
+                        <th class="actions">{% trans %}Actions{% endtrans %}</th>
                     </tr>
-                {% endfor %}
-            </table>
-            <hr />
+                    {% for currentVersion in article.articleVersions %}
+                        <tr
+                            {% if currentVersion.id ==  version.id %}
+                                class="is-displayed"
+                            {% endif %}
+                        >
+                            <td class="slug">{{ currentVersion.slug }}</td>
+                            <td class="date">{{ currentVersion.creationDate|date("d/m/Y H:i:s")}}</td>
+                            <td class="commit">{{ currentVersion.commitMessage}}</td>
+                            <td class="active">
+                                {% if currentVersion.active %}
+                                    <span class="is-active" title="{% trans %}Click to disable{% endtrans %}">
+                                        <a href="{{ path("admin_article_version_deactivate", {'version': currentVersion.id}) }}">
+                                            &#xeb7c;
+                                        </a>
+                                    </span>
+                                {% else %}
+                                    <span class="is-not-active" title="{% trans %}Click to enable{% endtrans %}">
+                                        <a href="{{ path("admin_article_version_activate", {'version': currentVersion.id}) }}">
+                                            &#xeb7d;
+                                        </a>
+                                    </span>
+                                {% endif %}
+                            </td>
+                            <td class="actions">TODO</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                <hr />
+            {% endif %}
             <h2>{% trans %}Content{% endtrans %}</h2>
             <label for="summary">{% trans %}Summary:{% endtrans %}</label><br />
-            <text-editor id="summary" name="summary" value="{{ version.summary }}"></text-editor>
+            <text-editor id="summary" name="summary" value="{{ version.summary|default('') }}"></text-editor>
             <label for="content">{% trans %}Body:{% endtrans %}</label><br />
-            <text-editor id="content" name="content" value="{{ version.content }}"></text-editor>
+            <text-editor id="content" name="content" value="{{ version.content|default('') }}"></text-editor>
             <label for="commit_message">{% trans %}Commit message{% endtrans %}</label>
             <textarea id="commit_message" name="commit_message"></textarea>
-            <input type="submit" value="{% trans %}Update{% endtrans %}" />
+            <input
+                    type="submit"
+                    {% if article is not null %}
+                        value="{% trans %}Update article{% endtrans %}"
+                    {% else %}
+                        value="{% trans %}Create article{% endtrans %}"
+                    {% endif %}
+            />
         </form>
     </div>
 {% endblock %}

@@ -4,7 +4,11 @@
     <div class="actions">
         <h2>{% trans %}Actions{% endtrans %}</h2>
         <ul>
-            <li><a href="#">{% trans %}Create a new article{% endtrans %}</a></li>
+            <li>
+                <a id="action-article-create" href="{{ path('admin_article_edit') }}">
+                    {% trans %}Create a new article{% endtrans %}
+                </a>
+            </li>
         </ul>
     </div>
     <div class="list">

@@ -37,24 +37,26 @@ class EditArticle extends AbstractAdminController
      * @Route("article/edit/{article}", name="admin_article_edit", methods={"GET"})
      * @IsGranted("ROLE_ADMIN")
      */
-    public function display(Request $request, Article $article) : Response
+    public function display(Request $request, Article $article = null) : Response
     {
-        $versionSlug = $request->query->get('version');
         $version = null;
-        if ($versionSlug) {
-            $version = $this->articleVersionRepository->findVersionByArticleAndSlug($article, $versionSlug);
-            if (is_null($version)) {
-                $request->getSession()->getFlashBag()->add(
-                    'error',
-                    $this->translator->trans(
-                        'The {slug} version of the article is not existing.',
-                        ['slug' => $versionSlug]
-                    )
-                );
+        if (!is_null($article)) {
+            $versionSlug = $request->query->get('version');
+            if ($versionSlug) {
+                $version = $this->articleVersionRepository->findVersionByArticleAndSlug($article, $versionSlug);
+                if (is_null($version)) {
+                    $request->getSession()->getFlashBag()->add(
+                        'error',
+                        $this->translator->trans(
+                            'The {slug} version of the article is not existing.',
+                            ['slug' => $versionSlug]
+                        )
+                    );
+                }
             }
-        }
-        if (is_null($version)) {
-            $version = $this->articleVersionRepository->findLastVersionForArticle($article);
+            if (is_null($version)) {
+                $version = $this->articleVersionRepository->findLastVersionForArticle($article);
+            }
         }
         return $this->render(
             'back/article/edit.html.twig',
@@ -69,12 +71,17 @@ class EditArticle extends AbstractAdminController
      * @Route("article/edit/{article}", name="admin_article_edit_post", methods={"POST"})
      * @IsGranted("ROLE_ADMIN")
      */
-    public function post(Article $article, Request $request) : Response
+    public function post(Request $request, Article $article = null) : Response
     {
         try {
             $this->checkCsrfToken($request);
-            $this->updateArticle($article, $request);
-            $request->getSession()->getFlashBag()->add('notice', 'Article updated!');
+            if (is_null($article)) {
+                $article = $this->createArticle($request);
+                $request->getSession()->getFlashBag()->add('notice', $this->translator->trans('Article created!'));
+            } else {
+                $this->updateArticle($article, $request);
+                $request->getSession()->getFlashBag()->add('notice', $this->translator->trans('Article updated!'));
+            }
         } catch (Exception $e) {
             $request->getSession()->getFlashBag()->add('error', $e->getMessage());
         } finally {
@@ -88,6 +95,13 @@ class EditArticle extends AbstractAdminController
             return ;
         }
         throw new Exception('Invalid CSRF token.');
+    }
+
+    protected function createArticle(Request $request) : Article
+    {
+        $article = new Article();
+        $this->updateArticle($article, $request);
+        return $article;
     }
 
     protected function updateArticle(Article $article, Request $request) : void

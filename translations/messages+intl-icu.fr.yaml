@@ -1,5 +1,7 @@
 # Controller/Admin/Article/EditArticleController.php
 "Article management": "Gestion des articles"
+"Article updated!": "Article mis à jour !"
+"Article created!": "Article créé !"
 
 # Controller/Admin/Article/IndexArticleController.php
 "Article edition": "Édition d'article"
@@ -50,6 +52,8 @@
 "Body:": "Corps :"
 "Commit message:": "Message de commit :"
 "Update": "Mise à jour"
+"Create article": "Créer l'article"
+"Update article": "Mise à jour de l'article"
 
 # templates/back/article/index.html.twig
 "Create a new article": "Création d'un nouvel article"

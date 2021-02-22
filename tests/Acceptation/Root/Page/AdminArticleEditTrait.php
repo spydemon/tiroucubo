@@ -2,6 +2,7 @@
 
 namespace App\Tests\Acceptation\Root\Page;
 
+use App\Tests\Exception\ElementNotExpectedException;
 use Exception;
 use Facebook\WebDriver\WebDriverKeys;
 
@@ -12,6 +13,8 @@ trait AdminArticleEditTrait
 
     public function testEmptyFieldsUpdate()
     {
+        $this->loginCustomer('admin@tiroucubo.local', 'pa$$word');
+        $this->getBrowser()->request('GET', "/{$this->workingArticleEditionPath}");
         $this->updateArticleContent('', '', '', '', '');
         $notification = $this->getElementByCssSelector('.notification .error');
         $this->assertEquals(
@@ -25,6 +28,8 @@ trait AdminArticleEditTrait
 
     public function testInvalidSlug()
     {
+        $this->loginCustomer('admin@tiroucubo.local', 'pa$$word');
+        $this->getBrowser()->request('GET', "/{$this->workingArticleEditionPath}");
         $this->updateArticleContent(
             'New title',
             'fr/magento/new/path error',
@@ -46,6 +51,8 @@ trait AdminArticleEditTrait
             /**
              * Creation of a new version of the article.
              */
+            $this->loginCustomer('admin@tiroucubo.local', 'pa$$word');
+            $this->getBrowser()->request('GET', "/{$this->workingArticleEditionPath}");
             $newCommitMessageContent = 'New version released from the testSuccessfulUpdate test!';
             $this->updateArticleContent(
                 'New title',
@@ -134,6 +141,89 @@ trait AdminArticleEditTrait
         }
     }
 
+    public function testArticleCreation()
+    {
+        try {
+            /**
+             * Creation of a new article.
+             */
+            $this->loginCustomer('admin@tiroucubo.local', 'pa$$word');
+            $this->getBrowser()->request('GET', "/admin/article");
+            $createLink = $this->getElementByCssSelector('#action-article-create');
+            $createLink->click();
+            $this->assertEquals(
+                $this->getAppUrl('/admin/article/edit'),
+                $this->getBrowser()->getCurrentURL(),
+                'The link leading to the article creation page is working.'
+            );
+            $this->updateArticleContent(
+                'This is a completely new article!',
+                'fr/magento/installation/new-article',
+                'This is the summary of my new article',
+                'This is the content of my new article',
+                'First commit for my new article!'
+            );
+            $notification = $this->getElementByCssSelector('.notification .notice');
+            $this->assertEquals(
+                'Article created!',
+                $notification->getText(),
+                'The article seems correctly created.'
+            );
+            $this->assertRegExp(
+                "#^{$this->getAppUrl('/admin/article/edit')}/\d+?#",
+                $this->getBrowser()->getCurrentURL(),
+                'After the creation, we are redirected on the edition page of the article.'
+            );
+
+            /**
+             * We check that it is not visible since it is activated.
+             */
+            $this->getBrowser()->request('GET', '/fr/magento/installation/composer');
+            try {
+                $this->getElementByLinkText('new-article');
+                $this->fail('The new-article link is not present in the menu since the article does not have any activated version.');
+            } catch (ElementNotExpectedException $e) {
+            }
+            $this->getBrowser()->request('GET', '/fr/magento/installation/new-article');
+            $this->checkResponseIsA404();
+
+            /**
+             * Activation of a version of the article.
+             */
+            $this->getBrowser()->request('GET', '/admin/article/edit/8');
+            $activationLink = $this->getElementByCssSelector('.admin-article-edit table.version .active .is-not-active');
+            $activationLink->click();
+            $notification = $this->getElementByCssSelector('.notification .notice');
+            $this->assertRegExp(
+                '/The \w{8} version of the article is now enabled!/',
+                $notification->getText(),
+                'The notification saying that the version was enabled is here.'
+            );
+
+            /**
+             * Check that the article is now visible on the front.
+             */
+            $this->getBrowser()->request('GET', '/fr/magento/installation/composer');
+            $link = $this->getElementByLinkText('new-article');
+            $link->click();
+            $this->assertEquals(
+                $this->getBrowser()->getCurrentURL(),
+                $this->getAppUrl('/fr/magento/installation/new-article'),
+                'The new article is visible in the front.'
+            );
+            $firstParagraph = $this->getElementByCssSelector('article p:first-of-type');
+            $this->assertEquals(
+                $firstParagraph->getText(),
+                'This is the content of my new article',
+                'The new article is visible on the front.'
+            );
+            $this->resetDatabase();
+        } catch (Exception $e) {
+            $this->resetDatabase();
+            throw $e;
+        }
+    }
+
     protected function updateArticleContent(
         string $titleValue,
         string $pathValue,
@@ -141,8 +231,6 @@ trait AdminArticleEditTrait
         string $contentValue,
         string $commitMessage
     ) {
-        $this->loginCustomer('admin@tiroucubo.local', 'pa$$word');
-        $this->getBrowser()->request('GET', "/{$this->workingArticleEditionPath}");
         $title = $this->getElementByCssSelector('form #title');
         $path = $this->getElementByCssSelector('form #path');
         $summary = $this->getElementByCssSelector('form #summary .ProseMirror');

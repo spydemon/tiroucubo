@@ -1,0 +1,6 @@
+framework:
+  cache:
+    # Unique name of your app: used to compute stable namespaces for cache keys.
+    # Using the %kernel.environment% value as seed avoid us to mix the cache between the dev and the test
+    # environments if they run both on the same infrastructure.
+    prefix_seed: 'atest'

@@ -13,7 +13,7 @@ framework:
         # Unique name of your app: used to compute stable namespaces for cache keys.
         # Using the %kernel.environment% value as seed avoid us to mix the cache between the dev and the test
         # environments if they run both on the same infrastructure.
-        prefix_seed: '%kernel.environment%'
+        prefix_seed: 'dev'
 
         # The "app" cache stores to the filesystem by default.
         # The data in this cache should persist between deploys.

@@ -22,10 +22,10 @@ class PrepareDatabase implements BeforeFirstTestHook
         exec('unset XDEBUG_CONFIG && bin/console cache:pool:clear cache.global_clearer');
         // doctrine:schema:drop should be used instead of doctrine:database:drop since Postgresql sequences are not
         // flushed by the second command.
-        exec('unset XDEBUG_CONFIG && bin/console doctrine:schema:drop -e test --force');
-        exec('unset XDEBUG_CONFIG && bin/console doctrine:database:drop -e test --force');
-        exec('unset XDEBUG_CONFIG && bin/console doctrine:database:create -e test');
-        exec('unset XDEBUG_CONFIG && bin/console doctrine:migrations:migrate -e test -n');
-        exec('unset XDEBUG_CONFIG && bin/console doctrine:fixtures:load -e test -n');
+        exec('unset XDEBUG_CONFIG && bin/console doctrine:schema:drop -e atest --force');
+        exec('unset XDEBUG_CONFIG && bin/console doctrine:database:drop -e atest --force');
+        exec('unset XDEBUG_CONFIG && bin/console doctrine:database:create -e atest');
+        exec('unset XDEBUG_CONFIG && bin/console doctrine:migrations:migrate -e atest -n');
+        exec('unset XDEBUG_CONFIG && bin/console doctrine:fixtures:load -e atest -n');
     }
 }

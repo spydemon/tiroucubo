@@ -31,6 +31,7 @@
     "stylelint": {
         "extends": "stylelint-config-recommended",
         "rules": {
+            "font-family-no-missing-generic-family-keyword" :  null,
             "no-duplicate-selectors": null
         }
     }

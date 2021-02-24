@@ -127,8 +127,8 @@ class ArticleFixtures extends WithDependenciesFixtures
             [
                 'path' => 'fr/magento/utilisation-du-cms/tout-a-propos-des-clients',
                 'title' => 'Tout à propos des clients',
-                'summary' => $this->dumbSummary,
-                'content' => $this->dumbContent,
+                'summary' => '<p>Résumé de l\'article qui explique tout à propos des clients.</p>',
+                'content' => '<p>Contenu de l\'article qui explique tout sur les clients.</p>',
                 'creation_date' => '2020-02-12 01:01:01',
                 'update_date' => '2020-02-12 05:01:01',
             ],

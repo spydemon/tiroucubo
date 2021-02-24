@@ -222,4 +222,9 @@ class Path
         $this->type = $type;
         return $this;
     }
+
+    public function isFinal() : bool
+    {
+        return count($this->getChild()) > 0 ? false : true;
+    }
 }

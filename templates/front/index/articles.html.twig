@@ -1,10 +1,22 @@
 {% extends 'layout/three-columns.html.twig' %}
 
 {% block body %}
-    <article>
+    {% if path.isFinal %}
+        <article>
+            <h1> {{ articles|first.article.title }}</h1>
+            {{ articles|first.version.content|raw }}
+        </article>
+    {% else %}
         <h1>{{ path.title }}</h1>
         {% for article in articles %}
-            {{ article.version.content|raw }}
+            <article>
+                <h2>
+                    <a href="{{ article.url }}">
+                        {{ article.article.title }}
+                    </a>
+                </h2>
+                {{ article.version.summary|raw }}
+            </article>
         {% endfor %}
-    </article>
+    {% endif %}
 {% endblock %}

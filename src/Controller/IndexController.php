@@ -28,6 +28,8 @@ class IndexController extends AbstractBaseController
 
     /**
      * @Route("/{path}", name="default", requirements={"path"=".*"})
+     * TODO: SEO : index only final pages.
+     * TODO: extend the displaying of articles directly owned by the path?
      */
     public function display(string $path = null) : Response
     {
@@ -36,12 +38,17 @@ class IndexController extends AbstractBaseController
         if ($this->isRootUrlAsked()) {
             //TODO: handle redirection to preferred homepage.
         } elseif ($pathObject = $this->pathRepository->findByPath($this->requestUri)) {
-            $articles = $pathObject->getArticles();
+            $articles = $this->pathRepository->findActiveArticlesRecursivelyForPath($pathObject);
             $articlesToDisplay = [];
             foreach ($articles as $currentArticle) {
                 $activeVersion = $this->articleVersionRepository->findActiveVersionForArticle($currentArticle);
                 if (!is_null($activeVersion)) {
-                    $articlesToDisplay[] = ['article' => $currentArticle, 'version' => $activeVersion];
+                    $url = $this->pathRepository->getUrlForPath($currentArticle->getPath());
+                    $articlesToDisplay[] = [
+                        'article' => $currentArticle,
+                        'url' => $url,
+                        'version' => $activeVersion
+                    ];
                 }
             }
             // If none of the articles to display for the given path has an active version, it mean that we actually

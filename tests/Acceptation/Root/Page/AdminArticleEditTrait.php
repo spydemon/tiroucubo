@@ -81,7 +81,7 @@ trait AdminArticleEditTrait
             $resultTitle = $this->getElementByCssSelector('h1');
             $resultContent = $this->getElementByCssSelector('article p:first-of-type');
             $this->assertEquals(
-                'path',
+                'New title',
                 $resultTitle->getText(),
                 'The updated title of the new article page is correctly set.'
             );

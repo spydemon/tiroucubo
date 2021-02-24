@@ -1,12 +1,18 @@
 <div class="logo"></div>
 <div class="title">
-    <div class="main">Spyzone</div>
+    <div class="main">
+        <a href="{{ tiroucuboPathUrl('') }}">
+            Spyzone
+        </a>
+    </div>
     <div class="sub">{% trans %}Spydemon personal blog{% endtrans %}</div>
 </div>
 <div class="navigation">
     <nav>
         <div class="item">
-            {% trans %}Home{% endtrans %}
+            <a href="{{tiroucuboPathUrl('')}}">
+                {% trans %}Home{% endtrans %}
+            </a>
         </div>
         <div class="item">
             <a href="{{tiroucuboPathUrl('linux')}}">
@@ -14,15 +20,27 @@
             </a>
         </div>
         <div class="item">
-            {% trans %}Magento{% endtrans %}
+            <a href="{{ tiroucuboPathUrl('magento') }}">
+                {% trans %}Magento{% endtrans %}
+            </a>
         </div>
         <div class="item">
-            {% trans %}Symfony{% endtrans %}
+            <a href="{{ tiroucuboPathUrl('symfony') }}">
+                {% trans %}Symfony{% endtrans %}
+            </a>
         </div>
         <div class="item">
-            {% trans %}Whatever…{% endtrans %}
+            <a href="{{  tiroucuboPathUrl('perso') }}">
+                {% trans %}Personal{% endtrans %}
+            </a>
         </div>
-        {% if user_admin%}
+        <div class="item">
+            {# TODO: handle translation in path.#}
+            <a href="{{  tiroucuboPathUrl('about') }}">
+                {% trans %}About{% endtrans %}
+            </a>
+        </div>
+        {% if user_admin %}
             <div class="item admin">
                 <a href="{{ path('back_dashboard') }}">{% trans %}Admin{% endtrans %}</a>
             </div>

@@ -2,9 +2,9 @@
 
 namespace App\Tests\Acceptation\Mobile;
 
-use App\Tests\Acceptation\IntegrationAbstract;
+use App\Tests\Acceptation\AcceptationAbstract;
 
-class MobileAbstract extends IntegrationAbstract
+class MobileAbstract extends AcceptationAbstract
 {
 
     protected function getBrowserWidth() : int

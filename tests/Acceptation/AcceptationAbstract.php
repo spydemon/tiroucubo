@@ -16,10 +16,8 @@ use Symfony\Component\Panther\PantherTestCase;
  * Class IntegrationAbstract
  *
  * This class should be extended on each integration tests.
- *
- * @package App\Tests\Integration
  */
-abstract class IntegrationAbstract extends PantherTestCase
+abstract class AcceptationAbstract extends PantherTestCase
 {
     private ?Client $client = null;
     private ?string $envBaseUri = null;

@@ -2,9 +2,9 @@
 
 namespace App\Tests\Acceptation\TabletLandscape;
 
-use App\Tests\Acceptation\IntegrationAbstract;
+use App\Tests\Acceptation\AcceptationAbstract;
 
-class TabletLandscapeAbstract extends IntegrationAbstract
+class TabletLandscapeAbstract extends AcceptationAbstract
 {
     protected function getBrowserWidth() : int
     {

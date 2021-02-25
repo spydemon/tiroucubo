@@ -36,7 +36,8 @@ class IndexController extends AbstractBaseController
         $this->requestUri = $path;
         $this->setLocale();
         if ($this->isRootUrlAsked()) {
-            //TODO: handle redirection to preferred homepage.
+            $locale = $this->getPreferredLocaleFromBrowser();
+            return $this->redirect($locale);
         } elseif ($pathObject = $this->pathRepository->findByPath($this->requestUri)) {
             $articles = $this->pathRepository->findActiveArticlesRecursivelyForPath($pathObject);
             $articlesToDisplay = [];
@@ -81,5 +82,15 @@ class IndexController extends AbstractBaseController
         if (isset($matches[1]) && in_array($matches[1], $existingLocales)) {
             $request->setLocale($matches[1]);
         }
+    }
+
+    /**
+     * Here, we get the preferred language set by the customer browser and sent to us through the "Accept-Language"
+     * HTTP header. We only accept the "en" and the "fr" one. If none are set, we return "en" as fallback since its the
+     * first element in "getPreferredLanguage" parameter array.
+     */
+    protected function getPreferredLocaleFromBrowser() : string
+    {
+        return $this->requestStack->getMasterRequest()->getPreferredLanguage(['en', 'fr']);
     }
 }

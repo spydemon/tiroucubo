@@ -4,6 +4,31 @@ namespace App\Tests\Acceptation\Root\Page;
 
 trait IndexTrait
 {
+    public function testRootUrlRedirection()
+    {
+        $this->changeBrowserLang('fr');
+        $this->goToUrl($this->getAppUrl(''));
+        $this->assertEquals(
+            $this->getAppUrl('/fr'),
+            $this->getBrowser()->getCurrentURL(),
+            'We are redirected to the french homepage if a browser set with the french as preferred language loads the root page of the website.'
+        );
+        $this->changeBrowserLang('it');
+        $this->goToUrl($this->getAppUrl(''));
+        $this->assertEquals(
+            $this->getAppUrl('/en'),
+            $this->getBrowser()->getCurrentURL(),
+            'We are redirected to the english homepage if a browser set with a non supported language loads the root page of the website.'
+        );
+        $this->changeBrowserLang('en');
+        $this->goToUrl($this->getAppUrl(''));
+        $this->assertEquals(
+            $this->getAppUrl('/en'),
+            $this->getBrowser()->getCurrentURL(),
+            'We are redirected to the english homepage if a browser set with the english language loads the root page of the website.'
+        );
+    }
+
     public function testPathArticleDisplayingTest()
     {
         $this->goToUrl($this->getAppUrl('/fr/magento/installation/configuration-docker'));

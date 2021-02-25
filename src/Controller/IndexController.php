@@ -65,7 +65,6 @@ class IndexController extends AbstractBaseController
         } else {
             throw new NotFoundHttpException();
         }
-        return $this->render('front/path.twig.html');
     }
 
     protected function isRootUrlAsked() : bool

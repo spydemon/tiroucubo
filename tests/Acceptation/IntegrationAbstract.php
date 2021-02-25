@@ -24,6 +24,7 @@ abstract class IntegrationAbstract extends PantherTestCase
     private ?Client $client = null;
     private ?string $envBaseUri = null;
     private ?string $envSeleniumUri = null;
+    private string $browserLang = 'en';
 
     abstract protected function getBrowserWidth() : int;
 
@@ -37,6 +38,18 @@ abstract class IntegrationAbstract extends PantherTestCase
     {
         parent::__construct($name, $data, $dataName);
         $this->setConfiguration();
+    }
+
+    /**
+     * Changing the browser language will also update the "Accept-Language" HTTP header send to each queries.
+     * This is usefully for translation tests.
+     */
+    protected function changeBrowserLang(string $lang) : void
+    {
+        $this->browserLang = $lang;
+        if ($this->client) {
+            $this->client = null;
+        }
     }
 
     /**
@@ -167,9 +180,13 @@ abstract class IntegrationAbstract extends PantherTestCase
         $options->addArguments([
             '--disable-gpu',
             '--no-sandbox',
-            '--headless',
             "--window-size={$this->getBrowserWidth()},{$this->getBrowserHeight()}"
         ]);
+        $options->setExperimentalOption('prefs', ['intl.accept_languages' => $this->browserLang]);
+        // It seems that the "intl.accept_languages" option is ignored if the browser is not launched in headless mode.
+        if ($this->browserLang == 'en') {
+            $options->addArguments(['--headless']);
+        }
         $capabilities->setCapability(ChromeOptions::CAPABILITY, $options);
         return Client::createSeleniumClient(
             $this->envSeleniumUri,

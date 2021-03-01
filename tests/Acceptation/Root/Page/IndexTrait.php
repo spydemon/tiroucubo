@@ -13,6 +13,12 @@ trait IndexTrait
             $this->getBrowser()->getCurrentURL(),
             'We are redirected to the french homepage if a browser set with the french as preferred language loads the root page of the website.'
         );
+        $content = $this->getElementByCssSelector('.one-column p:first-of-type');
+        $this->assertEquals(
+            'Bienvenu sur mon blog !',
+            $content->getText(),
+            'We are correctly displaying the home_fr twig template.'
+        );
         $this->changeBrowserLang('it');
         $this->goToUrl($this->getAppUrl(''));
         $this->assertEquals(
@@ -26,6 +32,12 @@ trait IndexTrait
             $this->getAppUrl('/en'),
             $this->getBrowser()->getCurrentURL(),
             'We are redirected to the english homepage if a browser set with the english language loads the root page of the website.'
+        );
+        $content = $this->getElementByCssSelector('.one-column p:first-of-type');
+        $this->assertEquals(
+            'Welcome on my blog!',
+            $content->getText(),
+            'We are correctly displaying the home_en twig template.'
         );
     }
 

@@ -58,7 +58,8 @@ class IndexController extends AbstractBaseController
                 throw new NotFoundHttpException();
             }
             // TODO: cache result
-            return $this->render('front/index/articles.html.twig', [
+            $template = $pathObject->getCustomTemplate() ?? 'front/path/default.html.twig';
+            return $this->render($template, [
                 'path' => $pathObject,
                 'articles' => $articlesToDisplay
             ]);

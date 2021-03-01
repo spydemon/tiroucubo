@@ -60,6 +60,11 @@ class Path
     private int $type;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private ?string $customTemplate = null;
+
+    /**
      * If the path has the "dynamic" type, it means that it represents stuff that could be edited from the back-office.
      * It's displaying state should thus be computed in order to determine if the path should be displayed on the menu
      * and if it should return a 404 error or not.
@@ -226,6 +231,17 @@ class Path
     public function isFinal() : bool
     {
         return count($this->getChild()) > 0 ? false : true;
+    }
+
+    public function getCustomTemplate() : ?string
+    {
+        return $this->customTemplate;
+    }
+
+    public function setCustomTemplate(?string $customTemplate) : self
+    {
+        $this->customTemplate = $customTemplate;
+        return $this;
     }
 
     /**

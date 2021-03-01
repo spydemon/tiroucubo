@@ -12,7 +12,7 @@ class PathFixtures extends Fixture
     private PathRepository $pathRepository;
 
     private array $data = [
-        ['slug' => 'en', 'parent_path' => '', 'title' => 'English tree'],
+        ['slug' => 'en', 'parent_path' => '', 'title' => 'English tree', 'custom_template' => 'front/path/home_en.html.twig'],
         ['slug' => 'magento', 'parent_path' => 'en', 'title' => 'Magento'],
         ['slug' => 'installation', 'parent_path' => 'en/magento', 'title' => 'Installation'],
         ['slug' => 'docker-configuration', 'parent_path' => 'en/magento/installation', 'title' => 'Docker configuration'],
@@ -21,7 +21,7 @@ class PathFixtures extends Fixture
         ['slug' => 'use-of-the-cms', 'parent_path' => 'en/magento', 'title' => 'Use of the CMS'],
         ['slug' => 'all-about-customers', 'parent_path' => 'en/magento/use-of-the-cms', 'title' => 'All about customers'],
         ['slug' => 'product-configuration', 'parent_path' => 'en/magento/use-of-the-cms', 'title' => 'Product configuration'],
-        ['slug' => 'fr', 'parent_path' => '', 'title' => 'Arbre français'],
+        ['slug' => 'fr', 'parent_path' => '', 'title' => 'Arbre français', 'custom_template' => 'front/path/home_fr.html.twig'],
         ['slug' => 'magento', 'parent_path' => 'fr', 'title' => 'Magento'],
         ['slug' => 'installation', 'parent_path' => 'fr/magento', 'title' => 'Installation'],
         ['slug' => 'configuration-docker', 'parent_path' => 'fr/magento/installation', 'title' => 'Configuration Docker'],
@@ -57,6 +57,9 @@ class PathFixtures extends Fixture
             $path->setTitle($currentPathData['title']);
             if (isset($currentPathData['type'])) {
                 $path->setType($currentPathData['type']);
+            }
+            if (isset($currentPathData['custom_template'])) {
+                $path->setCustomTemplate($currentPathData['custom_template']);
             }
             $objectManager->persist($path);
             // The flush should be in the foreach for allowing children to fetch their parent.

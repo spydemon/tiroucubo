@@ -227,4 +227,18 @@ class Path
     {
         return count($this->getChild()) > 0 ? false : true;
     }
+
+    /**
+     * It seems that Doctrine objects that are cached are not able to correctly handle lazy loading when the serialized
+     * object wakes up. We thus have to load each lazy loaded attributes of the entity before its serialization.
+     * @noinspection PhpExpressionResultUnusedInspection
+     */
+    public function __sleep() : array
+    {
+        $this->getChild();
+        $this->getPathMap();
+        $this->getArticles();
+        $this->getParent();
+        return ['id', 'slug', 'title', 'parent', 'child', 'pathMap', 'articles', 'type', 'customTemplate'];
+    }
 }

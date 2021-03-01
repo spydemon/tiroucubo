@@ -108,7 +108,7 @@ body {
   }
 }
 
-body > * {
+body > * > * {
   padding: $default-padding-horizontal;
 }
 
@@ -127,30 +127,4 @@ h1 {
 
 ul {
   margin: 0;
-}
-
-/**
- * Handle the position of left column, right column and the main content.
- */
-
-.left-column, .main-content, .right-column {
-  display: block;
-
-  @include for-tablet-landscape-up {
-    display: table-cell;
-    vertical-align: top;
-  }
-}
-
-.left-column, .right-column {
-  @include for-tablet-landscape-up {
-    max-width: 350px;
-    min-width: 350px;
-  }
-}
-
-.main-content {
-  @include for-tablet-landscape-up {
-    width: 100%;
-  }
 }

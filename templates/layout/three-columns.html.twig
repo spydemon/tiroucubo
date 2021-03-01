@@ -1,25 +1,27 @@
 {% extends 'base.html.twig' %}
 
 {% block main_content %}
-    <div class="notification">
-        {% block notification %}
-            {{ render(controller( 'App\\Controller\\Fragment\\Notification::display')) }}
-        {% endblock %}
-    </div>
-    <div class="left-column">
-        {% block left_column %}
-            {{ render(controller( 'App\\Controller\\Fragment\\LeftColumn::display')) }}
-        {% endblock %}
-        <div class="right-column in-left-column">
-            {% block right_column %}
-                {{ render(controller( 'App\\Controller\\Fragment\\RightColumn::display')) }}
+    <div class="three-columns">
+        <div class="notification">
+            {% block notification %}
+                {{ render(controller( 'App\\Controller\\Fragment\\Notification::display')) }}
             {% endblock %}
         </div>
-    </div>
-    <div class="main-content">
-        {% block body %}{% endblock %}
-    </div>
-    <div class="right-column in-its-own-column">
-        {{ block('right_column') }}
+        <div class="left-column">
+            {% block left_column %}
+                {{ render(controller( 'App\\Controller\\Fragment\\LeftColumn::display')) }}
+            {% endblock %}
+            <div class="right-column in-left-column">
+                {% block right_column %}
+                    {{ render(controller( 'App\\Controller\\Fragment\\RightColumn::display')) }}
+                {% endblock %}
+            </div>
+        </div>
+        <div class="main-content">
+            {% block body %}{% endblock %}
+        </div>
+        <div class="right-column in-its-own-column">
+            {{ block('right_column') }}
+        </div>
     </div>
 {% endblock %}

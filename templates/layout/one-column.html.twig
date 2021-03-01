@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block main_content %}
+    <div class="one-column">
+        <div class="notification">
+            {% block notification %}
+                {{ render(controller( 'App\\Controller\\Fragment\\Notification::display')) }}
+            {% endblock %}
+        </div>
+        <div class="main-content">
+            {% block body %}{% endblock %}
+        </div>
+    </div>
+{% endblock %}

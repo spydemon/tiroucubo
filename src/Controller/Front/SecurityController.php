@@ -20,7 +20,7 @@ class SecurityController extends AbstractBaseController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser()) {
-            return $this->redirectToRoute('front_home');
+            return $this->redirectToRoute('default');
         }
         $lastUsername = $authenticationUtils->getLastUsername();
         return $this->render('front/login.html.twig', [

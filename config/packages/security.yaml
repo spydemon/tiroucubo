@@ -21,7 +21,7 @@ security:
             custom_authenticator: App\Security\AppCustomAuthenticator
             logout:
                 path: front_security_logout
-                target: front_home
+                target: default
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 

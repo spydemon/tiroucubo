@@ -19,6 +19,13 @@ trait IndexTrait
             $content->getText(),
             'We are correctly displaying the home_fr twig template.'
         );
+        // This test was added since previous regular expression was not matching homepages URL.
+        $content = $this->getElementByCssSelector('.item.lang');
+        $this->assertEquals(
+            '[en]',
+            $content->getText(),
+            'Language selector works correctly on the French homepage.'
+        );
         $this->changeBrowserLang('it');
         $this->goToUrl($this->getAppUrl(''));
         $this->assertEquals(

@@ -78,7 +78,7 @@ class IndexController extends AbstractBaseController
     {
         static $existingLocales = ['fr', 'en'];
         $request = $this->requestStack->getMasterRequest();
-        preg_match('#^/(.*?)/#', $request->getRequestUri(), $matches);
+        preg_match('#^/(.*?)(/|\z)#', $request->getRequestUri(), $matches);
         if (isset($matches[1]) && in_array($matches[1], $existingLocales)) {
             $request->setLocale($matches[1]);
         }

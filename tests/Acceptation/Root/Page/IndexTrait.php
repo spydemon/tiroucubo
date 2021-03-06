@@ -13,7 +13,7 @@ trait IndexTrait
             $this->getBrowser()->getCurrentURL(),
             'We are redirected to the french homepage if a browser set with the french as preferred language loads the root page of the website.'
         );
-        $content = $this->getElementByCssSelector('.one-column p:first-of-type');
+        $content = $this->getElementByCssSelector('.one-column h1');
         $this->assertEquals(
             'Bienvenu sur mon blog !',
             $content->getText(),
@@ -33,7 +33,7 @@ trait IndexTrait
             $this->getBrowser()->getCurrentURL(),
             'We are redirected to the english homepage if a browser set with the english language loads the root page of the website.'
         );
-        $content = $this->getElementByCssSelector('.one-column p:first-of-type');
+        $content = $this->getElementByCssSelector('.one-column h1');
         $this->assertEquals(
             'Welcome on my blog!',
             $content->getText(),

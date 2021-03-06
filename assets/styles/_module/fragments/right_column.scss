@@ -22,27 +22,3 @@
     display: none;
   }
 }
-
-/**
- * Ads decorations
- */
-
-.newsletter {
-  background-color: $color-font-bgm-second;
-  color: $color-background-main;
-  text-align: center;
-  padding: $default-padding-horizontal;
-
-  @include for-tablet-landscape-up {
-    margin-top: 10px;
-  }
-  @include for-desktop-up {
-    margin-top: 0;
-  }
-
-  input, button {
-    border: 3px double $color-font-bgm-second;
-    margin: 2px 0;
-    width: 100%;
-  }
-}

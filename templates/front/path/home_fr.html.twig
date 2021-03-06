@@ -1,5 +1,34 @@
 {% extends 'layout/one-column.html.twig' %}
 
 {% block body %}
-    <p>Bienvenu sur mon blog !</p>
+    <div class="intro-left-content">
+        <div class="info-block">
+            <h2>Développeur web back-end en freelance</h2>
+            <h3>Spécialisé Magento et Symfony</h3>
+            <p>N'hésitez pas à me contacter si vous avez besoin de moi !</p>
+        </div>
+    </div>
+    <div class="intro-right-content">
+        <h1>Bienvenu sur mon blog !</h1>
+        <p>
+            Temporibus animi aut quaerat porro aliquid. Et quia et est rerum aliquid qui eius qui. Illum pariatur omnis et et aspernatur at ratione hic. Dolore et velit ut enim quia totam ipsum. Totam aspernatur et laudantium laboriosam nihil non eum. Corporis neque nulla labore optio rerum totam voluptatem.
+        </p>
+        <p>
+            Aspernatur pariatur vitae ipsum voluptates cum fugit asperiores facere. Accusantium et rem beatae non praesentium occaecati in. Enim et sit qui qui ducimus voluptatem quis laborum.
+        </p>
+        <p>
+            Perspiciatis dolores eligendi aut aut et atque. Laborum voluptas praesentium et praesentium rem autem pariatur. Voluptas laborum qui voluptates consequatur omnis. Beatae dolores consequatur mollitia assumenda. Possimus maiores fugit voluptas culpa eius laborum aut. Quo tenetur enim ut nostrum aliquid qui reprehenderit voluptas.
+        </p>
+    </div>
+    <h2>Derniers articles</h2>
+    <div class="article-list">
+        {% for article in articles %}
+            {% if loop.index < 7 %}
+                <div class="article">
+                    <h3><a href="{{ article.url }}">{{ article.article.title }}</a></h3>
+                    <p>{{ article.version.summary|raw }}</p>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
 {% endblock %}

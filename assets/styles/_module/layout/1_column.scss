@@ -1,0 +1,49 @@
+.one-column
+{
+  /**
+   * Display the first part of the welcome pages: the one with the ad and the introduction.
+   */
+  h1 {
+    margin-top: 10px;
+    @include for-tablet-landscape-up {
+      margin-top: 0;
+    }
+  }
+
+  .intro-left-content, .intro-right-content {
+    display: block;
+    @include for-tablet-landscape-up {
+      display: table-cell;
+      vertical-align: top;
+    }
+  }
+
+  .intro-left-content {
+    width: 100%;
+    @include for-tablet-landscape-up {
+      width: 500px;
+    }
+  }
+
+  .intro-right-content {
+    padding-left: 10px;
+  }
+
+  /**
+   * Handle the last articles summary displaying.
+   */
+  .article-list {
+    display: flex;
+    justify-content: space-between;
+    flex-grow: 1;
+    flex-wrap: wrap;
+  }
+
+  .article {
+    box-sizing: border-box;
+    width: 100%;
+    @include for-tablet-landscape-up {
+      width: calc(50% - 20px);
+    }
+  }
+}

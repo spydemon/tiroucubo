@@ -57,6 +57,17 @@ class PathRepository extends ServiceEntityRepository
         );
     }
 
+    public function findAllSortedByPath() : array
+    {
+        $paths = $this->findAll();
+        $pathsSorted = [];
+        foreach ($paths as $path) {
+            $pathsSorted[$path->__toString()] = $path;
+        }
+        ksort($pathsSorted);
+        return $pathsSorted;
+    }
+
     public function findByPath(string $path) : ?Path
     {
         // We are caching only the entity ID because the serialization of Doctrine items that contains Collections seems broken.

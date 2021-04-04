@@ -1,0 +1,56 @@
+{% extends 'layout/three-columns.html.twig' %}
+
+{% block body %}
+    <div class="admin-path-edit">
+        <h1>Path edition: {{ path.title }}</h1>
+        <form method="post">
+            <input type="hidden" name="id" value="{{path.id|default('') }}" />
+            <input type="hidden" name="csrf_token" value="{{ csrf_token('admin-path-edit') }}" >
+            <table>
+                <tr>
+                    <td>
+                        <label for="slug">{% trans %}Path slug:{% endtrans %}</label>
+                    </td>
+                    <td>
+                        <input type="text" id="slug" name="slug" value="{{ path }}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="title">{% trans %}Title:{% endtrans %}</label>
+                    </td>
+                    <td>
+                        <input type="text" id="title" name="title" value="{{ path.title }}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="template">{% trans %}Custom template{% endtrans %}</label>
+                    </td>
+                    <td>
+                        <input type="text" id="template" name="template" value="{{ path.customTemplate }}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="type">{% trans %}Type{% endtrans %}</label>
+                    </td>
+                    <td>
+                        <select id="type" name="type">
+                            {% for type in types %}
+                                <option
+                                    value="{{ type.id }}"
+                                    {% if path.type == type.id %}
+                                        selected="selected"
+                                    {% endif %}
+                                >
+                                    {{ type.label }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+{% endblock %}

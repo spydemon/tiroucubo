@@ -36,6 +36,7 @@ class PathFixtures extends Fixture
         ['slug' => 'linux', 'parent_path' => 'fr', 'title' => 'Linux'],
         ['slug' => 'theorie', 'parent_path' => 'fr/linux', 'title' => 'Théorie'],
         ['slug' => 'histoire-de-la-creation', 'parent_path' => 'fr/linux/theorie', 'title' => 'L\'histoire de la création de Linux'],
+        ['slug' => 'path', 'parent_path' => 'admin', 'title' => 'Paths', 'type' => Path::TYPE_ALWAYS_VISIBLE],
     ];
 
     public function __construct(

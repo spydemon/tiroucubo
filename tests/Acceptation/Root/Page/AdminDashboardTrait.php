@@ -1,6 +1,5 @@
 <?php
 
-namespace App\Tests\Acceptation\IntegrationAbstract;
 namespace App\Tests\Acceptation\Root\Page;
 
 trait AdminDashboardTrait

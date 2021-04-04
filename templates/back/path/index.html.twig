@@ -1,0 +1,14 @@
+{% extends 'layout/three-columns.html.twig' %}
+
+{% block body %}
+    <h1>{% trans %}Paths edition{% endtrans %}</h1>
+    <ul>
+        {% for path in paths %}
+            <li>
+                <a href="{{ path('admin_path_edit', {path: path.id}) }}">
+                    {{ path }}
+                </a>
+            </li>
+        {% endfor  %}
+    </ul>
+{% endblock %}

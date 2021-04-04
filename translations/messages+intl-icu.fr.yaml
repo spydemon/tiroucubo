@@ -18,6 +18,10 @@
 "The version {slug} was already enabled.": "La version {slug} était déjà activée."
 "The {slug} version of the article is now enabled!": "La version {slug} de l'article est à présent activée !"
 
+# Controller/Admin/Path/EditPathController.php
+"Dynamic": "Dynamique"
+"Always visible": "Toujours visible"
+
 # templates/fragment/_footer.html.twig
 "Footer of the website.": "Footer du site web."
 "Home": "Accueil"
@@ -41,7 +45,7 @@
 # templates/back/article/edit.html.twig
 "Edition:": "Édition :"
 "Title:": "Titre :"
-"Path:": "Chemin :"
+"Page path:": "Chemin de la page :"
 "Versions": "Version"
 "Slug": "Slug"
 "Date": "Date"

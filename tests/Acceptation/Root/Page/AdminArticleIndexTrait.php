@@ -44,7 +44,7 @@ trait AdminArticleIndexTrait
 
     public function testArticlesDisplayedByPath()
     {
-        $this->checkColumnSort('Path', '?sort=path', [2, 3, 6, 4, 0, 1, 5]);
+        $this->checkColumnSort('Page path', '?sort=path', [2, 3, 6, 4, 0, 1, 5]);
     }
 
     public function testArticlesDisplayedByCreationDate()

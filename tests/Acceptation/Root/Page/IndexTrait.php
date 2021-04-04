@@ -2,6 +2,8 @@
 
 namespace App\Tests\Acceptation\Root\Page;
 
+use App\Tests\Exception\ElementNotExpectedException;
+
 trait IndexTrait
 {
     public function testRootUrlRedirection()
@@ -106,5 +108,30 @@ trait IndexTrait
             $articleContent->getText(),
             'Link to the final path displaying the body of the article is working.'
         );
+    }
+
+    public function testHomepageLastArticleSummaryDisplaying()
+    {
+        $this->goToUrl('/fr');
+        $lastArticleTitles = $this->getAllElementsByCssSelector('.main-content .article-list .article h3');
+        $expectedTitles = ['Tout à propos des clients', 'Composer', 'L\'histoire de la création de Linux', 'Configuration Docker'];
+        for ($i = 0; $i <= 3; $i++) {
+            $this->assertEquals(
+                $expectedTitles[$i],
+                $lastArticleTitles[$i]->getText(),
+                "Title of summary article $i on the French home is correct."
+            );
+        }
+    }
+
+    public function testHomepageCustomLayoutUse()
+    {
+        $this->goToUrl('/fr');
+        try {
+            $this->getElementByCssSelector('body .one-column');
+        } catch (ElementNotExpectedException $e) {
+            $this->fail('Custom layout to path seems working.');
+        }
+        $this->assertTrue(true, 'The test did not fail.');
     }
 }

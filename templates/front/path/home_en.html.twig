@@ -20,15 +20,19 @@
             Perspiciatis dolores eligendi aut aut et atque. Laborum voluptas praesentium et praesentium rem autem pariatur. Voluptas laborum qui voluptates consequatur omnis. Beatae dolores consequatur mollitia assumenda. Possimus maiores fugit voluptas culpa eius laborum aut. Quo tenetur enim ut nostrum aliquid qui reprehenderit voluptas.
         </p>
     </div>
-    <h2>Last posts</h2>
-    <div class="article-list">
-        {% for article in articles %}
-            {% if loop.index < 7 %}
-                <div class="article">
-                    <h3><a href="{{ article.url }}">{{ article.article.title }}</a></h3>
-                    <p>{{ article.version.summary|raw }}</p>
-                </div>
-            {% endif %}
-        {% endfor %}
+    <div class="last-articles">
+        <h2>Last posts</h2>
+        <div class="article-list">
+            {% for article in articles %}
+                {% if loop.index < 7 %}
+                    <div class="article">
+                        <h3><a href="{{ article.url }}">{{ article.article.title }}</a></h3>
+                        <div class="summary">
+                            {{ article.version.summary|raw }}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}

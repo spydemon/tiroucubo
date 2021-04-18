@@ -1,6 +1,14 @@
 {% extends 'layout/three-columns.html.twig' %}
 
 {% block body %}
+    <h1>{% trans %}Actions{% endtrans %}</h1>
+    <ul>
+        <li>
+            <a href="{{ path('admin_path_edit') }}">
+                {% trans %}Create a new path{% endtrans %}
+            </a>
+        </li>
+    </ul>
     <h1>{% trans %}Paths edition{% endtrans %}</h1>
     <ul>
         {% for path in paths %}

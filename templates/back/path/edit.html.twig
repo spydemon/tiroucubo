@@ -2,7 +2,11 @@
 
 {% block body %}
     <div class="admin-path-edit">
-        <h1>Path edition: {{ path.title }}</h1>
+        {% if path is not null %}
+            <h1>{% trans %}Path edition:{% endtrans%} {{ path.title }}</h1>
+        {% else %}
+            <h1>{% trans %}Path creation{% endtrans %}</h1>
+        {% endif %}
         <form method="post">
             <input type="hidden" name="id" value="{{path.id|default('') }}" />
             <input type="hidden" name="csrf_token" value="{{ csrf_token('admin-path-edit') }}" >
@@ -12,7 +16,17 @@
                         <label for="slug">{% trans %}Path slug:{% endtrans %}</label>
                     </td>
                     <td>
-                        <input type="text" id="slug" name="slug" value="{{ path }}" />
+                        <input
+                            type="text"
+                            id="slug"
+                            name="slug"
+                            {% if path is not null %}
+                                disabled="disabled"
+                            {% endif %}
+                            value="{{ path }}" />
+                        {% if path is not null %}
+                            {% trans %}(Can not be edited.){% endtrans %}
+                        {% endif %}
                     </td>
                 </tr>
                 <tr>
@@ -20,7 +34,7 @@
                         <label for="title">{% trans %}Title:{% endtrans %}</label>
                     </td>
                     <td>
-                        <input type="text" id="title" name="title" value="{{ path.title }}" />
+                        <input type="text" id="title" name="title" value="{{ path.title|default('') }}" />
                     </td>
                 </tr>
                 <tr>
@@ -28,7 +42,7 @@
                         <label for="template">{% trans %}Custom template{% endtrans %}</label>
                     </td>
                     <td>
-                        <input type="text" id="template" name="template" value="{{ path.customTemplate }}" />
+                        <input type="text" id="template" name="template" value="{{ path.customTemplate|default('') }}" />
                     </td>
                 </tr>
                 <tr>
@@ -40,7 +54,7 @@
                             {% for type in types %}
                                 <option
                                     value="{{ type.id }}"
-                                    {% if path.type == type.id %}
+                                    {% if path is not null and path.type == type.id %}
                                         selected="selected"
                                     {% endif %}
                                 >
@@ -48,6 +62,18 @@
                                 </option>
                             {% endfor %}
                         </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input
+                           type="submit"
+                           {% if path is not null %}
+                               value="{% trans %}Update path{% endtrans %}"
+                           {% else %}
+                               value="{% trans %}Create path{% endtrans %}"
+                           {% endif %}
+                        />
                     </td>
                 </tr>
             </table>

@@ -21,6 +21,7 @@
 # Controller/Admin/Path/EditPathController.php
 "Dynamic": "Dynamique"
 "Always visible": "Toujours visible"
+"Path updated!": "Chemin mis à jour !"
 
 # templates/fragment/_footer.html.twig
 "Footer of the website.": "Footer du site web."
@@ -43,6 +44,8 @@
 "Subscribe!": "Inscription !"
 
 # templates/back/article/edit.html.twig
+"Path edition:": "Édition du chemin :"
+"Path creation": "Création de chemin"
 "Edition:": "Édition :"
 "Title:": "Titre :"
 "Page path:": "Chemin de la page :"
@@ -60,6 +63,8 @@
 "Update": "Mise à jour"
 "Create article": "Créer l'article"
 "Update article": "Mise à jour de l'article"
+"Create path": "Création du chemin"
+"Update path": "Mise à jour du chemin"
 
 # templates/back/article/index.html.twig
 "Create a new article": "Création d'un nouvel article"
@@ -70,6 +75,10 @@
 "Last update": "Dernière MàJ"
 "Edition": "Édition"
 "Unlock": "Déblocage"
+"(Can not be edited.)": "(Ne peut pas être édité.)"
+
+# templates/back/path/index.html.twig
+"Create a new path": "Création d'un nouveau chemin"
 
 # templates/front/home.html.twig
 "Home page of my blog. \\m/": "Page d'accueil de mon blog. \\m/"

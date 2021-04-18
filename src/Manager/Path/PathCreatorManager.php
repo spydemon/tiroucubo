@@ -28,6 +28,11 @@ class PathCreatorManager
     public function createFromString(string $path) : Path
     {
         try {
+            // If the first character of the path is a slash, we remove it in order to avoid to create an empty parent
+            // element.
+            if (substr($path, 0, 1) == '/') {
+                $path = substr($path, 1);
+            }
             $this->entityManager->getConnection()->beginTransaction();
             $path = $this->unstackPath($path);
             $this->entityManager->getConnection()->commit();

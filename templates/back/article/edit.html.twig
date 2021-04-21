@@ -1,5 +1,5 @@
 {% extends 'layout/three-columns.html.twig' %}
-{% set enableVue = true %}
+{#{% set enableVue = true %}#}
 {% block body %}
     <div class="admin-article-edit">
         {% if article is not null %}
@@ -57,9 +57,13 @@
             {% endif %}
             <h2>{% trans %}Content{% endtrans %}</h2>
             <label for="summary">{% trans %}Summary:{% endtrans %}</label><br />
-            <text-editor id="summary" name="summary" value="{{ version.summary|default('') }}"></text-editor>
+            <textarea id="summary" name="summary">
+                {{ version.summary|default('') }}
+            </textarea>
             <label for="content">{% trans %}Body:{% endtrans %}</label><br />
-            <text-editor id="content" name="content" value="{{ version.content|default('') }}"></text-editor>
+            <textarea id="content" name="content">
+                {{ version.content|default('') }}
+            </textarea>
             <label for="commit_message">{% trans %}Commit message{% endtrans %}</label>
             <textarea id="commit_message" name="commit_message"></textarea>
             <input

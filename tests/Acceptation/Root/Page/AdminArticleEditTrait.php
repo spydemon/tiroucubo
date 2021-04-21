@@ -18,9 +18,7 @@ trait AdminArticleEditTrait
         $this->updateArticleContent('', '', '', '', '');
         $notification = $this->getElementByCssSelector('.notification .error');
         $this->assertEquals(
-            // With the current implementation of the text editor, it is not possible to send empty fields, they will always have at least "<p></p>."
-            // 'Missing fields: title, summary, path, content.',
-            'Missing fields: title, path, commit_message.',
+            'Missing fields: title, summary, path, content, commit_message.',
             $notification->getText(),
             'The notification saying that the article was correctly updated is here.'
         );
@@ -33,7 +31,7 @@ trait AdminArticleEditTrait
         $this->updateArticleContent(
             'New title',
             'fr/magento/new/path error',
-            'My new summary',
+            '<p>My new summary</p>',
             '<p>My new content</p>',
             'Version added by the testInvalidSlug test!'
         );
@@ -57,7 +55,7 @@ trait AdminArticleEditTrait
             $this->updateArticleContent(
                 'New title',
                 $this->workingArticleReadingPath,
-                'My new summary',
+                '<p>My new summary</p>',
                 '<p>My new content</p>',
                 $newCommitMessageContent
             );
@@ -110,7 +108,7 @@ trait AdminArticleEditTrait
             $this->getBrowser()->request('GET', "/{$this->workingArticleReadingPath}");
             $resultContent = $this->getElementByCssSelector('article p:first-of-type');
             $this->assertEquals(
-                '<p>My new content</p>',
+                'My new content',
                 $resultContent->getText(),
                 'New version of the article is now displayed on the front-end.'
             );
@@ -160,7 +158,7 @@ trait AdminArticleEditTrait
                 'This is a completely new article!',
                 'fr/magento/installation/new-article',
                 'This is the summary of my new article',
-                'This is the content of my new article',
+                '<p>This is the content of my new article</p>',
                 'First commit for my new article!'
             );
             $notification = $this->getElementByCssSelector('.notification .notice');
@@ -233,8 +231,8 @@ trait AdminArticleEditTrait
     ) {
         $title = $this->getElementByCssSelector('form #title');
         $path = $this->getElementByCssSelector('form #path');
-        $summary = $this->getElementByCssSelector('form #summary .ProseMirror');
-        $content = $this->getElementByCssSelector('form #content .ProseMirror');
+        $summary = $this->getElementByCssSelector('form #summary');
+        $content = $this->getElementByCssSelector('form #content');
         $commit = $this->getElementByCssSelector('form #commit_message');
         $submit = $this->getElementByCssSelector('form input[type="submit"]');
         // This sendKeys will press ctrl+A and the backspace, meaning we are cleaning the content of the input field.

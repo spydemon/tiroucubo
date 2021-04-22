@@ -167,7 +167,7 @@ class ArticleFixtures extends WithDependenciesFixtures
             $version->setSummary($currentData['summary']);
             $version->setContent($currentData['content']);
             $version->setActive(true);
-            $version->setCommitMessage('Version added from ArticleVersion fixture.');
+            $version->setCommitMessage('Version added from Article fixture.');
             $manager->persist($article);
             $manager->persist($version);
         }

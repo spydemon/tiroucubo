@@ -12,6 +12,10 @@
 # Controller/Admin/Article/EditArticleController.php
 "The {slug} version of the article is not existing.": "La version {slug} de l'article est inexistante."
 
+# Controller/Admin/ArticleVersion/DeleteController.php
+"Invalid CSRF token.": "Token CSRF invalide."
+"The version {slug} was deleted.": "La version {slug} a été supprimée."
+
 # Controller/Admin/ArticleVersion/SetStateController.php
 "The version {slug} was already disabled.": "La version {slug} est déjà désactivée."
 "The {slug} version of the article was disabled. The article is now invisible on the front-end.": "La version {slug} de l'article a été désactivée. L'article est à présent invisible sur le front-end."
@@ -65,6 +69,8 @@
 "Update article": "Mise à jour de l'article"
 "Create path": "Création du chemin"
 "Update path": "Mise à jour du chemin"
+"Delete the version": "Suppression de la version"
+"Confirm version suppression": "Confirmez la suppression de la version"
 
 # templates/back/article/index.html.twig
 "Create a new article": "Création d'un nouvel article"

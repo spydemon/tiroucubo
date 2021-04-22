@@ -49,7 +49,19 @@
                                     </span>
                                 {% endif %}
                             </td>
-                            <td class="actions">TODO</td>
+                            <td class="actions">
+                                {% if not currentVersion.active %}
+                                    <span class="action-delete">
+                                        <a
+                                            href="{{ path("admin_article_version_delete", {'version': currentVersion.id, 'csrf': csrf_token('admin-article-version-delete') }) }}"
+                                            onclick="return confirm('{% trans %}Confirm version suppression{% endtrans %}');"
+                                            title="{% trans %}Delete the version{% endtrans %}"
+                                        >
+                                            &#xec2a;
+                                        </a>
+                                    </span>
+                                {% endif %}
+                            </td>
                         </tr>
                     {% endfor %}
                 </table>

@@ -50,6 +50,14 @@
                                 {% endif %}
                             </td>
                             <td class="actions">
+                                <span class="action-preview">
+                                    <a
+                                        href="{{ tiroucuboPathUrl(article.path, false, {version: currentVersion.slug}) }}"
+                                        title="{% trans %}Preview the version{% endtrans %}"
+                                    >
+                                        &#xecb5;
+                                    </a>
+                                </span>
                                 {% if not currentVersion.active %}
                                     <span class="action-delete">
                                         <a

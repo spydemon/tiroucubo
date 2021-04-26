@@ -29,7 +29,7 @@ class ArticleVersionFixtures extends WithDependenciesFixtures
         $article = $this->articleRepository->find(6);
         $version = $this->articleVersionRepository->createNewVersionForArticle($article);
         $version->setSummary('Summary');
-        $version->setContent('Content');
+        $version->setContent('<p>Content in the second version of the article.</p>');
         $version->setActive(false);
         $version->setCommitMessage('Version added from ArticleVersion fixture.');
         $manager->persist($version);

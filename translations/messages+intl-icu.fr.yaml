@@ -71,6 +71,7 @@
 "Update path": "Mise à jour du chemin"
 "Delete the version": "Suppression de la version"
 "Confirm version suppression": "Confirmez la suppression de la version"
+"Preview the version": "Prévisualisation de la version"
 
 # templates/back/article/index.html.twig
 "Create a new article": "Création d'un nouvel article"

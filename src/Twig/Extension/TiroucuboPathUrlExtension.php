@@ -27,13 +27,27 @@ class TiroucuboPathUrlExtension extends AbstractExtension
         ];
     }
 
-    public function tiroucuboPathUrl(string $pathString) : string
+    public function tiroucuboPathUrl(
+        string $pathString,
+        bool $addCurrentLocalePrefix = true,
+        array $getParams = []
+    ) : string
     {
-        $locale = $this->requestStack->getMasterRequest()->getLocale();
-        $path = $this->pathRepository->findByPath("$locale/$pathString");
+        if ($addCurrentLocalePrefix) {
+            $locale = $this->requestStack->getMasterRequest()->getLocale();
+            $pathString = "$locale/$pathString";
+        }
+        $path = $this->pathRepository->findByPath($pathString);
         if (!$path) {
             return '';
         }
-        return $this->pathRepository->getUrlForPath($path);
+        $url = $this->pathRepository->getUrlForPath($path);
+        $firstParam = true;
+        foreach ($getParams as $key => $value) {
+            $delimiter = $firstParam ? '?' : '&';
+            $url .= "{$delimiter}{$key}={$value}";
+            $firstParam = false;
+        }
+        return $url;
     }
 }

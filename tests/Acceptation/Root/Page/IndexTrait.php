@@ -134,4 +134,60 @@ trait IndexTrait
         }
         $this->assertTrue(true, 'The test did not fail.');
     }
+
+    public function testPathArticlePreview()
+    {
+        $this->loginCustomer('admin@tiroucubo.local', 'pa$$word');
+        $this->goToUrl('/admin/article/edit/6');
+        $allPreviews = $this->getAllElementsByCssSelector('td .action-preview');
+        $allPreviews[1]->click();
+        $url= $this->getBrowser()->getCurrentURL();
+        // We have to remove $1 from the URL in order to be able to use it in the "goToUrl" method.
+        // We remove $3 in order to obtain the URL without the "preview" HTTP GET parameter.
+        $urlWithoutPreview = preg_replace('~
+            (^https?://.*?)  # $1 will be the "http(s)://<website_domain>" present at the begginning of the URL.
+            (/.*)            # $2 will be the URI of the resource in the website.
+            (\?.*)$          # $3 will be GET parameters.
+            ~x',
+            '$2',
+            $url
+        );
+        $urlWithPreview = preg_replace(
+            '~
+                (^https?://.*?) # $1 will be the "http(s)://<website_domain>" present at the begginning of the URL.
+                (/.*)           # $2 will be the rest of the URL.
+                $~x',
+            '$2',
+            $url
+        );
+
+        /**
+         * Test preview displayed for an user with correct rights.
+         */
+        $articleContent = $this->getElementByCssSelector('article p');
+        $this->assertEquals(
+            'Content in the second version of the article.',
+            $articleContent->getText(),
+            'The preview displaying works for admin users.'
+        );
+
+        /**
+         * Ensure that the activated version is not the same that the one we preview.
+         */
+        $this->goToUrl($urlWithoutPreview);
+        $articleContent = $this->getElementByCssSelector('article p');
+        $this->assertNotEquals(
+            'Content in the second version of the article.',
+            $articleContent->getText(),
+            'The preview displaying works for admin users.'
+        );
+
+        /**
+         * Test that previews are not displayed to anonymous users.
+         */
+        $logoutLink = $this->getElementByLinkText('Déconnexion');
+        $logoutLink->click();
+        $this->goToUrl($urlWithPreview);
+        $this->checkResponseIsA404();
+    }
 }

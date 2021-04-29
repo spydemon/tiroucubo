@@ -84,6 +84,9 @@
 "Unlock": "Déblocage"
 "(Can not be edited.)": "(Ne peut pas être édité.)"
 
+# templates/back/media/index.html.twig
+"Add a new image": "Ajouter une nouvelle image"
+
 # templates/back/path/index.html.twig
 "Create a new path": "Création d'un nouveau chemin"
 

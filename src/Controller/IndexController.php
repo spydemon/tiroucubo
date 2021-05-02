@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Helper\TwigDefaultParameters;
 use App\Manager\Path\PathRendererManager;
 use App\Repository\PathRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -19,11 +20,13 @@ class IndexController extends AbstractBaseController
     public function __construct(
         PathRendererManager $pathRendererManager,
         PathRepository $pathRepository,
-        RequestStack $requestStack
+        RequestStack $requestStack,
+        TwigDefaultParameters $twigDefaultParameters
     ) {
         $this->pathRendererManager = $pathRendererManager;
         $this->pathRepository = $pathRepository;
         $this->requestStack = $requestStack;
+        return parent::__construct($twigDefaultParameters);
     }
 
     /**

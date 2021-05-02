@@ -3,6 +3,7 @@
 namespace App\Controller\Admin\Path;
 
 use App\Controller\Admin\AbstractAdminController;
+use App\Helper\TwigDefaultParameters;
 use App\Repository\PathRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,9 +14,11 @@ class IndexPathController extends AbstractAdminController
     private PathRepository $pathRepository;
 
     public function __construct(
-        PathRepository $pathRepository
+        PathRepository $pathRepository,
+        TwigDefaultParameters $twigDefaultParameters
     ) {
         $this->pathRepository = $pathRepository;
+        return parent::__construct($twigDefaultParameters);
     }
 
     /**

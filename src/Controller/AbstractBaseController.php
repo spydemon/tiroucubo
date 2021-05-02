@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Helper\TwigDefaultParameters;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -10,22 +11,12 @@ use Symfony\Component\HttpFoundation\Response;
  */
 abstract class AbstractBaseController extends AbstractController
 {
+    private TwigDefaultParameters $twigDefaultParameters;
     private ?string $pageTitle = null;
 
-    protected function addDefaultParameters(array $baseParameters) : array
+    public function __construct(TwigDefaultParameters $twigDefaultParameters)
     {
-        // TODO: define those default parameters automatically.
-        $defaultParameters = [
-            'page' => [
-                'author' => 'Administrator',
-                'lang' => 'en',
-                'title' => $this->getPageTitle()
-            ],
-            'website' => [
-                'title' => 'Spyzone'
-            ]
-        ];
-        return array_replace_recursive($defaultParameters, $baseParameters);
+        $this->twigDefaultParameters = $twigDefaultParameters;
     }
 
     protected function getPageTitle() : ?string
@@ -40,7 +31,8 @@ abstract class AbstractBaseController extends AbstractController
 
     protected function render(string $view, array $parameters = [], Response $response = null): Response
     {
-        $parameters = $this->addDefaultParameters($parameters);
+        $parameters['page']['title'] = $this->getPageTitle();
+        $parameters = $this->twigDefaultParameters->setDefaultParameters($parameters);
         return parent::render($view, $parameters, $response);
     }
 }

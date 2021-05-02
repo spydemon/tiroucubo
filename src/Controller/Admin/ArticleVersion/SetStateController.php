@@ -3,6 +3,7 @@
 namespace App\Controller\Admin\ArticleVersion;
 
 use App\Controller\Admin\AbstractAdminController;
+use App\Helper\TwigDefaultParameters;
 use App\Entity\ArticleVersion;
 use App\Repository\ArticleVersionRepository;
 use Exception;
@@ -19,10 +20,12 @@ class SetStateController extends AbstractAdminController
 
     public function __construct(
         ArticleVersionRepository $articleVersionRepository,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        TwigdefaultParameters $twigDefaultParameters
     ) {
         $this->articleVersionRepository = $articleVersionRepository;
         $this->translator = $translator;
+        return parent::__construct($twigDefaultParameters);
     }
 
     /**

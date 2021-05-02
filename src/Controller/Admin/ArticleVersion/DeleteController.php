@@ -4,6 +4,7 @@ namespace App\Controller\Admin\ArticleVersion;
 
 use App\Controller\Admin\AbstractAdminController;
 use App\Entity\ArticleVersion;
+use App\Helper\TwigDefaultParameters;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -15,9 +16,10 @@ class DeleteController extends AbstractAdminController
 {
     private TranslatorInterface $translator;
 
-    public function __construct(TranslatorInterface $translatorInterface)
+    public function __construct(TranslatorInterface $translatorInterface, TwigDefaultParameters $twigDefaultParameters)
     {
         $this->translator = $translatorInterface;
+        return parent::__construct($twigDefaultParameters);
     }
 
     /**

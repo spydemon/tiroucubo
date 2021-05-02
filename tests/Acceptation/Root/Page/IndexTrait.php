@@ -190,4 +190,21 @@ trait IndexTrait
         $this->goToUrl($urlWithPreview);
         $this->checkResponseIsA404();
     }
+
+    public function testMetadataDisplaying()
+    {
+        $this->goToUrl('/en/magento/installation/docker-configuration');
+        $metaAuthor = $this->getElementByCssSelector('head meta[name="author"]');
+        $this->assertEquals(
+            'Administrator',
+            $metaAuthor->getAttribute('content'),
+            'Meta author name is correctly displayed.'
+        );
+        $metaHtml = $this->getElementByCssSelector('html');
+        $this->assertEquals(
+            'en',
+            $metaHtml->getAttribute('lang'),
+            'Meta lang value is correctly displayed.'
+        );
+    }
 }

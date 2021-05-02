@@ -3,6 +3,7 @@
 namespace App\Controller\Admin\Article;
 
 use App\Controller\Admin\AbstractAdminController;
+use App\Helper\TwigDefaultParameters;
 use App\Repository\ArticleRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,11 +18,13 @@ class IndexArticle extends AbstractAdminController
 
     public function __construct(
         ArticleRepository $articleRepository,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        TwigDefaultParameters $twigDefaultParameters
     ) {
         $this->articleRepository = $articleRepository;
         $this->translator = $translator;
         $this->setPageTitle($this->translator->trans('Article management'));
+        return parent::__construct($twigDefaultParameters);
     }
 
     /**

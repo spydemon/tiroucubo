@@ -4,6 +4,7 @@ namespace App\PathRenderer;
 
 use App\Entity\Path;
 use App\Entity\User;
+use App\Helper\TwigDefaultParameters;
 use App\Repository\ArticleVersionRepository;
 use App\Repository\PathRepository;
 use Psr\Container\ContainerInterface;
@@ -20,19 +21,22 @@ class Article implements PathRendererInterface
     private ContainerInterface $container;
     private PathRepository $pathRepository;
     private RequestStack $requestStack;
+    private TwigDefaultParameters $twigDefaultParameters;
 
     public function __construct(
         ArticleVersionRepository $articleVersionRepository,
         AuthorizationCheckerInterface $authorizationChecker,
         ContainerInterface $container,
         PathRepository $pathRepository,
-        RequestStack $requestStack
+        RequestStack $requestStack,
+        TwigDefaultParameters $twigDefaultParameters
     ) {
         $this->articleVersionRepository = $articleVersionRepository;
+        $this->authorizationChecker = $authorizationChecker;
         $this->container = $container;
         $this->pathRepository = $pathRepository;
         $this->requestStack = $requestStack;
-        $this->authorizationChecker = $authorizationChecker;
+        $this->twigDefaultParameters = $twigDefaultParameters;
     }
 
     public function render(Path $path) : Response
@@ -66,10 +70,12 @@ class Article implements PathRendererInterface
         }
         // TODO: cache result
         $template = $path->getCustomTemplate() ?? 'front/path/default.html.twig';
-        $html = $this->container->get('twig')->render($template, [
+        $parameters = [
             'path' => $path,
             'articles' => $articlesToDisplay
-        ]);
+        ];
+        $parameters = $this->twigDefaultParameters->setDefaultParameters($parameters);
+        $html = $this->container->get('twig')->render($template, $parameters);
         $response = new Response();
         $response->setContent($html);
         return $response;

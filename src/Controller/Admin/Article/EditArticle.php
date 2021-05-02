@@ -3,6 +3,7 @@
 namespace App\Controller\Admin\Article;
 
 use App\Entity\Article;
+use App\Helper\TwigDefaultParameters;
 use App\Repository\ArticleVersionRepository;
 use App\Controller\Admin\AbstractAdminController;
 use App\Manager\Path\PathCreatorManager;
@@ -25,12 +26,14 @@ class EditArticle extends AbstractAdminController
     public function __construct(
         ArticleVersionRepository $articleVersionRepository,
         PathCreatormanager $pathCreatorManager,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        TwigDefaultParameters $twigDefaultParameters
     ) {
         $this->articleVersionRepository = $articleVersionRepository;
         $this->pathCreatorManager = $pathCreatorManager;
         $this->translator = $translator;
         $this->setPageTitle($this->translator->trans('Article edition'));
+        return parent::__construct($twigDefaultParameters);
     }
 
     /**

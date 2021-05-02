@@ -3,6 +3,7 @@
 namespace App\Controller\Admin\Path;
 
 use App\Controller\Admin\AbstractAdminController;
+use App\Helper\TwigDefaultParameters;
 use App\Manager\Path\PathCreatorManager;
 use App\Entity\Path;
 use Exception;
@@ -20,10 +21,12 @@ class EditPathController extends AbstractAdminController
 
     public function __construct(
         PathCreatorManager $pathCreatorManager,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        TwigDefaultParameters $twigDefaultParameters
     ) {
         $this->pathCreatorManager = $pathCreatorManager;
         $this->translator = $translator;
+        return parent::__construct($twigDefaultParameters);
     }
 
     /**

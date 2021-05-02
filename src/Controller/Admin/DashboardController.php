@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Helper\TwigDefaultParameters;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,10 +13,12 @@ class DashboardController extends AbstractAdminController
     private TranslatorInterface $translator;
 
     public function __construct(
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        TwigDefaultParameters $twigDefaultParameters
     ) {
         $this->translator = $translator;
         $this->setPageTitle($this->translator->trans('Admin dashboard'));
+        return parent::__construct($twigDefaultParameters);
     }
 
     /**

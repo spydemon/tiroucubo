@@ -78,7 +78,7 @@ trait AdminPathEditTrait
         /**
          * Check "Dynamic" path type.
          */
-        $client->request('GET', '/admin/path/edit/27');
+        $client->request('GET', '/admin/path/edit/31');
         $this->updatePathContent(
             null,
             null,

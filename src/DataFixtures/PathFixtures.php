@@ -38,6 +38,10 @@ class PathFixtures extends Fixture
         ['slug' => 'histoire-de-la-creation', 'parent_path' => 'fr/linux/theorie', 'title' => 'L\'histoire de la création de Linux'],
         ['slug' => 'path', 'parent_path' => 'admin', 'title' => 'Paths', 'type' => Path::TYPE_ALWAYS_VISIBLE],
         ['slug' => 'media', 'parent_path' => 'admin', 'title' => 'Medias', 'type' => Path::TYPE_ALWAYS_VISIBLE],
+        ['slug' => 'images', 'parent_path' => 'fr', 'title' => 'images', 'type' => Path::TYPE_MEDIA],
+        ['slug' => 'mir-test.webp', 'parent_path' => 'fr/images', 'title' => 'images', 'type' => Path::TYPE_MEDIA],
+        ['slug' => 'pictures', 'parent_path' => 'en', 'title' => 'pictures', 'type' => Path::TYPE_MEDIA],
+        ['slug' => 'mir-test.webp', 'parent_path' => 'en/pictures', 'title' => 'picture', 'type' => Path::TYPE_MEDIA],
     ];
 
     public function __construct(

@@ -77,6 +77,12 @@ class Path
      */
     public const TYPE_ALWAYS_VISIBLE = 2;
 
+    /**
+     * Path with the "media" type will represent static contents like WebP images. They will never be present in the
+     * menu.
+     */
+    public const TYPE_MEDIA = 3;
+
     public function __construct()
     {
         $this->child = new ArrayCollection();
@@ -97,7 +103,7 @@ class Path
 
     public function setSlug(string $slug): self
     {
-        if (preg_match('#[^a-z\d_-]#', $slug)) {
+        if (preg_match('#[^a-z.\d_-]#', $slug)) {
             throw new InvalidEntityParameterException('Slug contains invalid characters.', $this);
         }
         $this->slug = $slug;
@@ -220,7 +226,7 @@ class Path
 
     public function setType(int $type): self
     {
-        $allowedValues = [self::TYPE_DYNAMIC, self::TYPE_ALWAYS_VISIBLE];
+        $allowedValues = [self::TYPE_DYNAMIC, self::TYPE_ALWAYS_VISIBLE, self::TYPE_MEDIA];
         if (!in_array($type, $allowedValues)) {
             throw new Exception('Invalid type set.');
         }

@@ -4,16 +4,20 @@ namespace App\Manager\Path;
 
 use App\Entity\Path;
 use App\PathRenderer\Article as ArticleRenderer;
+use App\PathRenderer\Media\Image\Webp as WebpRenderer;
 use Symfony\Component\HttpFoundation\Response;
 
 class PathRendererManager
 {
     private ArticleRenderer $articleRenderer;
+    private WebpRenderer $webpRenderer;
 
     public function __construct(
-        ArticleRenderer $articleRenderer
+        ArticleRenderer $articleRenderer,
+        WebpRenderer $webpRenderer
     ) {
         $this->articleRenderer = $articleRenderer;
+        $this->webpRenderer = $webpRenderer;
     }
 
     /**
@@ -23,7 +27,7 @@ class PathRendererManager
      */
     public function render(Path $path) : Response
     {
-        // TODO: call \App\Controller\AbstractBaseController::addDefaultParameters
-        return $this->articleRenderer->render($path);
+        $renderer = $path->getType() == Path::TYPE_MEDIA ? $this->webpRenderer : $this->articleRenderer;
+        return $renderer->render($path);
     }
 }

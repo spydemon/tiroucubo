@@ -1,0 +1,30 @@
+{% extends 'layout/three-columns.html.twig' %}
+
+{% block body %}
+    <div class="admin-media-edit">
+        <h1>{% trans %}Add a new media{% endtrans %}</h1>
+        <h2>{% trans %}Image{% endtrans %}</h2>
+        <form method="post" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token('admin-media-edit') }}" >
+            <table>
+                <tr>
+                    <td>{% trans %}Path{% endtrans %}</td>
+                    <td>
+                        <input type="text" name="path" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>{% trans %}Image{% endtrans %}</td>
+                    <td>
+                        <input type="file" name="image" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input type="submit" value="{% trans %}Create image{% endtrans %}" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+{% endblock %}

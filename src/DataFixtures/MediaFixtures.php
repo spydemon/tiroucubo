@@ -11,8 +11,13 @@ class MediaFixtures extends Fixture
 
     public function load(ObjectManager $objectManager) : void
     {
+        $file = tmpfile();
+        fwrite($file, base64_decode($this->imageContent));
+        // The seek is needed in order to copy the real content of the resource in the database and not an empty
+        // content since the "cursor" of the file will be after the write and not at its beginning.
+        fseek($file, 0);
         $media = new Media();
-        $media->setContent(base64_decode($this->imageContent));
+        $media->setContent($file);
         $objectManager->persist($media);
         $objectManager->flush();
     }

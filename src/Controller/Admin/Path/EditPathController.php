@@ -3,6 +3,9 @@
 namespace App\Controller\Admin\Path;
 
 use App\Controller\Admin\AbstractAdminController;
+use App\Repository\PathRepository;
+use App\Form\AdminEditPath\FormData as AdminEditPathFormData;
+use App\Form\AdminEditPath\FormType as AdminEditPathFormType;
 use App\Helper\TwigDefaultParameters;
 use App\Manager\Path\PathCreatorManager;
 use App\Entity\Path;
@@ -17,102 +20,58 @@ class EditPathController extends AbstractAdminController
 {
 
     private PathCreatorManager $pathCreatorManager;
+    private PathRepository $pathRepository;
     private TranslatorInterface $translator;
 
     public function __construct(
         PathCreatorManager $pathCreatorManager,
+        PathRepository $pathRepository,
         TranslatorInterface $translator,
         TwigDefaultParameters $twigDefaultParameters
     ) {
         $this->pathCreatorManager = $pathCreatorManager;
+        $this->pathRepository = $pathRepository;
         $this->translator = $translator;
         return parent::__construct($twigDefaultParameters);
     }
 
     /**
-     * @Route("path/edit/{path}", name="admin_path_edit", methods={"GET"})
+     * @Route("path/edit/{path}", name="admin_path_edit")
      * @IsGranted("ROLE_ADMIN")
      */
-    public function display(Path $path = null) : Response
+    public function display(Request $request, Path $path = null) : Response
     {
-        return $this->render('back/path/edit.html.twig', ['path' => $path, 'types' => $this->getTypes()]);
-    }
-
-    /**
-     * @Route("path/edit/{path}", name="admin_path_edit_post", methods={"POST"})
-     * @IsGranted("ROLE_ADMIN")
-     * TODO: add a delete action. ^^"
-     */
-    public function post(Request $request, Path $path = null) : Response
-    {
+        $editionMode = false;
         try {
-            $this->checkCsrfToken($request);
-            if (!$path) {
-                $slug = $request->request->get('slug');
-                if (!$slug) {
-                    throw new Exception('Slug is missing.');
-                }
-                // TODO: if several path have to be created, intermediate ones will have default values. It means for
-                // instance that if we create an "always visible" path, it's parent will be initialized with the default
-                // "dynamic" type. It means that our always visible path will in fact remain invisible if it is empty
-                // until we manually change the type of all its parents. It could thus be interesting if we implement a
-                // way to force displaying of those intermediate paths.
-                $path = $this->pathCreatorManager->createFromString($slug);
+            $formData = new AdminEditPathFormData();
+            if ($path) {
+                $formData->feed($path);
+                $editionMode = true;
             }
-            $path = $this->updatePath($path, $request);
-            $request->getSession()->getFlashBag()->add('notice', $this->translator->trans('Path updated!'));
-        } catch (Exception $e) {
-            $request->getSession()->getFlashBag()->add('error', $e->getMessage());
-        } finally {
-            return $this->redirectToRoute('admin_path_edit', ['path' => $path->getId()]);
-        }
-    }
-
-    protected function checkCsrfToken(Request $request) : void
-    {
-        if ($this->isCsrfTokenValid('admin-path-edit', $request->request->get('csrf_token'))) {
-            return ;
-        }
-        throw new Exception('Invalid CSRF token.');
-    }
-
-    protected function updatePath(Path $path, Request $request) : Path
-    {
-        try {
-            $this->getDoctrine()->getConnection()->beginTransaction();
-            $template = $request->request->get('template');
-            $title = $request->request->get('title');
-            $type = $request->request->get('type');
-            $missingFields = [];
-            if (!$title) {
-                $missingFields[] = 'title';
+            $form = $this->createForm(AdminEditPathFormType::class, $formData, ['edition_mode' => $editionMode]);
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->getDoctrine()->getConnection()->beginTransaction();
+                $path = $formData->getId()
+                    ? $this->pathRepository->find($formData->getId())
+                    : $this->pathCreatorManager->createFromString($formData->getSlug());
+                $path->setCustomTemplate($formData->getCustomTemplate());
+                $path->setTitle($formData->getTitle());
+                $path->setType($formData->getType());
+                $this->getDoctrine()->getManager()->persist($path);
+                $this->getDoctrine()->getManager()->flush();
+                $this->getDoctrine()->getConnection()->commit();
+                $request->getSession()->getFlashBag()->add('notice', $this->translator->trans('Path updated!'));
             }
-            if (!$type) {
-                $missingFields[] = 'type';
-            }
-            if (count($missingFields)) {
-                throw new Exception('Missing fields: ' . implode(', ', $missingFields) . '.');
-            }
-            $path->setTitle($title);
-            $path->setType($type);
-            if ($template) {
-                $path->setCustomTemplate($template);
-            }
-            $this->getDoctrine()->getManager()->persist($path);
-            $this->getDoctrine()->getManager()->flush();
-            $this->getDoctrine()->getConnection()->commit();
-            return $path;
         } catch (Exception $e) {
             $this->getDoctrine()->getConnection()->rollback();
-            throw $e;
+            $form = $this->createForm(AdminEditPathFormType::class, $path);
+            $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+        } finally {
+            return $this->render(
+                'back/path/edit.html.twig',
+                ['form' => $form->createView(), 'path' => $path]
+            );
         }
-    }
-
-    private function getTypes() : array
-    {
-        return [
-            ['id' => Path::TYPE_DYNAMIC, 'label' => $this->translator->trans('Dynamic')],
-            ['id' => Path::TYPE_ALWAYS_VISIBLE, 'label' => $this->translator->trans('Always visible')],
-        ];
     }
 }

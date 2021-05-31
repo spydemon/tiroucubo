@@ -125,30 +125,30 @@ trait AdminPathEditTrait
         ?string $typeContent = null
     ) : void {
         if ($slugContent) {
-            $slug = $this->getElementByCssSelector('form #slug');
+            $slug = $this->getElementByCssSelector('#form_slug');
             // This sendKeys will press ctrl+A and the backspace, meaning we are cleaning the content of the input field.
             $slug->sendKeys(WebDriverKeys::CONTROL . 'A' . WebDriverKeys::BACKSPACE);
             $slug->sendKeys($slugContent);
         }
         if ($titleContent) {
-            $title = $this->getElementByCssSelector('form #title');
+            $title = $this->getElementByCssSelector('#form_title');
             $title->sendKeys(WebDriverKeys::CONTROL . 'A' . WebDriverKeys::BACKSPACE);
             $title->sendKeys($titleContent);
         }
         if ($customTemplateContent) {
-            $customTemplate = $this->getElementByCssSelector('form #template');
+            $customTemplate = $this->getElementByCssSelector('#form_custom_template');
             $customTemplate->sendKeys(WebDriverKeys::CONTROL . 'A' . WebDriverKeys::BACKSPACE);
             $customTemplate->sendKeys($customTemplateContent);
         }
         if ($typeContent) {
             // Type input is from "option" type. We thus have to click on it and to write starting characters of
             // the label of the option to select. The browser will thus update the selected option.
-            $type = $this->getElementByCssSelector('form #type');
+            $type = $this->getElementByCssSelector('#form_type');
             $type->click();
             $type->sendKeys($typeContent);
             $type->sendKeys(WebDriverKeys::ENTER);
         }
-        $submit = $this->getElementByCssSelector('form input[type="submit"]');
+        $submit = $this->getElementByCssSelector('#form_submit');
         $submit->click();
     }
 }

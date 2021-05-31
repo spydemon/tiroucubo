@@ -101,6 +101,12 @@ class Path
         return $this->slug;
     }
 
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+        return $this;
+    }
+
     public function setSlug(string $slug): self
     {
         if (preg_match('#[^a-z.\d_-]#', $slug)) {

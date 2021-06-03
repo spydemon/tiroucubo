@@ -15,11 +15,6 @@ class PathSlugConstraint extends Constraint
 
     protected string $format;
 
-    public function __construct($options = null, array $groups = null, $payload = null)
-    {
-        parent::__construct($options, $groups, $payload);
-    }
-
     public function getDefaultOption()
     {
         return 'format';

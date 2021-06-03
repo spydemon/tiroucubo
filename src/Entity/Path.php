@@ -3,11 +3,11 @@
 namespace App\Entity;
 
 use App\EntityConstraints\PathSlugConstraint;
+use App\EntityConstraints\PathTypeConstraint;
 use App\Repository\PathRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Exception;
 
 /**
  * @ORM\Entity(repositoryClass=PathRepository::class)
@@ -57,6 +57,7 @@ class Path
 
     /**
      * @ORM\Column(type="integer")
+     * @PathTypeConstraint
      */
     private int $type;
 
@@ -230,10 +231,6 @@ class Path
 
     public function setType(int $type): self
     {
-        $allowedValues = [self::TYPE_DYNAMIC, self::TYPE_ALWAYS_VISIBLE, self::TYPE_MEDIA];
-        if (!in_array($type, $allowedValues)) {
-            throw new Exception('Invalid type set.');
-        }
         $this->type = $type;
         return $this;
     }

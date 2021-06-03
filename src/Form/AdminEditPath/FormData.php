@@ -3,13 +3,11 @@
 namespace App\Form\AdminEditPath;
 
 use App\Entity\Path;
+use App\EntityConstraints\PathSlugConstraint;
+use App\EntityConstraints\PathTypeConstraint;
 use stdClass;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\EntityConstraints\PathSlugConstraint;
 
-/**
- * TODO: set validation assert.
- */
 class FormData extends stdClass
 {
     private ?string $customTemplate = null;
@@ -25,6 +23,9 @@ class FormData extends stdClass
      */
     private ?string $title = null;
 
+    /**
+     * @PathTypeConstraint
+     */
     private ?int $type = null;
 
     public function feed(Path $path) : self

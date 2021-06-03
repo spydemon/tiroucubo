@@ -26,6 +26,7 @@ trait AdminArticleEditTrait
 
     public function testInvalidSlug()
     {
+        $this->markTestSkipped('Skipped until refactoring of article creation page with Symfony forms.');
         $this->loginCustomer('admin@tiroucubo.local', 'pa$$word');
         $this->getBrowser()->request('GET', "/{$this->workingArticleEditionPath}");
         $this->updateArticleContent(

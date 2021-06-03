@@ -5,6 +5,7 @@ namespace App\Form\AdminEditPath;
 use App\Entity\Path;
 use stdClass;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\EntityConstraints\PathSlugConstraint;
 
 /**
  * TODO: set validation assert.
@@ -15,7 +16,7 @@ class FormData extends stdClass
     private ?int $id = null;
 
     /**
-     * @Assert\NotBlank
+     * @PathSlugConstraint(format="complete")
      */
     private ?string $slug = null;
 

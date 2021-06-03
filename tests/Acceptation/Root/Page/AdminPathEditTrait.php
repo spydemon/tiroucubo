@@ -118,6 +118,27 @@ trait AdminPathEditTrait
         $this->resetDatabase();
     }
 
+    public function testInvalidPathCreation()
+    {
+        $this->loginCustomer('admin@tiroucubo.local', 'pa$$word');
+        $client = $this->getBrowser();
+
+        $client->request('GET', '/admin/path/edit');
+        $this->updatePathContent(
+            '/en/magento/new~',
+            'New test path',
+            '',
+            'Always'
+        );
+        //TODO: the selector will be updated when forms will be stylized.
+        $error = $this->getElementByCssSelector('form div div ul li');
+        $this->assertEquals(
+            'The "/en/magento/new~" complete path contains invalid characters.',
+            $error->getText(),
+            'Invalid path are marked as error on the form.'
+        );
+    }
+
     protected function updatePathContent(
         ?string $slugContent = null,
         ?string $titleContent = null,

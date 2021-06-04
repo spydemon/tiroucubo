@@ -2,11 +2,15 @@
 {#{% set enableVue = true %}#}
 {% block body %}
     <div class="admin-article-edit">
+        {#
         {% if article is not null %}
             <h1>{% trans %}Edition:{% endtrans %} {{ article.title|default('') }}</h1>
         {% else %}
             <h1>{% trans %}Creation of a new article{% endtrans %}</h1>
         {% endif %}
+        #}
+        {{ form(form) }}
+        {#
         <form method="post">
             <input type="hidden" name="id" value="{{ article.id|default('') }}" />
             <input type="hidden" name="csrf_token" value="{{ csrf_token('admin-article-edit') }}" >
@@ -95,5 +99,6 @@
                     {% endif %}
             />
         </form>
+        #}
     </div>
 {% endblock %}

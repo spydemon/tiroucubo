@@ -3,6 +3,8 @@
 namespace App\Controller\Admin\Article;
 
 use App\Entity\Article;
+use App\Form\AdminArticleEdit\FormType as AdminArticleEditFormType;
+use App\Form\AdminArticleEdit\FormData as AdminArticleEditFormData;
 use App\Helper\TwigDefaultParameters;
 use App\Repository\ArticleVersionRepository;
 use App\Controller\Admin\AbstractAdminController;
@@ -37,11 +39,33 @@ class EditArticle extends AbstractAdminController
     }
 
     /**
-     * @Route("article/edit/{article}", name="admin_article_edit", methods={"GET"})
+     * @Route("article/edit/{article}", name="admin_article_edit")
      * @IsGranted("ROLE_ADMIN")
      */
     public function display(Request $request, Article $article = null) : Response
     {
+        try {
+            $formData = new AdminArticleEditFormData();
+            $form = $this->createForm(AdminArticleEditFormType::class, $formData);
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->createArticle($formData);
+                $request->getSession()->getFlashBag()->add('notice', $this->translator->trans('Article created!'));
+            }
+        } catch (Exception $e) {
+            $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+            $form = $this->createForm(AdminArticleEditFormType::class, $formData);
+        } finally {
+            return $this->render(
+                'back/article/edit.html.twig',
+                [
+//                    'article' => $article,
+//                    'version' => $version
+                    'form' => $form->createView()
+                ]
+            );
+        }
+        /**
         $version = null;
         if (!is_null($article)) {
             $versionSlug = $request->query->get('version');
@@ -68,12 +92,14 @@ class EditArticle extends AbstractAdminController
                 'version' => $version
             ]
         );
+         * **/
     }
 
     /**
      * @Route("article/edit/{article}", name="admin_article_edit_post", methods={"POST"})
      * @IsGranted("ROLE_ADMIN")
      */
+    /**
     public function post(Request $request, Article $article = null) : Response
     {
         try {
@@ -91,6 +117,7 @@ class EditArticle extends AbstractAdminController
             return $this->redirectToRoute('admin_article_edit', ['article' => $article->getId()]);
         }
     }
+     */
 
     protected function checkCsrfToken(Request $request) : void
     {
@@ -100,46 +127,23 @@ class EditArticle extends AbstractAdminController
         throw new Exception('Invalid CSRF token.');
     }
 
-    protected function createArticle(Request $request) : Article
+    protected function createArticle(AdminArticleEditFormData $formData) : Article
     {
         $article = new Article();
-        $this->updateArticle($article, $request);
+        $this->updateArticle($article, $formData);
         return $article;
     }
 
-    protected function updateArticle(Article $article, Request $request) : void
+    protected function updateArticle(Article $article, AdminArticleEditFormData $formData) : void
     {
         $this->getDoctrine()->getConnection()->beginTransaction();
         $version = $this->articleVersionRepository->createNewVersionForArticle($article);
         try {
-            $title = $request->request->get('title');
-            $summary = $request->request->get('summary');
-            $path = $request->request->get('path');
-            $content = $request->request->get('content');
-            $commitMessage = $request->request->get('commit_message');
-            $missingFields = [];
-            if (!$title) {
-                $missingFields[] = 'title';
-            }
-            if (!$summary) {
-                $missingFields[] = 'summary';
-            }
-            if (!$path) {
-                $missingFields[] = 'path';
-            }
-            if (!$content) {
-                $missingFields[] = 'content';
-            }
-            if (!$commitMessage) {
-                $missingFields[] = 'commit_message';
-            }
-            if (count($missingFields)) {
-                throw new Exception('Missing fields: ' . implode(', ', $missingFields) . '.');
-            }
-            $version->setContent($content);
-            $version->setSummary($summary);
-            $version->setCommitMessage($commitMessage);
-            $path = $this->pathCreatorManager->createFromString($path);
+            $title = $formData->getTitle();
+            $version->setContent($formData->getBody());
+            $version->setSummary($formData->getSummary());
+            $version->setCommitMessage($formData->getCommit());
+            $path = $this->pathCreatorManager->createFromString($formData->getPath());
             $article->setPath($path);
             $article->setTitle($title);
             $this->getDoctrine()->getManager()->persist($article);

@@ -15,18 +15,16 @@ trait AdminArticleEditTrait
     {
         $this->loginCustomer('admin@tiroucubo.local', 'pa$$word');
         $this->getBrowser()->request('GET', "/{$this->workingArticleEditionPath}");
-        $this->updateArticleContent('', '', '', '', '');
-        $notification = $this->getElementByCssSelector('.notification .error');
-        $this->assertEquals(
-            'Missing fields: title, summary, path, content, commit_message.',
-            $notification->getText(),
-            'The notification saying that the article was correctly updated is here.'
-        );
+        $this->getElementByCssSelector('form #form_title[required="required"]');
+        $this->getElementByCssSelector('form #form_path[required="required"]');
+        $this->getElementByCssSelector('form #form_summary[required="required"]');
+        $this->getElementByCssSelector('form #form_commit[required="required"]');
+        $this->getElementByCssSelector('form #form_body[required="required"]');
+        $this->assertTrue(true, 'Required fields has the "required" flag.');
     }
 
     public function testInvalidSlug()
     {
-        $this->markTestSkipped('Skipped until refactoring of article creation page with Symfony forms.');
         $this->loginCustomer('admin@tiroucubo.local', 'pa$$word');
         $this->getBrowser()->request('GET', "/{$this->workingArticleEditionPath}");
         $this->updateArticleContent(
@@ -36,9 +34,10 @@ trait AdminArticleEditTrait
             '<p>My new content</p>',
             'Version added by the testInvalidSlug test!'
         );
-        $notification = $this->getElementByCssSelector('.notification .error');
+        //TODO: the selector will be updated when forms will be stylized.
+        $notification = $this->getElementByCssSelector('form div ul li');
         $this->assertEquals(
-            'Slug contains invalid characters.',
+            'The "fr/magento/new/path error" complete path contains invalid characters.',
             $notification->getText(),
             'The slug validity checker seems to work.'
         );
@@ -230,12 +229,12 @@ trait AdminArticleEditTrait
         string $contentValue,
         string $commitMessage
     ) {
-        $title = $this->getElementByCssSelector('form #title');
-        $path = $this->getElementByCssSelector('form #path');
-        $summary = $this->getElementByCssSelector('form #summary');
-        $content = $this->getElementByCssSelector('form #content');
-        $commit = $this->getElementByCssSelector('form #commit_message');
-        $submit = $this->getElementByCssSelector('form input[type="submit"]');
+        $title = $this->getElementByCssSelector('form #form_title');
+        $path = $this->getElementByCssSelector('form #form_path');
+        $summary = $this->getElementByCssSelector('form #form_summary');
+        $content = $this->getElementByCssSelector('form #form_body');
+        $commit = $this->getElementByCssSelector('form #form_commit');
+        $submit = $this->getElementByCssSelector('form button[type="submit"]');
         // This sendKeys will press ctrl+A and the backspace, meaning we are cleaning the content of the input field.
         $title->sendKeys(WebDriverKeys::CONTROL . 'A' . WebDriverKeys::BACKSPACE);
         $title->sendKeys($titleValue);

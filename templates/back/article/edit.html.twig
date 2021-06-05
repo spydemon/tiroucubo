@@ -1,23 +1,16 @@
 {% extends 'layout/three-columns.html.twig' %}
-{#{% set enableVue = true %}#}
+{#{% set enableVue = false %}#}
 {% block body %}
     <div class="admin-article-edit">
-        {#
         {% if article is not null %}
             <h1>{% trans %}Edition:{% endtrans %} {{ article.title|default('') }}</h1>
         {% else %}
             <h1>{% trans %}Creation of a new article{% endtrans %}</h1>
         {% endif %}
-        #}
-        {{ form(form) }}
-        {#
-        <form method="post">
-            <input type="hidden" name="id" value="{{ article.id|default('') }}" />
-            <input type="hidden" name="csrf_token" value="{{ csrf_token('admin-article-edit') }}" >
-            <label for="title">{% trans %}Title:{% endtrans %}</label><br />
-            <input type="text" id="title" name="title" value="{{ article.title|default('') }}" /><br />
-            <label for="path">{% trans %}Path:{% endtrans %}</label><br />
-            <input type="text" id="path" name="path" value="{{ article.path|default('') }}" /><br />
+        {{ form_start(form) }}
+            {{ form_row(form.id) }}
+            {{ form_row(form.title) }}
+            {{ form_row(form.path) }}
             <hr />
             {% if article.articleVersions is defined %}
                 <h2>{% trans %}Versions{% endtrans %}</h2>
@@ -31,7 +24,7 @@
                     </tr>
                     {% for currentVersion in article.articleVersions %}
                         <tr
-                            {% if currentVersion.id ==  version.id %}
+                            {% if currentVersion.id == version.id %}
                                 class="is-displayed"
                             {% endif %}
                         >
@@ -79,26 +72,10 @@
                 </table>
                 <hr />
             {% endif %}
-            <h2>{% trans %}Content{% endtrans %}</h2>
-            <label for="summary">{% trans %}Summary:{% endtrans %}</label><br />
-            <textarea id="summary" name="summary">
-                {{ version.summary|default('') }}
-            </textarea>
-            <label for="content">{% trans %}Body:{% endtrans %}</label><br />
-            <textarea id="content" name="content">
-                {{ version.content|default('') }}
-            </textarea>
-            <label for="commit_message">{% trans %}Commit message{% endtrans %}</label>
-            <textarea id="commit_message" name="commit_message"></textarea>
-            <input
-                    type="submit"
-                    {% if article is not null %}
-                        value="{% trans %}Update article{% endtrans %}"
-                    {% else %}
-                        value="{% trans %}Create article{% endtrans %}"
-                    {% endif %}
-            />
-        </form>
-        #}
+        <h2>{% trans %}Content{% endtrans %}</h2>
+        {{ form_row(form.summary) }}
+        {{ form_row(form.body) }}
+        {{ form_row(form.commit) }}
+        {{ form_end(form) }}
     </div>
 {% endblock %}

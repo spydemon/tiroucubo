@@ -2,6 +2,8 @@
 
 namespace App\Form\AdminArticleEdit;
 
+use App\Entity\Article;
+use App\Entity\ArticleVersion;
 use App\EntityConstraints\PathSlugConstraint;
 use stdClass;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -37,6 +39,15 @@ class FormData extends stdClass
      * @Assert\NotBlank
      */
     private ?string $title;
+
+    public function feed(Article $article, ArticleVersion $version)
+    {
+        $this->setId($article->getId());
+        $this->setBody($version->getContent());
+        $this->setTitle($article->getTitle());
+        $this->setPath($article->getPath());
+        $this->setSummary($version->getSummary());
+    }
 
     public function getBody() : ?string
     {

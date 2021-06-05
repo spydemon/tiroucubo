@@ -97,12 +97,12 @@ trait AdminPathEditTrait
          * Check article switch in the path.
          */
         $client->request('GET', '/admin/article/edit/1');
-        $pathInput = $this->getElementByCssSelector('form #path');
+        $pathInput = $this->getElementByCssSelector('form #form_path');
         $pathInput->sendKeys(WebDriverKeys::CONTROL . 'A' . WebDriverKeys::BACKSPACE);
         $pathInput->sendKeys('en/magento/new');
-        $commitInput = $this->getElementByCssSelector('form #commit_message');
+        $commitInput = $this->getElementByCssSelector('form #form_commit');
         $commitInput->sendKeys('Version created by the AdminPathEditTrait::testPathCreation test.');
-        $submitButton = $this->getElementByCssSelector('form input[type="submit"]');
+        $submitButton = $this->getElementByCssSelector('form button[type="submit"]');
         $submitButton->click();
         $activeButton = $this->getAllElementsByCssSelector('table.version td.active');
         $activeButton[1]->click();

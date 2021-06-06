@@ -5,6 +5,8 @@ namespace App\Controller\Admin\Media;
 use App\Entity\Media;
 use App\Entity\Path;
 use App\Entity\PathMedia;
+use App\Form\AdminMediaEdit\FormData as AdminMediaEditFormData;
+use App\Form\AdminMediaEdit\FormType as AdminMediaEditFormType;
 use App\Helper\TwigDefaultParameters;
 use App\Manager\Path\PathCreatorManager;
 use App\Controller\Admin\AbstractAdminController;
@@ -20,48 +22,49 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class EditController extends AbstractAdminController
 {
 
+    private PathCreatorManager $pathCreatorManager;
     private TranslatorInterface $translator;
 
-    public function __construct(TranslatorInterface $translator, TwigDefaultParameters $twigDefaultParameters)
-    {
+    public function __construct(
+        PathCreatorManager $pathCreatorManager,
+        TranslatorInterface $translator,
+        TwigDefaultParameters $twigDefaultParameters
+    ) {
+        $this->pathCreatorManager = $pathCreatorManager;
         $this->translator = $translator;
         parent::__construct($twigDefaultParameters);
     }
 
     /**
-     * @Route("/media/edit", name="admin_media_edit", methods={"GET"})
-     * @IsGranted("ROLE_ADMIN")
-     */
-    public function display() : Response
-    {
-        return $this->render('back/media/edit.html.twig');
-    }
-
-    /**
-     * @Route("/media/edit/{media}", name="admin_media_edit_post", methods={"POST"})
+     * @Route("/media/edit/{media}", name="admin_media_edit")
      * @IsGranted("ROLE_ADMIN")
      * TODO: a media could be assigned to several paths.
      * TODO: implementation of the update of an already existing media.
      */
-    public function post(PathCreatorManager $pathCreatorManager, Request $request, Media $media = null): Response
+    public function display(Request $request, Media $media = null) : Response
     {
+        $formData = new AdminMediaEditFormData();
+        if (!is_null($media)) {
+            //TODO $formData->feed($media);
+        }
+        $form = $this->createForm(AdminMediaEditFormType::class, $formData);
         try {
-            $this->checkCsrfToken($request);
-            $content = $this->getMediaContent();
-            $pathString = $request->request->get('path');
-            if (!$pathString) {
-                throw new Exception($this->translator->trans('The media path is missing.'));
-            }
-            if (is_null($media)) {
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
                 $media = new Media;
-                //TODO: set the process in a manager?
-                $this->getDoctrine()->getConnection()->beginTransaction();
-                $path = $pathCreatorManager->createFromString($pathString);
+                $tmpFile = tmpfile();
+                fwrite($tmpFile, $formData->getMedia()->getContent());
+                // The fseek is needed in order to write the integrity of the media in the database.
+                // Without it, the internal cursor of the resource will be at the end of it, and thus a null content
+                // would be saved.
+                fseek($tmpFile, 0);
+                $path = $this->pathCreatorManager->createFromString($formData->getPath());
                 $path->setType(Path::TYPE_MEDIA);
-                $media->setContent($content);
+                $media->setContent($tmpFile);
                 $pathMedia = new PathMedia;
                 $pathMedia->setMedia($media);
                 $pathMedia->setPath($path);
+                $this->getDoctrine()->getConnection()->beginTransaction();
                 $this->getDoctrine()->getManager()->persist($path);
                 $this->getDoctrine()->getManager()->persist($media);
                 $this->getDoctrine()->getManager()->persist($pathMedia);
@@ -78,25 +81,9 @@ class EditController extends AbstractAdminController
             $request->getSession()->getFlashBag()->add('error', $e->getMessage());
             $this->getDoctrine()->getConnection()->rollback();
         } finally {
-            $mediaId = is_null($media) ? null : $media->getId();
-            return $this->redirectToRoute('admin_media_edit', ['media' => $mediaId]);
+            return $this->render('back/media/edit.html.twig', [
+                'form' => $form->createView()
+            ]);
         }
-    }
-
-    protected function checkCsrfToken(Request $request) : void
-    {
-        if ($this->isCsrfTokenValid('admin-media-edit', $request->request->get('csrf_token'))) {
-            return ;
-        }
-        throw new Exception('Invalid CSRF token.');
-    }
-
-    protected function getMediaContent()
-    {
-        $contentPath = @$_FILES['image']['tmp_name'];
-        if (!$contentPath) {
-            throw new Exception($this->translator->trans('Media file can not be empty.'));
-        }
-        return fopen($contentPath, 'r');
     }
 }

@@ -24,7 +24,12 @@ class Media
      */
     private $content;
 
-    private array $allowedResourceType = ['image/webp'];
+    private static array $allowedResourceType = ['image/webp'];
+
+    public static function getAllowedResourceType() : array
+    {
+        return self::$allowedResourceType;
+    }
 
     public function getId(): ?int
     {
@@ -38,7 +43,10 @@ class Media
 
     public function setContent($content): self
     {
-        if (!in_array(mime_content_type($content), $this->allowedResourceType)) {
+        if (!is_resource($content)) {
+            throw new Exception('The media content is not a resource.');
+        }
+        if (!in_array(mime_content_type($content), self::$allowedResourceType)) {
              throw new Exception("Content type is not allowed.");
         }
         $this->content = $content;

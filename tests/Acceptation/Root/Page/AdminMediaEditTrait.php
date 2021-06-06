@@ -16,15 +16,16 @@ trait AdminMediaEditTrait
          * Check incorrect uploaded type.
          */
         $client->request('GET', '/admin/media/edit');
-        $pathField = $this->getElementByCssSelector('form input[name="path"]');
+        $pathField = $this->getElementByCssSelector('#form_path');
         $pathField->sendKeys('fr/linux/histoire-de-la-creation/pdp-7.jpeg');
-        $imageField = $this->getElementByCssSelector('form input[name="image"]');
+        $imageField = $this->getElementByCssSelector('#form_media');
         $imageField->sendKeys('/root/data/tiroucubo/AdminMediaEdit/pdp-7.jpeg');
-        $submitButton = $this->getElementByCssSelector('form input[type="submit"]');
+        $submitButton = $this->getElementByCssSelector('#form_submit');
         $submitButton->click();
-        $notification = $this->getElementByCssSelector('.notification .error');
+        //TODO: the selector will be updated when forms will be stylized.
+        $notification = $this->getElementByCssSelector('form div div ul li');
         $this->assertEquals(
-            'Content type is not allowed.',
+            'Content type is not allowed. Allowed ones are: image/webp',
             $notification->getText(),
             'Not allowed media type are not saved.'
         );
@@ -33,11 +34,11 @@ trait AdminMediaEditTrait
          * Check correct uploaded type.
          */
         $client->request('GET', '/admin/media/edit');
-        $pathField = $this->getElementByCssSelector('form input[name="path"]');
+        $pathField = $this->getElementByCssSelector('#form_path');
         $pathField->sendKeys('fr/linux/histoire-de-la-creation/pdp-7.webp');
-        $imageField = $this->getElementByCssSelector('form input[name="image"]');
+        $imageField = $this->getElementByCssSelector('#form_media');
         $imageField->sendKeys('/root/data/tiroucubo/AdminMediaEdit/pdp-7.webp');
-        $submitButton = $this->getElementByCssSelector('form input[type="submit"]');
+        $submitButton = $this->getElementByCssSelector('#form_submit');
         $submitButton->click();
         $client->request('GET', '/fr/linux/histoire-de-la-creation/pdp-7.webp');
         try {
@@ -50,11 +51,11 @@ trait AdminMediaEditTrait
          * Check upload on an already existing path.
          */
         $client->request('GET', '/admin/media/edit');
-        $pathField = $this->getElementByCssSelector('form input[name="path"]');
+        $pathField = $this->getElementByCssSelector('#form_path');
         $pathField->sendKeys('fr/linux/histoire-de-la-creation/pdp-7.webp');
-        $imageField = $this->getElementByCssSelector('form input[name="image"]');
+        $imageField = $this->getElementByCssSelector('#form_media');
         $imageField->sendKeys('/root/data/tiroucubo/AdminMediaEdit/pdp-7.webp');
-        $submitButton = $this->getElementByCssSelector('form input[type="submit"]');
+        $submitButton = $this->getElementByCssSelector('#form_submit');
         $submitButton->click();
         $notification = $this->getElementByCssSelector('.notification .error');
         $this->assertEquals(
@@ -64,34 +65,12 @@ trait AdminMediaEditTrait
         );
 
         /**
-         * Check upload without media file.
+         * Check mandatory fields.
          */
         $client->request('GET', '/admin/media/edit');
-        $pathField = $this->getElementByCssSelector('form input[name="path"]');
-        $pathField->sendKeys('fr/linux/histoire-de-la-creation/pdp-7.webp');
-        $submitButton = $this->getElementByCssSelector('form input[type="submit"]');
-        $submitButton->click();
-        $notification = $this->getElementByCssSelector('.notification .error');
-        $this->assertEquals(
-            'Media file can not be empty.',
-            $notification->getText(),
-            'Avoid to proceed the query if the media file is missing in the form.'
-        );
-
-        /**
-         * Check upload without path.
-         */
-        $client->request('GET', '/admin/media/edit');
-        $imageField = $this->getElementByCssSelector('form input[name="image"]');
-        $imageField->sendKeys('/root/data/tiroucubo/AdminMediaEdit/pdp-7.webp');
-        $submitButton = $this->getElementByCssSelector('form input[type="submit"]');
-        $submitButton->click();
-        $notification = $this->getElementByCssSelector('.notification .error');
-        $this->assertEquals(
-            'The media path is missing.',
-            $notification->getText(),
-            'Avoid to proceed the query if the media file is missing in the form.'
-        );
+        $this->getElementByCssSelector('form #form_path[required="required"]');
+        $this->getElementByCssSelector('form #form_media[required="required"]');
+        $this->assertTrue(true, 'Required fields has the "required" flag.');
 
         $this->resetDatabase();
     }

@@ -23,6 +23,7 @@
 "The {slug} version of the article is now enabled!": "La version {slug} de l'article est à présent activée !"
 
 # Controller/Admin/Media/EditController.php
+"At least one path is needed.": "Au moins un chemin est nécessaire."
 "The new media was correctly created!": "Le nouveau média a été correctement créé !"
 "A media already exists on this path." : "Un media est déjà existant sur ce chemin."
 "Media file can not be empty." : "Le fichier du média ne peut pas être vide."

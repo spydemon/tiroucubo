@@ -38,7 +38,6 @@ class EditController extends AbstractAdminController
     /**
      * @Route("/media/edit/{media}", name="admin_media_edit")
      * @IsGranted("ROLE_ADMIN")
-     * TODO: a media could be assigned to several paths.
      * TODO: implementation of the update of an already existing media.
      */
     public function display(Request $request, Media $media = null) : Response
@@ -58,16 +57,21 @@ class EditController extends AbstractAdminController
                 // Without it, the internal cursor of the resource will be at the end of it, and thus a null content
                 // would be saved.
                 fseek($tmpFile, 0);
-                $path = $this->pathCreatorManager->createFromString($formData->getPath());
-                $path->setType(Path::TYPE_MEDIA);
-                $media->setContent($tmpFile);
-                $pathMedia = new PathMedia;
-                $pathMedia->setMedia($media);
-                $pathMedia->setPath($path);
                 $this->getDoctrine()->getConnection()->beginTransaction();
-                $this->getDoctrine()->getManager()->persist($path);
+                $media->setContent($tmpFile);
                 $this->getDoctrine()->getManager()->persist($media);
-                $this->getDoctrine()->getManager()->persist($pathMedia);
+                if (count($formData->getPath()) == 0) {
+                    throw new Exception($this->translator->trans('At least one path is needed.'));
+                }
+                foreach ($formData->getPath() as $currentPath) {
+                    $path = $this->pathCreatorManager->createFromString($currentPath);
+                    $path->setType(Path::TYPE_MEDIA);
+                    $pathMedia = new PathMedia;
+                    $pathMedia->setMedia($media);
+                    $pathMedia->setPath($path);
+                    $this->getDoctrine()->getManager()->persist($path);
+                    $this->getDoctrine()->getManager()->persist($pathMedia);
+                }
                 $this->getDoctrine()->getManager()->flush();
                 $this->getDoctrine()->getConnection()->commit();
                 $request->getSession()->getFlashBag()

@@ -4,6 +4,7 @@ namespace App\Form\AdminMediaEdit;
 
 use App\Entity\Media;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -18,7 +19,13 @@ class FormType extends Abstracttype
     {
         return $builder
             ->add('id', HiddenType::class)
-            ->add('path', TextType::class)
+            ->add('path',CollectionType::class, [
+                'allow_add' => true,
+                'allow_delete' => true,
+                'entry_type' => TextType::class,
+                'label' => 'Path',
+                'prototype' => true,
+            ])
             ->add('media', FileType::class, [
                 'constraints' => [
                     new File([

@@ -17,9 +17,12 @@ class FormData extends stdClass
     private UploadedFile $media;
 
     /**
-     * @PathSlugConstraint(format="complete")
+     * @Assert\NotBlank(message="At least one path is needed.")
+     * @Assert\All({
+     *   @PathSlugConstraint(format="complete")
+     * })
      */
-    private ?string $path;
+    private ?array $path;
 
     public function getId() : ?int
     {
@@ -31,7 +34,7 @@ class FormData extends stdClass
         return $this->media;
     }
 
-    public function getPath() : string
+    public function getPath() : ?array
     {
         return $this->path;
     }
@@ -46,7 +49,7 @@ class FormData extends stdClass
         $this->media = $media;
     }
 
-    public function setPath(string $path) : void
+    public function setPath(array $path) : void
     {
         $this->path = $path;
     }

@@ -3,7 +3,35 @@
 {% block body %}
     <div class="admin-media-edit">
         <h1>{% trans %}Add a new media{% endtrans %}</h1>
-        <h2>{% trans %}Image{% endtrans %}</h2>
-        {{ form(form) }}
+        {{ form_start(form) }}
+            {{ form_errors(form) }}
+            {{ form_label(form.path) }}
+            {{ form_errors(form.path) }}
+            <ul id="path_list" data-prototype="{{ form_widget(form.path.vars.prototype)|e('html_attr') }}">
+                {% for currentPath in form.path %}
+                    <li>
+                        {{ form_errors(currentPath) }}
+                        {{ form_widget(currentPath) }}
+                    </li>
+                {% endfor %}
+                {% if not form.path.children %}
+                    {{ form_widget(form.path) }}
+                {% endif %}
+            </ul>
+            <button type="button" class="add-path" data-collection-holder-class="path_list" onclick="addPath()">Add a path</button>
+            {{ form_row(form.media) }}
+        {{ form_end(form) }}
     </div>
+
+    <script type="text/javascript">
+        function addPath() {
+            let $pathList = window.document.getElementById('path_list');
+            const $prototype = $pathList.dataset.prototype;
+            const $index = $pathList.childElementCount;
+            const $newInput = $prototype.replace(/__name__/g, $index + 1);
+            let $li = document.createElement('li');
+            $li.innerHTML = $newInput;
+            $pathList.appendChild($li);
+        }
+    </script>
 {% endblock %}

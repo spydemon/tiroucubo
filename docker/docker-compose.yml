@@ -33,10 +33,13 @@ services:
     container_name: tiroucubo-web
     expose:
       - "80"
-    environment:
-      - VIRTUAL_HOST=tiroucubo.local
     hostname: tiroucubo-web
     image: spydemon/php74-symfony:0.1
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tiroucubo-web.rule=Host(`tiroucubo.local`)"
+      - "traefik.http.routers.tiroucubo-web.tls.domains[0].main=tiroucubo.local"
+      - "traefik.http.routers.tiroucubo-web.tls.domains[0].sans=*.tiroucubo.local"
     volumes:
       - ..:/var/www
       - ./config/local.env:/var/www/.env
@@ -48,9 +51,13 @@ services:
     container_name: tiroucubo-web_test
     expose:
       - "80"
-    environment:
-      - VIRTUAL_HOST=tiroucubo-test.local
     hostname: tiroucubo-web_test
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tiroucubo-web-test.rule=Host(`tiroucubo-test.local`)"
+      # TODO: use HTTPS on the test container. The problem to solve is to trust the certificate in Selenium container.
+      # - "traefik.http.routers.tiroucubo-web-test.tls.domains[0].main=tiroucubo-test.local"
+      # - "traefik.http.routers.tiroucubo-web-test.tls.domains[0].sans=*.tiroucubo-test.local"
     image: spydemon/php74-symfony:0.1
     volumes:
       - ..:/var/www

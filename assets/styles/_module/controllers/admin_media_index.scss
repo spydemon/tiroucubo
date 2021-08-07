@@ -1,0 +1,28 @@
+.admin-media-index {
+
+  .media-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    .media-item {
+      width: 100%;
+      @include for-desktop-up {
+        width: 50%;
+      }
+
+      .picture, .paths {
+        display: table-cell;
+        vertical-align: middle;
+      }
+
+      .picture {
+          width: 120px;
+
+          img {
+            width: 120px;
+          }
+      }
+    }
+  }
+}

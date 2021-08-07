@@ -16,7 +16,7 @@ trait AdminMediaEditTrait
         /**
          * Check incorrect uploaded type.
          */
-        $client->request('GET', '/admin/media/edit');
+        $client->request('GET', '/admin/media/create');
         $this->addPath('fr/linux/histoire-de-la-creation/pdp-7.jpeg');
         $imageField = $this->getElementByCssSelector('#form_media');
         $imageField->sendKeys('/root/data/tiroucubo/AdminMediaEdit/pdp-7.jpeg');
@@ -33,7 +33,7 @@ trait AdminMediaEditTrait
         /**
          * Check correct uploaded type.
          */
-        $client->request('GET', '/admin/media/edit');
+        $client->request('GET', '/admin/media/create');
         $this->addPath('fr/linux/histoire-de-la-creation/pdp-7.webp');
         $this->addPath('en/linux/history-of-its-creation/pdp-7.webp');
         $imageField = $this->getElementByCssSelector('#form_media');
@@ -56,7 +56,7 @@ trait AdminMediaEditTrait
         /**
          * Check upload on an already existing path.
          */
-        $client->request('GET', '/admin/media/edit');
+        $client->request('GET', '/admin/media/create');
         $this->addPath('fr/linux/histoire-de-la-creation/pdp-7.webp');
         $imageField = $this->getElementByCssSelector('#form_media');
         $imageField->sendKeys('/root/data/tiroucubo/AdminMediaEdit/pdp-7.webp');
@@ -72,7 +72,7 @@ trait AdminMediaEditTrait
         /**
          * Check mandatory fields.
          */
-        $client->request('GET', '/admin/media/edit');
+        $client->request('GET', '/admin/media/create');
         $this->addPath('');
         $this->addPath('');
         $this->getElementByCssSelector('form #form_path_2[required="required"]');
@@ -83,7 +83,7 @@ trait AdminMediaEditTrait
         /**
          * Check that at least a path is provided.
          */
-        $client->request('GET', '/admin/media/edit');
+        $client->request('GET', '/admin/media/create');
         $imageField = $this->getElementByCssSelector('#form_media');
         $imageField->sendKeys('/root/data/tiroucubo/AdminMediaEdit/pdp-7.webp');
         $submitButton = $this->getElementByCssSelector('#form_submit');

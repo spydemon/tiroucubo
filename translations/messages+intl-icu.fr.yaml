@@ -23,6 +23,7 @@
 "The {slug} version of the article is now enabled!": "La version {slug} de l'article est à présent activée !"
 
 # Controller/Admin/Media/EditController.php
+"The media is missing.": "Le média est manquant."
 "At least one path is needed.": "Au moins un chemin est nécessaire."
 "The new media was correctly created!": "Le nouveau média a été correctement créé !"
 "A media already exists on this path." : "Un media est déjà existant sur ce chemin."
@@ -92,7 +93,9 @@
 "(Can not be edited.)": "(Ne peut pas être édité.)"
 
 # templates/back/media/index.html.twig
+"Create a new media": "Création d'un nouveau média"
 "Add a new image": "Ajouter une nouvelle image"
+"Edit existing media": "Édition des médias existant"
 
 # templates/back/path/index.html.twig
 "Create a new path": "Création d'un nouveau chemin"

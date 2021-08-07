@@ -1,12 +1,32 @@
 {% extends 'layout/three-columns.html.twig' %}
 
 {% block body %}
-    <h1>{% trans %}Medias{% endtrans %}</h1>
-    <ul>
-        <li>
-            <a href="{{ path('admin_media_edit') }}">
-                {% trans %}Add a new image{% endtrans %}
-            </a>
-        </li>
-    </ul>
+    <div class="admin-media-index">
+        <h1>{% trans %}Medias{% endtrans %}</h1>
+        <h2>{% trans %}Create a new media{% endtrans %}</h2>
+        <ul>
+            <li>
+                <a href="{{ path('admin_media_create') }}">
+                    {% trans %}Add a new image{% endtrans %}
+                </a>
+            </li>
+        </ul>
+        <h2>{% trans %}Edit existing media{% endtrans %}</h2>
+        <div class="media-list">
+            {% for media in medias %}
+                <div class="media-item">
+                    <div class="picture">
+                        <a href="{{ path('admin_media_edit', {media: media.media_id}) }}">
+                            <img src="{{ media.media_url}}" alt="Media preview" />
+                        </a>
+                    </div>
+                    <ul class="paths">
+                        {% for mediaPath in media.all_paths %}
+                            <li>{{ mediaPath.path }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

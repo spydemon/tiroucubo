@@ -3,6 +3,9 @@
 {% block body %}
     <div class="admin-media-edit">
         <h1>{% trans %}Add a new media{% endtrans %}</h1>
+        {% if data.url is not null %}
+            <img class="current-image" src="{{ data.url }}" alt="Image to edit" />
+        {% endif %}
         {{ form_start(form) }}
             {{ form_errors(form) }}
             {{ form_label(form.path) }}

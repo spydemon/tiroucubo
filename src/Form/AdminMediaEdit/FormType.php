@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 
 class FormType extends Abstracttype
@@ -17,6 +18,7 @@ class FormType extends Abstracttype
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $editionMode = $options['edition_mode'];
         return $builder
             ->add('id', HiddenType::class)
             ->add('path',CollectionType::class, [
@@ -35,8 +37,18 @@ class FormType extends Abstracttype
                             'Content type is not allowed. Allowed ones are: '
                             . implode(', ', Media::getAllowedResourceType()),
                     ])
-                ]
+                ],
+                'required' => !$editionMode
             ])
             ->add('submit', SubmitType::class);
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        // The form can be used for creating a new path entity or for updating an already existing one. This option
+        // should be set at "true" if we are editing an already existing Path.
+        $resolver->setDefaults(['edition_mode' => false]);
+        $resolver->setAllowedTypes('edition_mode', 'bool');
+        parent::configureOptions($resolver);
     }
 }

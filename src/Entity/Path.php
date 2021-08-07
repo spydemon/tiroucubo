@@ -165,6 +165,13 @@ class Path
         return $this;
     }
 
+    /**
+     * This method will return the relative URL corresponding to the path.
+     * Eg: en/magento/backend/user/authentication
+     * TODO: should be put in another method. It's counter intuitive to have this behavior on __toString.
+     *
+     * @return string
+     */
     public function __toString(): string
     {
         $path = '';

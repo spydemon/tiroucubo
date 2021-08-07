@@ -14,7 +14,8 @@ class FormData extends stdClass
      */
     private ?int $id;
 
-    private UploadedFile $media;
+    private ?UploadedFile $media = null;
+    private ?string $url = null;
 
     /**
      * @Assert\NotBlank(message="At least one path is needed.")
@@ -29,7 +30,7 @@ class FormData extends stdClass
         return $this->id;
     }
 
-    public function getMedia() : UploadedFile
+    public function getMedia() : ?UploadedFile
     {
         return $this->media;
     }
@@ -37,6 +38,11 @@ class FormData extends stdClass
     public function getPath() : ?array
     {
         return $this->path;
+    }
+
+    public function getUrl() : ?string
+    {
+        return $this->url;
     }
 
     public function setId(int $id) : void
@@ -52,5 +58,10 @@ class FormData extends stdClass
     public function setPath(array $path) : void
     {
         $this->path = $path;
+    }
+
+    public function setUrl(string $url) : void
+    {
+        $this->url = $url;
     }
 }

@@ -34,7 +34,21 @@ class PathMediaRepository extends ServiceEntityRepository
 
     /**
      * @param Path $path
-     * @return Media[]
+     * @return PathMedia[];
+     */
+    public function findPathMediaByPath(Path $path) : array
+    {
+        return $this->createQueryBuilder('m')
+            ->andWhere('m.path= :path')
+            ->setParameter('path', $path)
+            ->getQuery()
+            ->setCacheable(true)
+            ->getResult();
+    }
+
+    /**
+     * @param Media $media
+     * @return PathMedia[]
      */
     public function findPathsByMedia(Media $media) : array
     {
@@ -43,6 +57,6 @@ class PathMediaRepository extends ServiceEntityRepository
             ->setParameter('media', $media)
             ->getQuery()
             ->setCacheable(true)
-            ->getArrayResult();
+            ->getResult();
     }
 }
